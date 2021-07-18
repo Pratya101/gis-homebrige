@@ -1,0 +1,38 @@
+@import "../../styles/app";
+.main-header {
+  .v-list {
+    .v-list-item:hover {
+      background-color: #f3f5ff;
+      &:before {
+        opacity: 0;
+      }
+    }
+    .v-list-item:hover .v-list-item__icon {
+      .v-icon {
+        color: rgba(var(--v-primary-base), 0.8) !important;
+      }
+    }
+    .link-item {
+      cursor: pointer;
+    }
+  }
+  .greeting-text {
+    font-size: 14px;
+    span {
+      font-weight: 600;
+    }
+  }
+}
+.set-shadows {
+  border-radius: 22px;
+  background: #f6f7fe;
+  box-shadow: 5px 5px 14px #828387, -5px -5px 14px #ffffff;
+}
+.set-font-shadows {
+  background: #77787a;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: rgba(255, 255, 255, 0.9) 1px 2px 1px;
+  font-size: 70px;
+}

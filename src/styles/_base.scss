@@ -1,0 +1,190 @@
+@import "./variables";
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+body {
+  font-family: "Kanit", sans-serif;
+  label {
+    font-family: "Kanit", sans-serif;
+  }
+  input {
+    font-family: "Kanit", sans-serif;
+  }
+  p {
+    font-family: "Kanit", sans-serif;
+  }
+  div.v-application {
+    background-color: $body-bg !important;
+    // Font Size
+    .fs-base {
+      font-size: $fs-base;
+    }
+    .fs-medium {
+      font-size: $fs-medium;
+    }
+    .fs-large {
+      font-size: $fs-larger;
+    }
+    .fs-lg {
+      font-size: $fs-lg;
+    }
+    .fs-index {
+      font-size: $fs-index;
+    }
+    .page-title {
+      font-size: 2.4rem;
+      color: var(--v-greyTint-base);
+      margin-bottom: 0;
+    }
+    .v-card {
+      box-shadow: $card-shadow !important;
+      .v-card__title {
+        p {
+          color: var(--v-greyMedium-base);
+          line-height: 1.33;
+          margin: 0;
+          font-size: 20px;
+          font-weight: 400;
+          font-family: "Sarabun", sans-serif;
+        }
+        .v-btn.v-btn--flat.v-btn--icon.v-btn--round {
+          &:hover {
+            transition: 300ms all;
+            background-color: var(--v-primary-base);
+            .v-icon {
+              color: rgba(255, 255, 255, 0.35) !important;
+            }
+          }
+        }
+      }
+    }
+    .v-navigation-drawer {
+      .v-navigation-drawer__content {
+        .v-list {
+          .v-list-item--active {
+            background-color: #f3f5ff;
+            &:before {
+              opacity: 0;
+            }
+          }
+          .v-list-item:hover {
+            background-color: #f3f5ff;
+            &:before {
+              opacity: 0;
+            }
+          }
+        }
+      }
+    }
+    h1 {
+      font-size: $h1-font-size;
+      font-weight: 400;
+      margin-bottom: 16px;
+      line-height: 1;
+      font-family: "Kanit", sans-serif;
+    }
+    h2 {
+      font-size: $h2-font-size;
+      font-weight: 400;
+      margin-bottom: 16px;
+      line-height: 1;
+      font-family: "Kanit", sans-serif;
+    }
+    h3 {
+      font-size: $h3-font-size;
+      font-weight: 400;
+      margin-bottom: 16px;
+      line-height: 1;
+      font-family: "Kanit", sans-serif;
+    }
+    h4 {
+      font-size: $h4-font-size;
+      font-weight: 400;
+      margin-bottom: 16px;
+      line-height: 1;
+      font-family: "Kanit", sans-serif;
+    }
+    h5 {
+      font-size: $h5-font-size;
+      font-weight: 400;
+      margin-bottom: 16px;
+      font-family: "Kanit", sans-serif;
+    }
+    h6 {
+      font-size: $h6-font-size;
+      font-weight: 400;
+      margin-bottom: 16px;
+      font-family: "Kanit", sans-serif;
+    }
+    .fs-normal {
+      font-size: 1rem;
+    }
+    .button-shadow {
+      box-shadow: $button-shadow;
+      &.theme--dark {
+        box-shadow: none;
+      }
+    }
+    code,
+    pre {
+      color: var(--v-greyBoldConst-base);
+      background-color: #f3f5ff;
+      padding: 7px;
+      font-weight: 500;
+    }
+    pre {
+      padding: 0.9rem;
+      font-size: 0.75rem;
+    }
+    .v-btn.default {
+      &.theme--dark {
+        .v-btn__content {
+          color: #000;
+        }
+      }
+      .v-btn__content {
+        color: var(--v-greyBold-base);
+      }
+    }
+  }
+  div.v-application.theme--dark {
+    background-color: $body-bg-dark !important;
+    .main-header.theme--dark {
+      background-color: #31313c !important;
+    }
+    .content {
+      background-color: $body-bg-dark !important;
+      .v-card {
+        background-color: #23232d;
+        box-shadow: none !important;
+      }
+    }
+    //ApexCharts
+    .v-card {
+      .apexcharts-legend-text {
+        color: #76767b !important;
+      }
+      .apexcharts-text {
+        &.apexcharts-xaxis-label,
+        &.apexcharts-yaxis-label {
+          fill: #76767b;
+        }
+      }
+    }
+  }
+}
+
+// menu
+.v-menu__content.menuable__content__active {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+    0 1px 10px 0 rgba(0, 0, 0, 0.12) !important;
+  font-family: "Kanit", sans-serif;
+  .v-list-item__title {
+    font-size: 1rem !important;
+    font-family: "Kanit", sans-serif;
+    font-weight: 400;
+  }
+}
+
+.set-font-kanit {
+  font-family: "Kanit", sans-serif;
+}

@@ -1,0 +1,62 @@
+@import "../../styles/app";
+
+.icon-list {
+  margin-top: $spacer;
+}
+
+.icon-list-item {
+  height: 32px;
+  font-size: 14px;
+  line-height: 32px;
+
+  > a {
+    color: var(--v-greyMedium-base);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--v-greyMedium-base);
+      text-decoration: none;
+    }
+  }
+
+  .glyphicon,
+  .fa,
+  .fi {
+    width: 32px;
+    margin-right: 10px;
+  }
+
+  &:hover {
+    .glyphicon,
+    .fa,
+    .fi {
+      font-size: 28px;
+      top: 2px;
+    }
+
+    .fa,
+    .fi {
+      vertical-align: -5px;
+    }
+
+    .glyphicon {
+      vertical-align: -6px;
+    }
+  }
+}
+h2 {
+  background: #686868;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
+  font-size: 70px;
+}
+.set-font-shadow {
+  background: #686868;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
+  font-size: 70px;
+}
