@@ -144,14 +144,16 @@
         <v-autocomplete
           v-model.trim="address2"
           :items="locationList"
-          item-text="SUB_DISTRICT_NAME"
+          item-text="SEARCH"
           return-object
           :disabled="!statusEdit"
           solo
         >
           <template v-slot:item="{ item }">
-            {{ item.SUB_DISTRICT_NAME }} > {{ item.DISTRICT_NAME }} >
-            {{ item.PROVINCE_NAME }} > {{ item.ZIPCODE }}
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.SUB_DISTRICT_NAME }}
           </template>
         </v-autocomplete>
       </v-col>
@@ -161,13 +163,15 @@
           v-model.trim="address2"
           :items="locationList"
           :disabled="!statusEdit"
-          item-text="DISTRICT_NAME"
+          item-text="SEARCH"
           return-object
           solo
         >
           <template v-slot:item="{ item }">
-            {{ item.SUB_DISTRICT_NAME }} > {{ item.DISTRICT_NAME }}>
-            {{ item.PROVINCE_NAME }} > {{ item.ZIPCODE }}
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.DISTRICT_NAME }}
           </template>
         </v-autocomplete>
       </v-col>
@@ -177,13 +181,15 @@
           v-model.trim="address2"
           :items="locationList"
           :disabled="!statusEdit"
-          item-text="PROVINCE_NAME"
+          item-text="SEARCH"
           return-object
           solo
         >
           <template v-slot:item="{ item }">
-            {{ item.SUB_DISTRICT_NAME }} > {{ item.DISTRICT_NAME }}>
-            {{ item.PROVINCE_NAME }} > {{ item.ZIPCODE }}
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.PROVINCE_NAME }}
           </template>
         </v-autocomplete>
       </v-col>
@@ -193,13 +199,15 @@
           v-model.trim="address2"
           :items="locationList"
           :disabled="!statusEdit"
-          item-text="GEO_NAME"
+          item-text="SEARCH"
           return-object
           solo
         >
           <template v-slot:item="{ item }">
-            {{ item.SUB_DISTRICT_NAME }} > {{ item.DISTRICT_NAME }}>
-            {{ item.PROVINCE_NAME }} > {{ item.ZIPCODE }}
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.GEO_NAME }}
           </template>
         </v-autocomplete>
       </v-col>
@@ -217,24 +225,6 @@
             >
           </template>
         </v-text-field>
-      </v-col>
-      <v-col cols="12" md="6">
-        <label>พิกัด TUM (X)</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="tumx"
-          hide-details
-          solo
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" md="6">
-        <label>พิกัด TUM (Y)</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="tumy"
-          hide-details
-          solo
-        ></v-text-field>
       </v-col>
       <v-col cols="12"> <v-divider></v-divider> </v-col>
       <v-col cols="12 set-text-shadow">
@@ -441,7 +431,7 @@
 </template>
 
 <script>
-import location_new from "@/data/location_new.json";
+import location_new from "@/data/locations.json";
 export default {
   name: "Icons",
   data() {

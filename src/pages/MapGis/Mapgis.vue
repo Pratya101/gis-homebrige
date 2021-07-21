@@ -77,7 +77,6 @@ export default {
       markers: [
         {
           location: { lon: 100.58, lat: 13.761 },
-
           icon: {
             url: "https://image.flaticon.com/icons/png/512/25/25694.png",
             offset: { x: 14, y: 10 },

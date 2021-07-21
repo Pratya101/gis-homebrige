@@ -31,29 +31,45 @@
         >
         หมวดข้อมูลในครัวเรือน
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col cols="12" md="2">
         <label>เลขบัตรประชาชน</label>
-        <v-select hide-details solo></v-select>
+        <v-text-field solo type="number" v-model.trim="idCard"></v-text-field>
       </v-col>
-      <v-col cols="12" md="1">
+      <v-col cols="12" md="2">
         <label>คำนำหน้า</label>
-        <v-select hide-details solo></v-select>
+        <v-select
+          v-model.trim="perfix"
+          :items="perfixList"
+          hide-details
+          solo
+        ></v-select>
       </v-col>
       <v-col cols="12" md="4">
         <label>ชื่อ</label>
-        <v-text-field hide-details solo></v-text-field>
+        <v-text-field v-model.trim="fname" hide-details solo></v-text-field>
       </v-col>
       <v-col cols="12" md="4"
-        ><label>นามสกุล</label><v-text-field hide-details solo></v-text-field
+        ><label>นามสกุล</label
+        ><v-text-field v-model.trim="lname" hide-details solo></v-text-field
       ></v-col>
       <v-col cols="12" md="6">
         <label>ตําแหน่ง/สถานะภาพ</label>
-        <v-select hide-details solo></v-select>
+        <v-select
+          :items="memberStatusList"
+          v-model.trim="memberStatus"
+          hide-details
+          solo
+        ></v-select>
       </v-col>
       <v-col cols="12" md="6"
         ><label>จำนวนสมาชิกในครัวเรือน</label>
-        <v-text-field type="number" hide-details solo></v-text-field
-      ></v-col>
+        <v-select
+          solo
+          :items="memberCountList"
+          v-model.trim="memberCount"
+          form
+        ></v-select>
+      </v-col>
       <v-col cols="12"> <v-divider></v-divider> </v-col>
       <v-col cols="12 set-text-shadow">
         <v-icon
@@ -70,31 +86,83 @@
       </v-col>
       <v-col cols="12" md="2">
         <label>บ้านเลขที่</label>
-        <v-text-field hide-details solo></v-text-field>
+        <v-text-field v-model.trim="houseId" hide-details solo></v-text-field>
       </v-col>
       <v-col cols="12" md="2">
         <label>หมู่ที่</label>
-        <v-text-field hide-details solo></v-text-field>
-      </v-col>
-      <v-col cols="12" md="4">
-        <label>ภาค</label>
-        <v-select hide-details solo></v-select>
-      </v-col>
-      <v-col cols="12" md="4">
-        <label>จังหวัด</label>
-        <v-select hide-details solo></v-select>
-      </v-col>
-      <v-col cols="12" md="4">
-        <label>อำเภอ/เขต</label>
-        <v-select hide-details solo></v-select>
+        <v-text-field v-model.trim="villageId" hide-details solo></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
         <label>ตําบล/แขวง</label>
-        <v-select hide-details solo></v-select>
+        <v-autocomplete
+          v-model.trim="address2"
+          :items="locationList"
+          item-text="SEARCH"
+          return-object
+          solo
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.SUB_DISTRICT_NAME }}
+          </template>
+        </v-autocomplete>
+      </v-col>
+      <v-col cols="12" md="4">
+        <label>อำเภอ/เขต</label>
+        <v-autocomplete
+          v-model.trim="address2"
+          :items="locationList"
+          item-text="SEARCH"
+          return-object
+          solo
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.DISTRICT_NAME }}
+          </template>
+        </v-autocomplete>
+      </v-col>
+      <v-col cols="12" md="4">
+        <label>จังหวัด</label>
+        <v-autocomplete
+          v-model.trim="address2"
+          :items="locationList"
+          item-text="SEARCH"
+          return-object
+          solo
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.PROVINCE_NAME }}
+          </template>
+        </v-autocomplete>
+      </v-col>
+      <v-col cols="12" md="4">
+        <label>ภาค</label>
+        <v-autocomplete
+          v-model.trim="address2"
+          :items="locationList"
+          item-text="SEARCH"
+          return-object
+          solo
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.GEO_NAME }}
+          </template>
+        </v-autocomplete>
       </v-col>
       <v-col cols="12" md="4">
         <label>พิกัด GPS</label>
-        <v-text-field v-model.trim="locationGPS" hide-details solo>
+        <v-text-field v-model.trim="gpsLocation" hide-details solo>
           <template v-slot:append>
             <v-icon @click="selectLocation" style="color:blue;cursor:pointer"
               >mdi-map-marker-radius-outline</v-icon
@@ -118,28 +186,55 @@
       </v-col>
       <v-col cols="12" md="4">
         <label>สภาพที่อยู่อาศัย</label>
-        <v-select hide-details solo></v-select>
+        <v-select
+          :items="addressStatusList"
+          v-model.trim="addressStatus"
+          hide-details
+          solo
+        ></v-select>
       </v-col>
       <v-col cols="12" md="4">
         <label>แนวทางการปรับปรุง</label>
-        <v-select hide-details solo></v-select>
+        <v-select
+          :items="restoreChanelList"
+          v-model.trim="restoreChanel"
+          hide-details
+          solo
+        ></v-select>
       </v-col>
       <v-col cols="12" md="4">
         <label>ความต้องการทีอยู่อาศัย</label>
-        <v-select hide-details solo></v-select>
+        <v-select
+          :items="houseNeedList"
+          v-model="houseNeed"
+          hide-details
+          solo
+        ></v-select>
       </v-col>
       <v-col cols="12" md="6">
         <label>ลักษณะบ้าน</label>
-        <v-select hide-details solo></v-select>
+        <v-select
+          :items="houseFormatList"
+          v-model="houseFormat"
+          hide-details
+          solo
+        ></v-select>
       </v-col>
       <v-col cols="12" md="6">
         <label>กรรมสิทธิทีดินของบ้านปจจุบัน</label>
-        <v-select hide-details solo></v-select>
+        <v-select
+          :items="solidsList"
+          v-model="solids"
+          item-value="value"
+          item-text="text"
+          hide-details
+          solo
+        ></v-select>
       </v-col>
 
       <v-col cols="12">
         <label>ลักษณะที่ดิน</label>
-        <v-radio-group v-model="row" row>
+        <v-radio-group v-model="soilsSelection" row>
           <v-col
             v-for="(item, index) in soils"
             :key="index"
@@ -147,7 +242,7 @@
             md="4"
             class="py-1"
           >
-            <v-radio :label="item" :value="[]"></v-radio>
+            <v-radio :label="item" :value="item"> </v-radio>
           </v-col>
         </v-radio-group>
       </v-col>
@@ -174,7 +269,12 @@
     </v-row>
     <v-dialog v-model="dialogSelectLocation" max-width="600">
       <v-card>
-        <v-card-title> ตำแหน่ง : {{ locationGPS }} </v-card-title>
+        <v-card-title>
+          ตำแหน่ง :
+          {{
+            gpsLocation ? gpsLocation : "เลื่อนแผนที่เพื่อระบุพิกัดครัวงเรือน"
+          }}
+        </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
           <longdo-map
@@ -214,69 +314,73 @@
 </template>
 
 <script>
+import location_new from "@/data/locations.json";
+import perfix_data from "@/data/perfix_data.json";
+import member_status from "@/data/member_status.json";
+import member_count from "@/data/member_count.json";
+import soilsType from "@/data/soilsType.json";
+import address_status from "@/data/address_status.json";
+import restore_chanel from "@/data/restore_chanel.json";
+import house_need from "@/data/house_need.json";
+import house_format from "@/data/house_format.json";
+import solids from "@/data/solids.json";
+
 export default {
   name: "Icons",
   data() {
     return {
+      //data for select
+      locationList: location_new,
+      perfixList: perfix_data.data,
+      memberStatusList: member_status.data,
+      memberCountList: member_count.data,
+      addressStatusList: address_status.data,
+      restoreChanelList: restore_chanel.data,
+      houseNeedList: house_need.data,
+      houseFormatList: house_format.data,
+      solidsList: solids.data,
+      // field data
+      idCard: "",
+      perfix: "",
+      fname: "",
+      lname: "",
+      memberStatus: "",
+      memberCount: "",
+      houseId: "",
+      villageId: "",
+      address2: {
+        SUB_DISTRICT_NAME: "",
+        DISTRICT_NAME: "",
+        PROVINCE_NAME: "",
+        ZIPCODE: "",
+        GEO_NAME: "",
+      },
+      gpsLocation: "",
+      addressStatus: "",
+      restoreChanel: "",
+      houseNeed: "",
+      houseFormat: "",
+      solids: "",
+      soilsSelection: "",
+      //data
+      soils: soilsType.data,
       locationStart: { lon: 102.82363467961038, lat: 16.432227961892437 },
-
       row: "",
-      soils: [
-        "ทีดินส่วนตัว",
-        "กรมศาสนา",
-        "เขตรักษาพันธุ์สัตว์ป่า",
-        "นิคมอุตสาหกรรม",
-        "ส.ป.ก.",
-        "กรมชลประทาน",
-        "กรมศิลปากร",
-        "ทหารเรือ",
-        "ป่าชายเลน",
-        "สำนักงานทรัพย์สินพระมหากษัตริย์",
-        "กรมทางหลวง",
-        "การเคหะแห่งชาติ",
-        "ที่ดินถือครองคู่กัน(องค์กรชุมชน,สหกรณ์)",
-        "ป่าสงวนแห่งชาติ",
-        "องค์การอุตสาหกรรมป่าไม้",
-        "กรมธนารักษ์",
-        "กรมท่าเรือแห่งประเทศไทย",
-        "นิคมการเกษตร",
-        "วัด",
-        "อุทยานแห่งชาติ",
-        "กรมประมง",
-        "การไฟฟ้าแห่งประเทศไทย",
-        "นิคมสร้างตนเอง",
-        "สาธารณะประโยชน์",
-        "เอกชน",
-        "อื่นๆ",
-      ],
-      dialogImageUrl: "",
-      dialogVisible: false,
-      disabled: false,
       dialogSelectLocation: false,
-      locationGPS: " 102.82363467961038,16.432227961892437",
     };
+  },
+  watch: {
+    soilsSelection(value) {
+      console.log("value seletion : ", value);
+    },
   },
   methods: {
     selectLocation() {
       this.dialogSelectLocation = true;
     },
-    toFontAwesomeText(name) {
-      return "fa-" + name.toLowerCase();
-    },
-    handleRemove(file) {
-      console.log(file);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    handleDownload(file) {
-      console.log(file);
-    },
     event(map) {
       map.Event.bind("drag", () => {
-        this.locationGPS = `${map.location().lat},${map.location().lon}`;
-        console.log("map.location();", this.locationGPS);
+        this.gpsLocation = `${map.location().lat},${map.location().lon}`;
       });
     },
   },
