@@ -233,6 +233,7 @@
       </v-col>
 
       <v-col cols="12">
+         
         <label>ลักษณะที่ดิน</label>
         <v-radio-group v-model="soilsSelection" row>
           <v-col

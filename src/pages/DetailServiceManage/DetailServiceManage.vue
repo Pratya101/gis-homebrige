@@ -305,11 +305,106 @@
         </v-tabs>
       </v-col>
     </v-row>
-    <v-dialog max-width="900" v-model="dialog">
+    <v-dialog max-width="1000" v-model="dialog">
       <v-card>
-        <v-card-title></v-card-title>
-        <v-card-text></v-card-text>
-        <v-card-actions></v-card-actions>
+        <v-card-title class="set-font-kanit mb-0 pb-0">
+          <v-row>
+            <v-col cols="12" md="6">
+              <h5><v-icon left>fa-search</v-icon>ค้นหาข้อมูลครัวเรือน</h5>
+            </v-col>
+            <v-col cols="12" md="6" class="d-md-flex justify-md-end">
+              <v-btn
+                color="success"
+                class="rounded-lg elevation-4"
+                large
+                outlined
+              >
+                <v-icon left>fa-search</v-icon>ค้นหา</v-btn
+              ></v-col
+            >
+          </v-row>
+        </v-card-title>
+        <v-card-text class="mt-0 pt-0">
+          <v-row class="mt-2">
+            <v-col cols="12" md="4">
+              <label for="">ชื่อ-นามสกุล</label>
+              <v-text-field hide-details solo></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+              <label for="">สภาพที่อยู่อาศัย</label
+              ><v-text-field hide-details solo></v-text-field
+            ></v-col>
+            <v-col cols="12" md="4"
+              ><label for="">ภาค</label
+              ><v-select hide-details :items="[]" solo></v-select
+            ></v-col>
+            <v-col cols="12" md="4">
+              <label for="">อำเภอ</label>
+              <v-select hide-details :items="[]" solo></v-select>
+            </v-col>
+            <v-col cols="12" md="4"
+              ><label for="">จังหวัด</label>
+              <v-select
+                hide-details
+                :items="[]"
+                label="Solo field"
+                solo
+              ></v-select
+            ></v-col>
+            <v-col cols="12" md="4"
+              ><label for="">ตำบล</label
+              ><v-select hide-details :items="[]" solo></v-select
+            ></v-col>
+          </v-row>
+          <v-divider class="my-5"></v-divider>
+          <h5><v-icon>fa-list</v-icon> ข้อมูลครัวเรือน</h5>
+          <v-simple-table class="material-table set-shadow mt-5">
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left white--text">
+                    <v-checkbox></v-checkbox>
+                  </th>
+                  <th class="text-left white--text">ชื่อ-สนามสกุล</th>
+                  <th class="text-left white--text">สภาพที่อยู่อาศัย</th>
+                  <th class="text-left white--text">ตำบล</th>
+                  <th class="text-left white--text">อำเภอ</th>
+                  <th class="text-left white--text">จังหวัด</th>
+                  <th class="text-left white--text">ภาค</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><v-checkbox></v-checkbox></td>
+                  <td>Pratya Phocha</td>
+                  <td>พอใช้</td>
+                  <td>ศรีโคตร</td>
+                  <td>จตุรพักตรพิมาน</td>
+                  <td>ร้อยเอ็ด</td>
+                  <td>ตะวันออกเฉียงเหนือ</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            class="set-font-kanit rounded-lg elevation-4"
+            x-large
+            outlined
+            ><v-icon left>fa-save</v-icon>บันทึก</v-btn
+          >
+          <v-btn
+            color="error"
+            class="set-font-kanit rounded-lg elevation-4"
+            x-large
+            outlined
+            ><v-icon left>fa-times</v-icon>ยกเลิก</v-btn
+          >
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-container>
