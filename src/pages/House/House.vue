@@ -44,23 +44,25 @@
                 <th class="text-left white--text">#</th>
                 <th class="text-left white--text">ชื่อ-สนามสกุล</th>
                 <th class="text-left white--text">สภาพที่อยู่อาศัย</th>
-                <th class="text-left white--text">ภาค</th>
-                <th class="text-left white--text">จังหวัด</th>
-                <th class="text-left white--text">อำเภอ</th>
                 <th class="text-left white--text">ตำบล</th>
+                <th class="text-left white--text">อำเภอ</th>
+                <th class="text-left white--text">จังหวัด</th>
+                <th class="text-left white--text">ภาค</th>
                 <th class="text-center white--text">ตำแหน่งที่อยู่</th>
                 <th class="text-center white--text">รายละเอียด</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Pratya Phocha</td>
-                <td>พอใช้</td>
-                <td>ตะวันออกเฉียงเหนือ</td>
-                <td>ร้อยเอ็ด</td>
-                <td>จตุรพักตรพิมาน</td>
-                <td>ศรีโคตร</td>
+              <tr v-for="(item, index) in houseList" :key="index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.form_fname }} {{ item.form_lname }}</td>
+                <td>{{ item.form_living }}</td>
+                <td>{{ item.form_sub_district }}</td>
+                <td>{{ item.form_district }}</td>
+                <td>{{ item.form_province }}</td>
+                <td>{{ item.form_geo }}</td>
+                <td>{{ item.form_lat }},{{ item.form_long }}</td>
+
                 <td class="text-center">
                   <v-btn
                     icon
@@ -69,12 +71,10 @@
                     style="cursor:pointer;"
                     ><v-icon>mdi-map-marker-radius-outline</v-icon></v-btn
                   >
-                </td>
-                <td class="text-center">
                   <v-btn
                     icon
                     color="primary"
-                    @click="detail"
+                    @click="detail(item.form_id)"
                     style="cursor:pointer;"
                     ><v-icon>mdi-information-outline</v-icon></v-btn
                   >
@@ -162,19 +162,33 @@
 </template>
 
 <script>
+import { apiService } from "@/services/axios";
 export default {
   name: "Icons",
   data() {
     return {
       dialog: false,
+      houseList: [],
     };
   },
+  mounted() {
+    this.getHouseList();
+  },
   methods: {
+    async getHouseList() {
+      let data = await apiService.get({
+        path: "form/list",
+      });
+      this.houseList = data.data;
+    },
     map() {
       this.$router.push("/map");
     },
-    detail() {
-      this.$router.push("/detail");
+    detail(id) {
+      this.$router.push({
+        name: "Detail",
+        query: { id: id },
+      });
     },
     search() {
       this.dialog = true;

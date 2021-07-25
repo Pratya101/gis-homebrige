@@ -1,86 +1,60 @@
 import config from "../config";
 
 const axios = require("axios");
-axios.defaults.baseURL = config.baseURLApi;
-const apiService = {
-  getToken: function(payload) {
-    try {
-      let { path, param, header } = payload;
-      var respone = new Promise((resolve) => {
-        var url = `${path}${param || param == 0 ? "/" + param : ""}`;
-        axios
-          .get(url, {
-            headers: {
-              Authorization: !header ? "" : header,
-            },
-          })
-          .then(async (res) => {
-            resolve(res.data);
-          });
-      });
-      return respone;
-    } catch (err) {
-      console.log(err);
-      return "GET ERROR";
-    }
-  },
+const www = config.baseURLApi + "/";
+let token = localStorage.getItem("token");
 
+const apiService = {
   post: async function(payload) {
     try {
-      let { path, body, header } = payload;
+      let { path, body } = payload;
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = token;
+      }
       var respone = await new Promise(function(resolve) {
-        axios
-          .post(`${path}`, body, {
-            headers: {
-              Authorization: !header ? "" : header,
-            },
-          })
-          .then(async (res) => {
-            resolve(res.data);
-          });
+        axios.post(`${www}${path}`, body).then(async (res) => {
+          if (path == "login") {
+            axios.defaults.headers.common["Authorization"] = res.data.token;
+            localStorage.setItem("token", res.data.token);
+          }
+          resolve(res.data.data == null ? { ...res.data, data: [] } : res.data);
+        });
       });
       return respone;
     } catch (err) {
-      console.log(err);
       return "POST ERROR";
     }
   },
-
   get: async function(payload) {
     try {
-      let { path, param, header } = payload;
+      let { path, param } = payload;
+
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = token;
+      }
       var respone = await new Promise(function(resolve) {
-        var url = `${path}${param || param == 0 ? "/" + param : ""}`;
-        axios
-          .get(url, {
-            headers: {
-              Authorization: !header ? "" : header,
-            },
-          })
-          .then(async (res) => {
-            resolve(res.data);
-          });
+        var url = `${www}${path}${param || param == 0 ? "/" + param : ""}`;
+        axios.get(url).then(async (res) => {
+          resolve(res.data);
+        });
       });
       return respone;
     } catch (err) {
-      console.log(err);
       return "GET ERROR";
     }
   },
+
   put: async function(payload) {
     try {
-      let { path, param, body, header } = payload;
+      let { path, param, body } = payload;
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = token;
+      }
       var respone = await new Promise(function(resolve) {
-        var url = `${path}${param || param == 0 ? "/" + param : ""}`;
-        axios
-          .put(url, body, {
-            headers: {
-              Authorization: !header ? "" : header,
-            },
-          })
-          .then(async (res) => {
-            resolve(res.data);
-          });
+        var url = `${www}${path}${param || param == 0 ? "/" + param : ""}`;
+        axios.put(url, body).then(async (res) => {
+          resolve(res.data);
+        });
       });
       return respone;
     } catch (err) {
@@ -91,18 +65,15 @@ const apiService = {
 
   delete: async function(payload) {
     try {
-      let { path, param, header } = payload;
+      let { path, param } = payload;
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = token;
+      }
       var respone = await new Promise(function(resolve) {
-        var url = `${path}${param || param == 0 ? "/" + param : ""}`;
-        axios
-          .delete(url, {
-            headers: {
-              Authorization: !header ? "" : header,
-            },
-          })
-          .then(async (res) => {
-            resolve(res.data);
-          });
+        var url = `${www}${path}${param || param == 0 ? "/" + param : ""}`;
+        axios.delete(url).then(async (res) => {
+          resolve(res.data);
+        });
       });
       return respone;
     } catch (err) {

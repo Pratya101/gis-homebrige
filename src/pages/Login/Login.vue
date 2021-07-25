@@ -22,12 +22,15 @@
             prepend-icon="fa-user"
             class="px-3"
             solo
+            v-model.trim="username"
           ></v-text-field>
           <!-- <label class="pl-12">Password</label> -->
           <v-text-field
             label="รหัสผ่าน"
             prepend-icon="fa-lock"
             class="px-3"
+            type="password"
+            v-model.trim="password"
             solo
           ></v-text-field>
           <div class="mx-3 my-10">
@@ -59,7 +62,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import config from "../../config";
-
+import { apiService } from "@/services/axios";
 export default {
   name: "Login",
   data() {
@@ -74,8 +77,8 @@ export default {
       ],
       createFullName: "John Smith",
       createEmail: "john@flatlogic.com",
-      createPassword: "password",
-      password: "password",
+      username: "admin",
+      password: "123456",
       passRules: [
         (v) => !!v || "Password is required",
         (v) => v.length >= 6 || "Min 6 characters",
@@ -87,11 +90,21 @@ export default {
   methods: {
     ...mapActions("register", ["registerUser", "registerError"]),
     ...mapActions("auth", ["loginUser", "receiveToken", "receiveLogin"]),
-    login() {
+    async login() {
       // const email = this.email;
       // const password = this.password;
       // this.loginUser({email, password});
-      this.$router.push("/map");
+      // this.$router.push("/map");
+      let body = {
+        username: this.username,
+        password: this.password,
+      };
+      let data = await apiService.post({
+        path: "login",
+        body: body,
+      });
+
+      data.response ? this.$router.push("/map") : (this.alert = true);
     },
     googleLogin() {
       this.loginUser({ social: "google" });
@@ -147,7 +160,7 @@ export default {
   mounted() {
     const creds = config.auth;
     this.email = creds.email;
-    this.password = creds.password;
+    // this.password = creds.password;
   },
 };
 </script>

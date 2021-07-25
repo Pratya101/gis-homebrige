@@ -40,10 +40,15 @@ export default new Router({
       redirect: "login",
       name: "Layout",
       component: Layout,
-      // beforeEnter: (to, from, next) => {
-      //   let token = localStorage.getItem("token");
-      //   isAuthenticated(token) ? next() : next({ path: "/login" });
-      // },
+      beforeEnter: (to, from, next) => {
+        let token = localStorage.getItem("token");
+        if (token) {
+          next();
+        } else {
+          next({ path: "/login" });
+        }
+        // isAuthenticated(token) ? next() : next({ path: "/login" });
+      },
       children: [
         {
           path: "/map",

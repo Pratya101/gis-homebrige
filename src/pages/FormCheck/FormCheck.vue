@@ -233,7 +233,6 @@
       </v-col>
 
       <v-col cols="12">
-         
         <label>ลักษณะที่ดิน</label>
         <v-radio-group v-model="soilsSelection" row>
           <v-col
@@ -251,6 +250,7 @@
         <v-btn
           color="primary"
           x-large
+          @click="sendForm"
           class="set-font-kanit rounded-lg elevation-4 me-2"
           outlined
         >
@@ -325,7 +325,7 @@ import restore_chanel from "@/data/restore_chanel.json";
 import house_need from "@/data/house_need.json";
 import house_format from "@/data/house_format.json";
 import solids from "@/data/solids.json";
-
+import { apiService } from "@/services/axios";
 export default {
   name: "Icons",
   data() {
@@ -356,6 +356,8 @@ export default {
         ZIPCODE: "",
         GEO_NAME: "",
       },
+      lat: "",
+      lon: "",
       gpsLocation: "",
       addressStatus: "",
       restoreChanel: "",
@@ -376,11 +378,43 @@ export default {
     },
   },
   methods: {
+    async sendForm() {
+      let body = {
+        form_id_card: this.idCard,
+        form_unit: this.perfix,
+        form_fname: this.fname,
+        form_lname: this.lname,
+        form_position: this.memberStatus,
+        form_members: this.memberCount,
+        form_home_id: this.houseId,
+        form_village: this.villageId,
+        form_sub_district: this.address2.SUB_DISTRICT_NAME,
+        form_province: this.address2.PROVINCE_NAME,
+        form_district: this.address2.DISTRICT_NAME,
+        form_geo: this.address2.GEO_NAME,
+        form_living: this.addressStatus,
+        form_improvement: this.restoreChanel,
+        form_housing_needs: this.houseNeed,
+        form_house_style: this.houseFormat,
+        form_house_ownership: this.solids,
+        form_land: this.soilsSelection,
+        form_lat: this.lat,
+        form_long: this.lon,
+      };
+      console.log("daya : ", body);
+      let data = await apiService.post({
+        path: "form",
+        body: body,
+      });
+      console.log(data);
+    },
     selectLocation() {
       this.dialogSelectLocation = true;
     },
     event(map) {
       map.Event.bind("drag", () => {
+        this.lat = map.location().lat;
+        this.lon = map.location().lon;
         this.gpsLocation = `${map.location().lat},${map.location().lon}`;
       });
     },

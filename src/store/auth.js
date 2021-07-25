@@ -64,14 +64,14 @@ export default {
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      // axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       dispatch("receiveLogin");
     },
     logoutUser() {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-      axios.defaults.headers.common["Authorization"] = "";
+      // document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      // axios.defaults.headers.common["Authorization"] = "";
       router.push("/login");
     },
     loginError({ commit }, payload) {

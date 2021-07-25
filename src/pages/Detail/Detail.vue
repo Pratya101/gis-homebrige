@@ -67,46 +67,44 @@
         หมวดข้อมูลในครัวเรือน
       </v-col>
       <v-col cols="12" md="2">
+        <label>เลขบัตรประชาชน</label>
+        <v-text-field solo type="number" v-model.trim="idCard"></v-text-field>
+      </v-col>
+      <v-col cols="12" md="2">
         <label>คำนำหน้า</label>
         <v-select
           v-model.trim="perfix"
-          :disabled="!statusEdit"
+          :items="perfixList"
           hide-details
           solo
         ></v-select>
       </v-col>
-      <v-col cols="12" md="5">
+      <v-col cols="12" md="4">
         <label>ชื่อ</label>
-        <v-text-field
-          v-model.trim="fname"
-          :disabled="!statusEdit"
-          hide-details
-          solo
-        ></v-text-field>
+        <v-text-field v-model.trim="fname" hide-details solo></v-text-field>
       </v-col>
-      <v-col cols="12" md="5"
+      <v-col cols="12" md="4"
         ><label>นามสกุล</label
-        ><v-text-field
-          v-model.trim="lname"
-          :disabled="!statusEdit"
-          hide-details
-          solo
-        ></v-text-field
+        ><v-text-field v-model.trim="lname" hide-details solo></v-text-field
       ></v-col>
       <v-col cols="12" md="6">
         <label>ตําแหน่ง/สถานะภาพ</label>
-        <v-select hide-details solo></v-select>
+        <v-select
+          :items="memberStatusList"
+          v-model.trim="memberStatus"
+          hide-details
+          solo
+        ></v-select>
       </v-col>
       <v-col cols="12" md="6"
         ><label>จำนวนสมาชิกในครัวเรือน</label>
-        <v-text-field
-          v-model.trim="famaryCount"
-          :disabled="!statusEdit"
-          type="number"
-          hide-details
+        <v-select
           solo
-        ></v-text-field
-      ></v-col>
+          :items="memberCountList"
+          v-model.trim="memberCount"
+          form
+        ></v-select>
+      </v-col>
       <v-col cols="12"> <v-divider></v-divider> </v-col>
       <v-col cols="12 set-text-shadow">
         <v-icon
@@ -123,21 +121,11 @@
       </v-col>
       <v-col cols="12" md="2">
         <label>บ้านเลขที่</label>
-        <v-text-field
-          v-model.trim="hourseNumber"
-          :disabled="!statusEdit"
-          hide-details
-          solo
-        ></v-text-field>
+        <v-text-field v-model.trim="houseId" hide-details solo></v-text-field>
       </v-col>
       <v-col cols="12" md="2">
         <label>หมู่ที่</label>
-        <v-text-field
-          v-model.trim="villageId"
-          :disabled="!statusEdit"
-          hide-details
-          solo
-        ></v-text-field>
+        <v-text-field v-model.trim="villageId" hide-details solo></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
         <label>ตําบล/แขวง</label>
@@ -146,7 +134,6 @@
           :items="locationList"
           item-text="SEARCH"
           return-object
-          :disabled="!statusEdit"
           solo
         >
           <template v-slot:item="{ item }">
@@ -162,7 +149,6 @@
         <v-autocomplete
           v-model.trim="address2"
           :items="locationList"
-          :disabled="!statusEdit"
           item-text="SEARCH"
           return-object
           solo
@@ -180,7 +166,6 @@
         <v-autocomplete
           v-model.trim="address2"
           :items="locationList"
-          :disabled="!statusEdit"
           item-text="SEARCH"
           return-object
           solo
@@ -198,7 +183,6 @@
         <v-autocomplete
           v-model.trim="address2"
           :items="locationList"
-          :disabled="!statusEdit"
           item-text="SEARCH"
           return-object
           solo
@@ -213,14 +197,9 @@
       </v-col>
       <v-col cols="12" md="4">
         <label>พิกัด GPS</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="gps"
-          hide-details
-          solo
-        >
+        <v-text-field v-model.trim="gpsLocation" hide-details solo>
           <template v-slot:append>
-            <v-icon style="color:blue;cursor:pointer"
+            <v-icon @click="selectLocation" style="color:blue;cursor:pointer"
               >mdi-map-marker-radius-outline</v-icon
             >
           </template>
@@ -243,8 +222,8 @@
       <v-col cols="12" md="4">
         <label>สภาพที่อยู่อาศัย</label>
         <v-select
-          :disabled="!statusEdit"
-          v-model.trim="tumy"
+          :items="addressStatusList"
+          v-model.trim="addressStatus"
           hide-details
           solo
         ></v-select>
@@ -252,8 +231,8 @@
       <v-col cols="12" md="4">
         <label>แนวทางการปรับปรุง</label>
         <v-select
-          :disabled="!statusEdit"
-          v-model.trim="tumy"
+          :items="restoreChanelList"
+          v-model.trim="restoreChanel"
           hide-details
           solo
         ></v-select>
@@ -261,8 +240,8 @@
       <v-col cols="12" md="4">
         <label>ความต้องการทีอยู่อาศัย</label>
         <v-select
-          :disabled="!statusEdit"
-          v-model.trim="tumy"
+          :items="houseNeedList"
+          v-model="houseNeed"
           hide-details
           solo
         ></v-select>
@@ -270,8 +249,8 @@
       <v-col cols="12" md="6">
         <label>ลักษณะบ้าน</label>
         <v-select
-          :disabled="!statusEdit"
-          v-model.trim="tumy"
+          :items="houseFormatList"
+          v-model="houseFormat"
           hide-details
           solo
         ></v-select>
@@ -279,18 +258,18 @@
       <v-col cols="12" md="6">
         <label>กรรมสิทธิทีดินของบ้านปจจุบัน</label>
         <v-select
-          :disabled="!statusEdit"
-          v-model.trim="tumy"
+          :items="solidsList"
+          v-model="solids"
+          item-value="value"
+          item-text="text"
           hide-details
           solo
         ></v-select>
       </v-col>
-      <v-col cols="12" v-if="!statusEdit">
-        <label>ลักษณะที่ดิน : ที่ดินส่วนตัว</label>
-      </v-col>
-      <v-col cols="12" v-if="statusEdit">
+
+      <v-col cols="12">
         <label>ลักษณะที่ดิน</label>
-        <v-radio-group v-model="row" row>
+        <v-radio-group v-model="soilsSelection" row>
           <v-col
             v-for="(item, index) in soils"
             :key="index"
@@ -298,7 +277,7 @@
             md="4"
             class="py-1"
           >
-            <v-radio :label="item" :value="item"></v-radio>
+            <v-radio :label="item" :value="item"> </v-radio>
           </v-col>
         </v-radio-group>
       </v-col>
@@ -427,77 +406,116 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogSelectLocation" max-width="600">
+      <v-card>
+        <v-card-title>
+          ตำแหน่ง :
+          {{
+            gpsLocation ? gpsLocation : "เลื่อนแผนที่เพื่อระบุพิกัดครัวงเรือน"
+          }}
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <longdo-map
+            @load="event"
+            :location="locationStart"
+            :lastView="false"
+            :zoom="10"
+            class="set-shadow"
+            style="height:615px"
+          >
+          </longdo-map>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            outlined
+            x-large
+            class="rounded-lg elevation-4 set-font-kanit"
+            @click="dialogSelectLocation = false"
+          >
+            <v-icon left>mdi-check-circle-outline</v-icon> ยืนยัน</v-btn
+          ><v-btn
+            color="error"
+            outlined
+            @click="dialogSelectLocation = false"
+            x-large
+            class="rounded-lg elevation-4 set-font-kanit"
+          >
+            <v-icon left>mdi-close</v-icon> ปิด
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import location_new from "@/data/locations.json";
+import { apiService } from "@/services/axios";
+import perfix_data from "@/data/perfix_data.json";
+import member_status from "@/data/member_status.json";
+import member_count from "@/data/member_count.json";
+import soilsType from "@/data/soilsType.json";
+import address_status from "@/data/address_status.json";
+import restore_chanel from "@/data/restore_chanel.json";
+import house_need from "@/data/house_need.json";
+import house_format from "@/data/house_format.json";
+import solids from "@/data/solids.json";
 export default {
-  name: "Icons",
+  name: "Detail",
   data() {
     return {
+      locationStart: { lon: 102.82363467961038, lat: 16.432227961892437 },
+      dialogSelectLocation: false,
+
+      //data for select
+      locationList: location_new,
+      perfixList: perfix_data.data,
+      memberStatusList: member_status.data,
+      memberCountList: member_count.data,
+      addressStatusList: address_status.data,
+      restoreChanelList: restore_chanel.data,
+      houseNeedList: house_need.data,
+      houseFormatList: house_format.data,
+      solidsList: solids.data,
+      soils: soilsType.data,
       confirm: false,
       row: "ที่ดินส่วนตัว",
-      locationList: location_new,
+      idCard: "",
+      perfix: "",
+      fname: "",
+      lname: "",
+      memberStatus: "",
+      memberCount: "",
+      houseId: "",
+      villageId: "",
       address2: {
-        SUB_DISTRICT_NAME: "ศรีโคตร",
-        DISTRICT_NAME: "จตุรพักตรพิมาน",
-        PROVINCE_NAME: "ร้อยเอ็ด",
-        ZIPCODE: "45180",
-        GEO_NAME: "ภาคตะวันออกเฉียงเหนือ",
+        SUB_DISTRICT_NAME: "",
+        DISTRICT_NAME: "",
+        PROVINCE_NAME: "",
+        ZIPCODE: "",
+        GEO_NAME: "",
       },
-      perfix: "นาย",
-      fname: "ปรัชญา",
-      lname: "โพธิ์ชา",
-      userStatus: "โสด",
-      famaryCount: "5",
-      hourseNumber: "17",
-      villageId: "5",
-      tumbon: "ศรีโคตร",
-      ampure: "จตุรพักตรพิมาน",
-      province: "ร้อยเอ็ด",
-      zipcode: "45180",
-      gps: "16.413294, 102.852986",
-      tumx: "X",
-      tumy: "Y",
-      addressState: "บ้านทรุดโทรมทั้งหลัง",
-      howToMa: "สร้างใหม่ทั้งหลัง",
-      howtowant: "ต้องการสร้างใหม่ทั้งหลัง",
-      homeType: "บ้านชันเดียวติดพื้นดิน",
-      roldeSolid: "ที่ดินส่วนตัว",
-      statusSolid: "ที่ดินส่วนตัว",
+      lat: "",
+      lon: "",
+      gpsLocation: "",
+      addressStatus: "",
+      restoreChanel: "",
+      houseNeed: "",
+      houseFormat: "",
+      solids: "",
+      soilsSelection: "",
       statusEdit: 0,
 
-      soils: [
-        "ที่ดินส่วนตัว",
-        "กรมศาสนา",
-        "เขตรักษาพันธุ์สัตว์ป่า",
-        "นิคมอุตสาหกรรม",
-        "ส.ป.ก.",
-        "กรมชลประทาน",
-        "กรมศิลปากร",
-        "ทหารเรือ",
-        "ป่าชายเลน",
-        "สำนักงานทรัพย์สินพระมหากษัตริย์",
-        "กรมทางหลวง",
-        "การเคหะแห่งชาติ",
-        "ที่ดินถือครองคู่กัน(องค์กรชุมชน,สหกรณ์)",
-        "ป่าสงวนแห่งชาติ",
-        "องค์การอุตสาหกรรมป่าไม้",
-        "กรมธนารักษ์",
-        "กรมท่าเรือแห่งประเทศไทย",
-        "นิคมการเกษตร",
-        "วัด",
-        "อุทยานแห่งชาติ",
-        "กรมประมง",
-        "การไฟฟ้าแห่งประเทศไทย",
-        "นิคมสร้างตนเอง",
-        "สาธารณะประโยชน์",
-        "เอกชน",
-        "อื่นๆ",
-      ],
       dialog: false,
     };
+  },
+  mounted() {
+    this.form_id = this.$route.query.id;
+    this.getFormData();
   },
   watch: {
     address2(value) {
@@ -505,8 +523,48 @@ export default {
     },
   },
   methods: {
+    async getFormData() {
+      let response = await apiService.get({
+        path: "form",
+        param: this.form_id,
+      });
+      this.mapData(response.data);
+    },
+    mapData(data) {
+      console.log("data :", data);
+      this.idCard = data.form_id_card;
+      this.perfix = data.form_unit;
+      this.fname = data.form_fname;
+      this.lname = data.form_lname;
+      this.memberStatus = data.form_position;
+      this.memberCount = data.form_members;
+      this.houseId = data.form_home_id;
+      this.villageId = data.form_village;
+      this.address2.SUB_DISTRICT_NAME = data.form_sub_district;
+      this.address2.PROVINCE_NAME = data.form_province;
+      this.address2.DISTRICT_NAME = data.form_district;
+      this.address2.GEO_NAME = data.form_geo;
+      this.addressStatus = data.form_living;
+      this.restoreChanel = data.form_improvement;
+      this.houseNeed = data.form_housing_needs;
+      this.houseFormat = data.form_house_style;
+      this.solids = data.form_house_ownership;
+      this.soilsSelection = data.form_land;
+      this.lat = data.form_lat;
+      this.lon = data.form_long;
+    },
     updateStatus() {
       this.dialog = true;
+    },
+    selectLocation() {
+      this.dialogSelectLocation = true;
+    },
+    event(map) {
+      map.Event.bind("drag", () => {
+        this.lat = map.location().lat;
+        this.lon = map.location().lon;
+        this.gpsLocation = `${map.location().lat},${map.location().lon}`;
+      });
     },
   },
 };

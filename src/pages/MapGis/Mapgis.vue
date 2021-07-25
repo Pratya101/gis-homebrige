@@ -65,14 +65,84 @@
         </v-row>
       </v-col>
     </v-row>
+    <div class="pieCharts-page">
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-card class="mx-1 mb-1">
+            <v-card-title class="pa-5 pb-3">
+              <p>Donut Pie Chart</p>
+              <v-spacer></v-spacer>
+            </v-card-title>
+            <v-card-text class="pa-5 pt-0">
+              <v-row no-gutters>
+                <v-col>
+                  <ApexChart
+                    type="donut"
+                    :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
+                    :options="apexPieDonut.options"
+                    :series="apexPieDonut.series"
+                  >
+                  </ApexChart>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
 <script>
+import ApexChart from "vue-apexcharts";
+import config from "@/config";
 export default {
+  components: {
+    ApexChart,
+  },
   name: "Maps",
   data() {
     return {
+      apexPieDonut: {
+        series: [44, 55, 41, 17, 15],
+        options: {
+          chart: {
+            type: "donut",
+            labels: {
+              show: true,
+            },
+
+            height: 350,
+          },
+          labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+          colors: [
+            config.light.primary,
+            config.light.success,
+            config.light.warning,
+            config.light.info,
+            config.light.secondary,
+          ],
+          responsive: [
+            {
+              breakpoint: 321,
+              options: {
+                chart: {
+                  height: 150,
+                },
+              },
+            },
+            {
+              breakpoint: 2561,
+              options: {
+                chart: {
+                  height: 350,
+                },
+              },
+            },
+          ],
+        },
+      },
+
       locationStart: { lon: 102.82363467961038, lat: 16.432227961892437 },
       markers: [
         {
@@ -110,6 +180,27 @@ export default {
       map.Event.bind("drag", function() {
         console.log("map.location();", map.location());
       });
+    },
+    appendData: function() {
+      var arr = this.apexDynamicChart.series.slice();
+      arr.push(Math.floor(Math.random() * (100 - 1 + 1)) + 1);
+      this.apexDynamicChart.series = arr;
+    },
+    removeData: function() {
+      if (this.apexDynamicChart.series.length === 1) return;
+      var arr = this.apexDynamicChart.series.slice();
+      arr.pop();
+      this.apexDynamicChart.series = arr;
+    },
+    randomize: function() {
+      this.apexDynamicChart.series = this.apexDynamicChart.series.map(
+        function() {
+          return Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+        }
+      );
+    },
+    reset: function() {
+      this.apexDynamicChart.series = [44, 55, 13, 33];
     },
   },
 };
