@@ -42,23 +42,23 @@
               <tr>
                 <th class="text-left white--text">#</th>
                 <th class="text-left white--text">ชื่อโครงการ</th>
+                <th class="text-left white--text">ประเภทโครงการ</th>
                 <th class="text-left white--text">เครือข่าย</th>
-                <th class="text-left white--text">ภาค</th>
                 <th class="text-left white--text">จังหวัด</th>
                 <th class="text-left white--text">
                   ความคืบหน้า (%)
                 </th>
-                <th class="text-left white--text">งบประมาณที่ใช้</th>
+                <th class="text-right white--text">งบประมาณที่ใช้</th>
                 <th class="text-center white--text">รายละเอียด</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Pratya Phocha</td>
-                <td>เครือข่ายชุมชนเพื่อการพัฒนา</td>
-                <td>ตะวันออกเฉียงเหนือ</td>
-                <td>ร้อยเอ็ด</td>
+              <tr v-for="(item, index) in projectList" :key="index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.project_name }}</td>
+                <td>{{ item.project_type_name }}</td>
+                <td>{{ item.project_network_name }}</td>
+                <td>{{ item.project_province }}</td>
                 <td>
                   <v-progress-linear
                     v-model="skill"
@@ -71,12 +71,14 @@
                     </template>
                   </v-progress-linear>
                 </td>
-                <td>20,000.00</td>
+                <td class="text-right">
+                  {{ item.project_budget | formatPrice }}
+                </td>
                 <td class="text-center">
                   <v-btn
                     icon
                     color="primary"
-                    @click="detail"
+                    @click="detail(item.project_id)"
                     style="cursor:pointer;"
                     ><v-icon>mdi-information-outline</v-icon></v-btn
                   >
@@ -159,23 +161,40 @@
 </template>
 
 <script>
+import { apiService } from "@/services/axios";
 export default {
   name: "Icons",
   data() {
     return {
       skill: 20,
       dialog: false,
+      projectList: [],
     };
   },
+  mounted() {
+    this.getProjectList();
+  },
   methods: {
+    async getProjectList() {
+      let data = await apiService.get({
+        path: "project/list",
+      });
+      this.projectList = data.data;
+    },
     map() {
       this.$router.push("/map");
     },
-    detail() {
-      this.$router.push("/detailservicemange");
+    detail(id) {
+      this.$router.push({ path: "/detailservicemange", query: { id: id } });
     },
     search() {
       this.dialog = true;
+    },
+  },
+  filters: {
+    formatPrice(value) {
+      let val = (value / 1).toFixed(2).replace(".", ".");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
   },
 };

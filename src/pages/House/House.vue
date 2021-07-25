@@ -42,6 +42,7 @@
             <thead>
               <tr>
                 <th class="text-left white--text">#</th>
+                <th class="text-left white--text">เลขบัตรประชาชน</th>
                 <th class="text-left white--text">ชื่อ-สนามสกุล</th>
                 <th class="text-left white--text">สภาพที่อยู่อาศัย</th>
                 <th class="text-left white--text">ตำบล</th>
@@ -55,6 +56,7 @@
             <tbody>
               <tr v-for="(item, index) in houseList" :key="index">
                 <td>{{ index + 1 }}</td>
+                <td>{{ item.form_id_card }}</td>
                 <td>{{ item.form_fname }} {{ item.form_lname }}</td>
                 <td>{{ item.form_living }}</td>
                 <td>{{ item.form_sub_district }}</td>

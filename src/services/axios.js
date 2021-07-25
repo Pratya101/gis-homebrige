@@ -43,7 +43,6 @@ const apiService = {
       return "GET ERROR";
     }
   },
-
   put: async function(payload) {
     try {
       let { path, param, body } = payload;

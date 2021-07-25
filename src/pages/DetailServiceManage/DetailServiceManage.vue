@@ -39,7 +39,7 @@
       </v-col>
     </v-row>
     <v-row class="set-shadow-form">
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="3">
         <label>ชื่อโครงการ</label>
         <v-text-field
           :disabled="!statusEdit"
@@ -48,72 +48,170 @@
           solo
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="3">
         <label>ประเภทโครงการ</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="type"
+        <v-select
+          :items="projectTypeList"
+          v-model.trim="projectType"
           hide-details
+          item-text="project_type_name"
+          item-value="project_type_id"
+          :disabled="!statusEdit"
+          solo
+        >
+          <template v-slot:append-outer>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="(typeName = ''), (dialogAddType = true)"
+                  style="color:blue;cursor:pointer"
+                  >mdi-plus-box-multiple</v-icon
+                >
+              </template>
+              <span class="set-font-kanit">เพิ่มประเภทโครงการ</span>
+            </v-tooltip>
+          </template>
+        </v-select>
+      </v-col>
+      <v-col cols="12" md="3">
+        <label>เครือข่าย</label>
+        <v-select
+          item-text="project_network_name"
+          item-value="project_network_id"
+          v-model.trim="projectNetwork"
+          :items="projectNetworkList"
+          :disabled="!statusEdit"
+          hide-details
+          solo
+        >
+          <template v-slot:append-outer>
+            <v-tooltip top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="(networkName = ''), (dialogAddNetwork = true)"
+                  style="color:blue;cursor:pointer"
+                  >mdi-plus-box-multiple</v-icon
+                >
+              </template>
+              <span class="set-font-kanit">เพิ่มเครือข่าย</span>
+            </v-tooltip>
+          </template>
+        </v-select>
+      </v-col>
+      <v-col cols="12" md="3">
+        <label>จำนวนงบประมาณ (100%)</label>
+        <v-text-field
+          v-model.trim="budget"
+          type="number"
+          hide-details
+          :disabled="!statusEdit"
           solo
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>เครือข่าย</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="network"
-          hide-details
-          solo
-        ></v-text-field></v-col
-      ><v-col cols="12" md="3">
+      <v-col cols="12" md="3">
         <label>ตําบล/แขวง</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="subDistrict"
+        <v-autocomplete
+          v-model.trim="address"
+          :items="locationList"
           hide-details
+          item-text="SEARCH"
+          :disabled="!statusEdit"
+          return-object
           solo
-        ></v-text-field></v-col
-      ><v-col cols="12" md="3">
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.SUB_DISTRICT_NAME }}
+          </template>
+        </v-autocomplete></v-col
+      >
+      <v-col cols="12" md="3">
         <label>อำเภอ/เขต</label>
-        <v-text-field
+        <v-autocomplete
+          v-model.trim="address"
+          :items="locationList"
           :disabled="!statusEdit"
-          v-model.trim="district"
+          item-text="SEARCH"
+          return-object
           hide-details
           solo
-        ></v-text-field>
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.DISTRICT_NAME }}
+          </template>
+        </v-autocomplete>
       </v-col>
       <v-col cols="12" md="3">
         <label>จังหวัด</label>
-        <v-text-field
+        <v-autocomplete
+          v-model.trim="address"
           :disabled="!statusEdit"
-          v-model.trim="province"
           hide-details
+          :items="locationList"
+          item-text="SEARCH"
+          return-object
           solo
-        ></v-text-field>
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.PROVINCE_NAME }}
+          </template>
+        </v-autocomplete>
       </v-col>
       <v-col cols="12" md="3">
         <label>รหัสไปรษณีย์</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="zipcode"
+        <v-autocomplete
+          v-model.trim="address"
+          :items="locationList"
           hide-details
+          item-text="SEARCH"
+          :disabled="!statusEdit"
+          return-object
           solo
-        ></v-text-field>
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.ZIPCODE }}
+          </template>
+        </v-autocomplete>
       </v-col>
       <v-col cols="12" md="3">
         <label>ภาค</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="geo"
+        <v-autocomplete
+          v-model.trim="address"
+          :items="locationList"
           hide-details
+          item-text="SEARCH"
+          :disabled="!statusEdit"
+          return-object
           solo
-        ></v-text-field>
+        >
+          <template v-slot:item="{ item }">
+            {{ item.SEARCH }}
+          </template>
+          <template v-slot:selection="{ item }">
+            {{ item.GEO_NAME }}
+          </template>
+        </v-autocomplete>
       </v-col>
       <v-col cols="12" md="3">
         <label>ผู้ประสานงาน</label>
         <v-text-field
           :disabled="!statusEdit"
-          v-model.trim="contact"
+          v-model.trim="coordinate"
           hide-details
           solo
         ></v-text-field>
@@ -131,7 +229,7 @@
         <label>ข้อมูลจำนวเป้าหมาย</label>
         <v-text-field
           :disabled="!statusEdit"
-          v-model.trim="goal"
+          v-model.trim="dataAmountDistination"
           hide-details
           solo
         ></v-text-field>
@@ -143,6 +241,7 @@
             color="primary"
             x-large
             v-show="statusEdit"
+            @click="updateProject"
             class="set-font-kanit rounded-lg elevation-4 me-2"
             outlined
           >
@@ -195,6 +294,7 @@
     <v-row class="mt-0">
       <v-col cols="12" class="px-0">
         <v-tabs
+          v-model="tab"
           slider-size="0"
           height="65"
           fixed-tabs
@@ -224,13 +324,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Pratya Phocha</td>
-                    <td>เครือข่ายชุมชนเพื่อการพัฒนา</td>
-                    <td>ตะวันออกเฉียงเหนือ</td>
-                    <td>ร้อยเอ็ด</td>
-                    <td>สร้างใหม่ทั้งหลัง</td>
+                  <tr v-for="(item, index) in houseTypeNewCreate" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>
+                      {{ item.form_unit }} {{ item.form_fname }}
+                      {{ item.form_lname }}
+                    </td>
+                    <td>{{ item.project_network_id }}</td>
+                    <td>{{ item.form_province }}</td>
+                    <td>{{ item.form_improvement }}</td>
                     <td>เตรียมข้อมูล</td>
                     <td class="text-center">
                       <v-btn
@@ -254,7 +356,6 @@
                     <th class="text-left white--text">#</th>
                     <th class="text-left white--text">ชื่อ-สนามสกุล</th>
                     <th class="text-left white--text">เครือข่าย</th>
-                    <th class="text-left white--text">ภาค</th>
                     <th class="text-left white--text">จังหวัด</th>
                     <th class="text-left white--text">หมวดการพัฒนา</th>
                     <th class="text-left white--text">สถานะการพัฒนา</th>
@@ -262,31 +363,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Pratya Phocha</td>
-                    <td>เครือข่ายชุมชนเพื่อการพัฒนา</td>
-                    <td>ตะวันออกเฉียงเหนือ</td>
-                    <td>ร้อยเอ็ด</td>
-                    <td>สร้างใหม่ทั้งหลัง</td>
-                    <td>เตรียมข้อมูล</td>
-                    <td class="text-center">
-                      <v-btn
-                        icon
-                        color="primary"
-                        @click="detail"
-                        style="cursor:pointer;"
-                        ><v-icon>mdi-information-outline</v-icon></v-btn
-                      >
+                  <tr v-for="(item, index) in houseTypeUpdate" :key="index">
+                    <td>{{ index + 1 }}</td>
+                    <td>
+                      {{ item.form_unit }} {{ item.form_fname }}
+                      {{ item.form_lname }}
                     </td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Pratya Phocha</td>
-                    <td>เครือข่ายชุมชนเพื่อการพัฒนา</td>
-                    <td>ตะวันออกเฉียงเหนือ</td>
-                    <td>ร้อยเอ็ด</td>
-                    <td>สร้างใหม่ทั้งหลัง</td>
+                    <td>{{ item.project_network_id }}</td>
+                    <td>{{ item.form_province }}</td>
+                    <td>{{ item.form_improvement }}</td>
                     <td>เตรียมข้อมูล</td>
                     <td class="text-center">
                       <v-btn
@@ -358,34 +443,31 @@
           </v-row>
           <v-divider class="my-5"></v-divider>
           <h5><v-icon>fa-list</v-icon> ข้อมูลครัวเรือน</h5>
-          <v-simple-table class="material-table set-shadow mt-5">
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left white--text">
-                    <v-checkbox></v-checkbox>
-                  </th>
-                  <th class="text-left white--text">ชื่อ-สนามสกุล</th>
-                  <th class="text-left white--text">สภาพที่อยู่อาศัย</th>
-                  <th class="text-left white--text">ตำบล</th>
-                  <th class="text-left white--text">อำเภอ</th>
-                  <th class="text-left white--text">จังหวัด</th>
-                  <th class="text-left white--text">ภาค</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><v-checkbox></v-checkbox></td>
-                  <td>Pratya Phocha</td>
-                  <td>พอใช้</td>
-                  <td>ศรีโคตร</td>
-                  <td>จตุรพักตรพิมาน</td>
-                  <td>ร้อยเอ็ด</td>
-                  <td>ตะวันออกเฉียงเหนือ</td>
-                </tr>
-              </tbody>
+          <v-data-table
+            v-model="selected"
+            show-select
+            item-key="form_id"
+            item-value="form_id"
+            :headers="[
+              {
+                text: 'ชื่อ-นามสกุล',
+                value: 'form_fname',
+              },
+              {
+                text: 'สภาพที่อยู่อาศัย',
+                value: 'form_living',
+              },
+            ]"
+            :items="houseList"
+            :items-per-page="10"
+            hide-default-footer
+            class="elevation-3"
+          >
+            <template v-slot:[`item.form_fname`]="{ item }">
+              {{ item.form_unit }} {{ item.form_fname }}
+              {{ item.form_lname }}
             </template>
-          </v-simple-table>
+          </v-data-table>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -395,6 +477,7 @@
             class="set-font-kanit rounded-lg elevation-4"
             x-large
             outlined
+            @click="mapHouseProject"
             ><v-icon left>fa-save</v-icon>บันทึก</v-btn
           >
           <v-btn
@@ -402,40 +485,302 @@
             class="set-font-kanit rounded-lg elevation-4"
             x-large
             outlined
+            @click="dialog = false"
             ><v-icon left>fa-times</v-icon>ยกเลิก</v-btn
           >
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogAddNetwork" max-width="550">
+      <v-card>
+        <v-card-title>
+          <h3><v-icon left>mdi-plus-circle-outline</v-icon>เพิ่มเครือข่าย</h3>
+        </v-card-title>
+        <v-divider class="mb-3"></v-divider>
+        <v-card-text>
+          <label>ชื่อเครือข่าย</label>
+          <v-text-field
+            hide-details
+            solo
+            v-model.trim="networkName"
+          ></v-text-field>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            outlined
+            large
+            @click="addNetwork"
+            class="rounded-lg elevation-4 set-font-kanit"
+          >
+            บันทึก
+          </v-btn>
+          <v-btn
+            large
+            color="error"
+            outlined
+            @click="dialogAddNetwork = false"
+            class="rounded-lg elevation-4 set-font-kanit"
+          >
+            ปิด
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogAddType" max-width="550">
+      <v-card>
+        <v-card-title>
+          <h3>
+            <v-icon left>mdi-plus-circle-outline</v-icon>เพิ่มประเภทโครงการ
+          </h3>
+        </v-card-title>
+        <v-divider class="mb-3"></v-divider>
+        <v-card-text>
+          <label>ชื่อประเภทโครงการ</label>
+          <v-text-field
+            hide-details
+            solo
+            v-model.trim="typeName"
+          ></v-text-field>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            outlined
+            large
+            @click="addType"
+            class="rounded-lg elevation-4 set-font-kanit"
+          >
+            บันทึก
+          </v-btn>
+          <v-btn
+            large
+            color="error"
+            outlined
+            @click="dialogAddType = false"
+            class="rounded-lg elevation-4 set-font-kanit"
+          >
+            ปิด
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
-ƒ
 <script>
+import location_new from "@/data/locations.json";
+import { apiService } from "@/services/axios";
 export default {
   name: "Icons",
   data() {
     return {
+      tab: "",
+      locationList: location_new,
+      typeName: "",
+      dialogAddType: false,
+      networkName: "",
+      dialogAddNetwork: false,
       dialog: false,
       statusEdit: false,
-      name: "บ้านพอเพียง ขอนแก่น",
-      type: "บ้านมันคงชนบท",
-      network: "ศูนย์รวมพัฒนาชุมชน",
-      subDistrict: "บ้านเป็ด",
-      district: "เมืองขอนแก่น",
-      province: "ขอนแก่น",
-      zipcode: "40000",
-      geo: "ตะวันออกเฉียงเหนือ",
-      contact: "Pratya Phocha",
-      tel: "099-098-0000",
-      goal: "10",
+      name: "",
+      projectType: "",
+      projectNetwork: "",
+      coordinate: "",
+      budget: "",
+      tel: "",
+      address: {},
+      dataAmountDistination: "",
+      project_id: "",
+      projectTypeList: [],
+      projectNetworkList: [],
+      houseList: [],
+      selected: [],
+      houseTypeNewCreate: [],
+      houseTypeUpdate: [],
     };
   },
+  watch: {
+    selected(value) {
+      console.log("select : ", value);
+    },
+  },
+  mounted() {
+    this.project_id = this.$route.query.id;
+    this.getProject();
+    this.getProjectNetWorkList();
+    this.getProjectTypeList();
+    this.getHosueInProject();
+  },
   methods: {
+    async mapHouseProject() {
+      let body = {
+        map_project_form_type: this.tab + 1,
+        project_id: this.project_id,
+        form_id: this.selected[0].form_id,
+      };
+      let data = await apiService.post({
+        path: "mapprojectfrom",
+        body: body,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "เพิ่มข้อมูลสำเร็จ",
+          message: "ทำการเพิ่มครัวเรือนลงในโครงการเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.selected = [];
+      this.getHosueInProject();
+      this.dialog = false;
+    },
+    async getHosueInProject() {
+      this.houseTypeNewCreate = [];
+      this.houseTypeUpdate = [];
+      let data = await apiService.get({
+        path: "mapprojectfrom/list",
+      });
+      data.data.forEach((element) => {
+        if (element.map_project_form_type == 1) {
+          this.houseTypeNewCreate.push(element);
+        } else {
+          this.houseTypeUpdate.push(element);
+        }
+      });
+    },
+    async updateProject() {
+      let body = {
+        project_name: this.name,
+        project_network_id: this.projectNetwork,
+        project_type_id: this.projectType,
+        project_sub_district: this.address.SUB_DISTRICT_NAME,
+        project_district: this.address.DISTRICT_NAME,
+        project_province: this.address.PROVINCE_NAME,
+        project_zipcode: this.address.ZIPCODE,
+        project_geo: this.address.GEO_NAME,
+        project_coordinator: this.coordinate,
+        project_tel: this.tel,
+        project_target: this.dataAmountDistination,
+        project_budget: this.budget,
+      };
+      let data = await apiService.put({
+        path: "project",
+        param: this.project_id,
+        body: body,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "แก้ไขข้อมูลสำเร็จ",
+          message: "ทำการแก้ไขข้อมูลโครงการเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.getProject();
+      this.statusEdit = false;
+    },
+    async getProject() {
+      let data = await apiService.get({
+        path: "project",
+        param: this.project_id,
+      });
+      this.mapData(data.data);
+    },
+    mapData(data) {
+      this.name = data.project_name;
+      this.projectType = data.project_type_id;
+      this.projectNetwork = data.project_network_id;
+      this.budget = data.project_budget;
+      this.address = {
+        DISTRICT_NAME: data.project_district,
+        GEO_NAME: data.project_geo,
+        PROVINCE_NAME: data.project_province,
+        SEARCH: `${data.project_sub_district} > ${data.project_district} > ${data.project_province} > ${data.project_zipcode} > ${data.project_geo}`,
+        SUB_DISTRICT_NAME: data.project_sub_district,
+        ZIPCODE: data.project_zipcode,
+      };
+      this.coordinate = data.project_coordinator;
+      this.tel = data.project_tel;
+      this.dataAmountDistination = data.project_target;
+    },
     addHouse() {
-      console.log("add house");
+      this.getHouseList();
       this.dialog = true;
     },
+    async getHouseList() {
+      let data = await apiService.get({
+        path: "form/list",
+      });
+      this.houseList = data.data;
+    },
     detail() {},
+    async addNetwork() {
+      let body = {
+        project_network_name: this.networkName,
+      };
+      let data = await apiService.post({
+        path: "projectnetwork",
+        body: body,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "เพิ่มข้อมูลสำเร็จ",
+          message: "ทำการเพิ่มข้อมูลเครือข่ายเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.dialogAddNetwork = false;
+      this.getProjectNetWorkList();
+    },
+    async addType() {
+      let body = {
+        project_type_name: this.typeName,
+      };
+      let data = await apiService.post({
+        path: "projecttype",
+        body: body,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "เพิ่มข้อมูลสำเร็จ",
+          message: "ทำการเพิ่มข้อมูลประเภทโครงการเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+
+      this.dialogAddType = false;
+      this.getProjectTypeList();
+    },
+    async getProjectTypeList() {
+      let data = await apiService.get({
+        path: "projecttype/list",
+      });
+      this.projectTypeList = data.data;
+    },
+    async getProjectNetWorkList() {
+      let data = await apiService.get({
+        path: "projectnetwork/list",
+      });
+      this.projectNetworkList = data.data;
+    },
   },
 };
 </script>

@@ -207,6 +207,8 @@
         <v-select
           :items="houseNeedList"
           v-model="houseNeed"
+          item-value="text"
+          item-text="text"
           hide-details
           solo
         ></v-select>
@@ -216,6 +218,8 @@
         <v-select
           :items="houseFormatList"
           v-model="houseFormat"
+          item-value="text"
+          item-text="text"
           hide-details
           solo
         ></v-select>
@@ -225,7 +229,7 @@
         <v-select
           :items="solidsList"
           v-model="solids"
-          item-value="value"
+          item-value="text"
           item-text="text"
           hide-details
           solo
@@ -391,6 +395,7 @@ export default {
         form_sub_district: this.address2.SUB_DISTRICT_NAME,
         form_province: this.address2.PROVINCE_NAME,
         form_district: this.address2.DISTRICT_NAME,
+        form_zipcode: this.address2.ZIPCODE,
         form_geo: this.address2.GEO_NAME,
         form_living: this.addressStatus,
         form_improvement: this.restoreChanel,
@@ -401,13 +406,26 @@ export default {
         form_lat: this.lat,
         form_long: this.lon,
       };
-      console.log("daya : ", body);
       let data = await apiService.post({
         path: "form",
         body: body,
       });
-      console.log(data);
+      data.response ? this.saveHouseSuccess() : this.saveHouseFailed();
     },
+    saveHouseSuccess() {
+      this.$notify.success({
+        title: "บักทึกข้อมูลสำเร็จ",
+        message: "ทำการบันทึกข้อมูลครัวเรือนเรียบร้อย",
+      });
+      this.$router.push("/house");
+    },
+    saveHouseFailed() {
+      this.$notify.error({
+        title: "ผิดพลาด",
+        message: "ไม่สามารถบันทึกข้อมูลได้",
+      });
+    },
+
     selectLocation() {
       this.dialogSelectLocation = true;
     },

@@ -68,30 +68,47 @@
       </v-col>
       <v-col cols="12" md="2">
         <label>เลขบัตรประชาชน</label>
-        <v-text-field solo type="number" v-model.trim="idCard"></v-text-field>
+        <v-text-field
+          :disabled="!statusEdit"
+          solo
+          type="number"
+          v-model.trim="idCard"
+        ></v-text-field>
       </v-col>
       <v-col cols="12" md="2">
         <label>คำนำหน้า</label>
         <v-select
           v-model.trim="perfix"
           :items="perfixList"
+          :disabled="!statusEdit"
           hide-details
           solo
         ></v-select>
       </v-col>
       <v-col cols="12" md="4">
         <label>ชื่อ</label>
-        <v-text-field v-model.trim="fname" hide-details solo></v-text-field>
+        <v-text-field
+          :disabled="!statusEdit"
+          v-model.trim="fname"
+          hide-details
+          solo
+        ></v-text-field>
       </v-col>
       <v-col cols="12" md="4"
         ><label>นามสกุล</label
-        ><v-text-field v-model.trim="lname" hide-details solo></v-text-field
+        ><v-text-field
+          :disabled="!statusEdit"
+          v-model.trim="lname"
+          hide-details
+          solo
+        ></v-text-field
       ></v-col>
       <v-col cols="12" md="6">
         <label>ตําแหน่ง/สถานะภาพ</label>
         <v-select
           :items="memberStatusList"
           v-model.trim="memberStatus"
+          :disabled="!statusEdit"
           hide-details
           solo
         ></v-select>
@@ -100,6 +117,7 @@
         ><label>จำนวนสมาชิกในครัวเรือน</label>
         <v-select
           solo
+          :disabled="!statusEdit"
           :items="memberCountList"
           v-model.trim="memberCount"
           form
@@ -121,17 +139,28 @@
       </v-col>
       <v-col cols="12" md="2">
         <label>บ้านเลขที่</label>
-        <v-text-field v-model.trim="houseId" hide-details solo></v-text-field>
+        <v-text-field
+          :disabled="!statusEdit"
+          v-model.trim="houseId"
+          hide-details
+          solo
+        ></v-text-field>
       </v-col>
       <v-col cols="12" md="2">
         <label>หมู่ที่</label>
-        <v-text-field v-model.trim="villageId" hide-details solo></v-text-field>
+        <v-text-field
+          :disabled="!statusEdit"
+          v-model.trim="villageId"
+          hide-details
+          solo
+        ></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
         <label>ตําบล/แขวง</label>
         <v-autocomplete
-          v-model.trim="address2"
+          v-model="address2"
           :items="locationList"
+          :disabled="!statusEdit"
           item-text="SEARCH"
           return-object
           solo
@@ -147,7 +176,8 @@
       <v-col cols="12" md="4">
         <label>อำเภอ/เขต</label>
         <v-autocomplete
-          v-model.trim="address2"
+          v-model="address2"
+          :disabled="!statusEdit"
           :items="locationList"
           item-text="SEARCH"
           return-object
@@ -164,8 +194,9 @@
       <v-col cols="12" md="4">
         <label>จังหวัด</label>
         <v-autocomplete
-          v-model.trim="address2"
+          v-model="address2"
           :items="locationList"
+          :disabled="!statusEdit"
           item-text="SEARCH"
           return-object
           solo
@@ -181,9 +212,10 @@
       <v-col cols="12" md="4">
         <label>ภาค</label>
         <v-autocomplete
-          v-model.trim="address2"
+          v-model="address2"
           :items="locationList"
           item-text="SEARCH"
+          :disabled="!statusEdit"
           return-object
           solo
         >
@@ -197,7 +229,12 @@
       </v-col>
       <v-col cols="12" md="4">
         <label>พิกัด GPS</label>
-        <v-text-field v-model.trim="gpsLocation" hide-details solo>
+        <v-text-field
+          :disabled="!statusEdit"
+          v-model.trim="gpsLocation"
+          hide-details
+          solo
+        >
           <template v-slot:append>
             <v-icon @click="selectLocation" style="color:blue;cursor:pointer"
               >mdi-map-marker-radius-outline</v-icon
@@ -222,6 +259,7 @@
       <v-col cols="12" md="4">
         <label>สภาพที่อยู่อาศัย</label>
         <v-select
+          :disabled="!statusEdit"
           :items="addressStatusList"
           v-model.trim="addressStatus"
           hide-details
@@ -231,6 +269,7 @@
       <v-col cols="12" md="4">
         <label>แนวทางการปรับปรุง</label>
         <v-select
+          :disabled="!statusEdit"
           :items="restoreChanelList"
           v-model.trim="restoreChanel"
           hide-details
@@ -240,8 +279,11 @@
       <v-col cols="12" md="4">
         <label>ความต้องการทีอยู่อาศัย</label>
         <v-select
+          :disabled="!statusEdit"
           :items="houseNeedList"
           v-model="houseNeed"
+          item-value="text"
+          item-text="text"
           hide-details
           solo
         ></v-select>
@@ -251,6 +293,9 @@
         <v-select
           :items="houseFormatList"
           v-model="houseFormat"
+          :disabled="!statusEdit"
+          item-value="text"
+          item-text="text"
           hide-details
           solo
         ></v-select>
@@ -260,7 +305,8 @@
         <v-select
           :items="solidsList"
           v-model="solids"
-          item-value="value"
+          item-value="text"
+          :disabled="!statusEdit"
           item-text="text"
           hide-details
           solo
@@ -269,7 +315,7 @@
 
       <v-col cols="12">
         <label>ลักษณะที่ดิน</label>
-        <v-radio-group v-model="soilsSelection" row>
+        <v-radio-group :disabled="!statusEdit" v-model="soilsSelection" row>
           <v-col
             v-for="(item, index) in soils"
             :key="index"
@@ -285,6 +331,7 @@
         <v-btn
           color="primary"
           x-large
+          @click="updateFormData"
           class="set-font-kanit rounded-lg elevation-4 me-2"
           outlined
         >
@@ -364,7 +411,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
     <v-dialog v-model="confirm" max-width="550">
       <v-card>
         <v-card-title>
@@ -492,13 +538,7 @@ export default {
       memberCount: "",
       houseId: "",
       villageId: "",
-      address2: {
-        SUB_DISTRICT_NAME: "",
-        DISTRICT_NAME: "",
-        PROVINCE_NAME: "",
-        ZIPCODE: "",
-        GEO_NAME: "",
-      },
+      address2: {},
       lat: "",
       lon: "",
       gpsLocation: "",
@@ -508,21 +548,61 @@ export default {
       houseFormat: "",
       solids: "",
       soilsSelection: "",
-      statusEdit: 0,
-
+      statusEdit: false,
       dialog: false,
+      subDistrictName: "",
+      districtName: "",
+      provinceName: "",
+      geoName: "",
     };
   },
   mounted() {
     this.form_id = this.$route.query.id;
     this.getFormData();
   },
-  watch: {
-    address2(value) {
-      console.log("value", value);
-    },
-  },
+
   methods: {
+    async updateFormData() {
+      let body = {
+        form_id_card: this.idCard,
+        form_unit: this.perfix,
+        form_fname: this.fname,
+        form_lname: this.lname,
+        form_position: this.memberStatus,
+        form_members: this.memberCount,
+        form_home_id: this.houseId,
+        form_village: this.villageId,
+        form_sub_district: this.address2.SUB_DISTRICT_NAME,
+        form_province: this.address2.PROVINCE_NAME,
+        form_district: this.address2.DISTRICT_NAME,
+        form_zipcode: this.address2.ZIPCODE,
+        form_geo: this.address2.GEO_NAME,
+        form_living: this.addressStatus,
+        form_improvement: this.restoreChanel,
+        form_housing_needs: this.houseNeed,
+        form_house_style: this.houseFormat,
+        form_house_ownership: this.solids,
+        form_land: this.soilsSelection,
+        form_lat: this.lat,
+        form_long: this.lon,
+      };
+      let data = await apiService.put({
+        path: "form",
+        param: this.form_id,
+        body: body,
+      });
+      data.response
+        ? this.$notify.success({
+            title: "แก้ไขข้อมูลสำเร็จ",
+            message: "ทำการแก้ไขข้อมูลครัวเรือนเรียบร้อย",
+          })
+        : this.$notify.success({
+            title: "แก้ไขข้อมูลสำเร็จ",
+            message: data.message,
+          });
+      this.getFormData();
+      this.statusEdit = false;
+    },
     async getFormData() {
       let response = await apiService.get({
         path: "form",
@@ -540,10 +620,6 @@ export default {
       this.memberCount = data.form_members;
       this.houseId = data.form_home_id;
       this.villageId = data.form_village;
-      this.address2.SUB_DISTRICT_NAME = data.form_sub_district;
-      this.address2.PROVINCE_NAME = data.form_province;
-      this.address2.DISTRICT_NAME = data.form_district;
-      this.address2.GEO_NAME = data.form_geo;
       this.addressStatus = data.form_living;
       this.restoreChanel = data.form_improvement;
       this.houseNeed = data.form_housing_needs;
@@ -552,6 +628,17 @@ export default {
       this.soilsSelection = data.form_land;
       this.lat = data.form_lat;
       this.lon = data.form_long;
+      this.gpsLocation = `${data.form_lat},${data.form_long}`;
+      this.address2 = {
+        DISTRICT_NAME: data.form_district,
+        GEO_NAME: data.form_geo,
+        PROVINCE_NAME: data.form_province,
+        SEARCH: `${data.form_sub_district} > ${data.form_district} > ${data.form_province} > ${data.form_zipcode} > ${data.form_geo}`,
+        SUB_DISTRICT_NAME: data.form_sub_district,
+        ZIPCODE: data.form_zipcode,
+      };
+      console.log("address list : ", this.locationList);
+      console.log("address : ", this.address2);
     },
     updateStatus() {
       this.dialog = true;
@@ -563,6 +650,7 @@ export default {
       map.Event.bind("drag", () => {
         this.lat = map.location().lat;
         this.lon = map.location().lon;
+
         this.gpsLocation = `${map.location().lat},${map.location().lon}`;
       });
     },
