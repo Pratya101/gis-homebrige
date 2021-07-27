@@ -379,12 +379,21 @@
         </v-card-title>
         <v-divider class="mt-0"></v-divider>
         <v-card-text>
-          <label>รูปภาพ</label>
-          <v-file-input
-            label="File input"
-            filled
-            prepend-icon="mdi-camera"
-          ></v-file-input>
+          <label align="center">รูปภาพ</label>
+          <el-upload
+            align="center"
+            actions="#"
+            list-type="picture"
+            drag
+            :auto-upload="false"
+            :file-list="fileList"
+            multiple
+          >
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">
+              ลากและวางไฟล์หรือคลิก <em>เพื่ออัพโหลดรูปภาพ</em>
+            </div>
+          </el-upload>
           <label class="mt-5">รายละเอียด</label>
           <v-textarea solo rows="3"></v-textarea>
         </v-card-text>

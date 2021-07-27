@@ -15,153 +15,97 @@
           รายการติดตามการพัฒนาที่อยู่อาศัย
         </h2>
       </v-col>
-      <v-col cols="12" md="6" class="d-md-flex justify-md-end px-0">
-        <v-btn
-          color="success"
-          @click="search"
-          outlined
-          large
-          class="set-font-kanit rounded-lg elevation-4 me-2"
-          ><v-icon left>mdi-magnify</v-icon> ค้นหาข้อมูลการติดตาม</v-btn
-        >
-      </v-col>
     </v-row>
     <v-row class="pt-0 mt-0">
-      <v-col cols="12 " class="px-0">
-        <v-simple-table class="material-table set-shadow">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left white--text">#</th>
-                <th class="text-left white--text">ชื่อ-สนามสกุล</th>
-                <th class="text-left white--text">เครือข่าย</th>
-                <th class="text-left white--text">ภาค</th>
-                <th class="text-left white--text">จังหวัด</th>
-                <th class="text-left white--text">หมวดการพัฒนา</th>
-                <th class="text-left white--text">สถานะการพัฒนา</th>
-                <th class="text-center white--text">รายละเอียด</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Pratya Phocha</td>
-                <td>เครือข่ายชุมชนเพื่อการพัฒนา</td>
-                <td>ตะวันออกเฉียงเหนือ</td>
-                <td>ร้อยเอ็ด</td>
-                <td>สร้างใหม่ทั้งหลัง</td>
-                <td>เตรียมข้อมูล</td>
-                <td class="text-center">
-                  <v-btn
-                    icon
-                    color="primary"
-                    @click="detail"
-                    style="cursor:pointer;"
-                    ><v-icon>mdi-information-outline</v-icon></v-btn
-                  >
-                </td>
-              </tr>
-            </tbody>
+      <v-col cols="12" md="6">
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="ค้นหาข้อมูล"
+          class="set-shadow"
+          placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
+          outlined
+          hide-details
+        ></v-text-field
+      ></v-col>
+      <v-col cols="12" md="6">
+        <v-select
+          v-model="search"
+          hide-details
+          class="set-shadow"
+          :items="address_status_list"
+          outlined
+          placeholder="เลือกสภาพที่อยู่อาศัย"
+          label="เลือกสภาพที่อยู่อาศัย"
+        ></v-select
+      ></v-col>
+      <v-col cols="12">
+        <v-data-table
+          :headers="headers"
+          :items="followList"
+          :search="search"
+          class="material-table set-shadow"
+          :mobile-breakpoint="0"
+        >
+          <template v-slot:[`item.form_id`]="{ index }">
+            {{ index + 1 }}
           </template>
-        </v-simple-table>
+          <template v-slot:[`item.form_fname`]="{ item }">
+            {{ item.form_unit }} {{ item.form_fname }} {{ item.form_lname }}
+          </template>
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-btn icon color="primary" @click="map" style="cursor:pointer;"
+              ><v-icon>mdi-map-marker-radius-outline</v-icon></v-btn
+            >
+            <v-btn
+              icon
+              color="primary"
+              @click="detail(item.form_id)"
+              style="cursor:pointer;"
+              ><v-icon>mdi-information-outline</v-icon></v-btn
+            >
+          </template>
+        </v-data-table>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" max-width="750">
-      <v-card>
-        <v-card-title>
-          <h2>
-            <v-icon
-              style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-              >fa-search</v-icon
-            >
-            ค้นหาข้อมูลการติดตาม
-          </h2>
-        </v-card-title>
-        <v-divider class="mt-0"></v-divider>
-        <v-card-text>
-          <v-row class="mt-2">
-            <v-col cols="12" md="6"
-              ><label for="">หมวดการพัฒนา</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-            <v-col cols="12" md="6"
-              ><label for="">สถานะการพัฒนา</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-            <v-col cols="12" md="6">
-              <label for="">ชื่อ-นามสกุล</label>
-              <v-text-field hide-details solo></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <label for="">เครือข่าย</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-            <v-col cols="12" md="6"
-              ><label for="">ภาค</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-            <v-col cols="12" md="6">
-              <label for="">จังหวัด</label>
-              <v-select hide-details :items="[]" solo></v-select>
-            </v-col>
-            <v-col cols="12" md="6"
-              ><label for="">อำเภอ</label>
-              <v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-            <v-col cols="12" md="6"
-              ><label for="">ตำบล</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-          </v-row>
-        </v-card-text>
-        <v-divider class="mt-0"></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            x-large
-            color="primary"
-            class="set-font-kanit elevation-4 rounded-lg"
-            outlined
-          >
-            <v-icon small left>fa-search</v-icon> ค้นหา</v-btn
-          >
-          <v-btn
-            @click="dialog = false"
-            x-large
-            color="error"
-            class="set-font-kanit elevation-4 rounded-lg"
-            outlined
-          >
-            <v-icon small left>fa-close</v-icon>ปิด</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script>
+import followTableHeader from "./follow-table-header.json";
+import { apiService } from "@/services/axios";
+import address_status from "@/data/address_status.json";
 export default {
   name: "Icons",
   data() {
     return {
+      search: "",
       dialog: false,
+      headers: followTableHeader,
+      followList: [],
+      address_status_list: [],
     };
   },
+  mounted() {
+    this.getFollowList();
+    this.address_status_list = address_status.data;
+    this.address_status_list.unshift("ทั้งหมด");
+  },
   methods: {
+    async getFollowList() {
+      let data = await apiService.get({
+        path: "mapprojectfrom/list",
+      });
+      this.followList = data.data;
+    },
     map() {
       this.$router.push("/map");
     },
-    detail() {
-      this.$router.push("/detail");
-    },
-    search() {
-      this.dialog = true;
+    detail(id) {
+      this.$router.push({
+        name: "Detail",
+        query: { id: id },
+      });
     },
   },
 };

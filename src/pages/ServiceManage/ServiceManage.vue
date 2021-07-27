@@ -90,6 +90,7 @@
 <script>
 import { apiService } from "@/services/axios";
 import serviceManagerTableHeader from "./service-manager-table-header";
+import address_status from "@/data/address_status.json";
 export default {
   name: "Icons",
   data() {
@@ -99,10 +100,13 @@ export default {
       skill: 20,
       dialog: false,
       projectList: [],
+      address_status_list: [],
     };
   },
   mounted() {
     this.getProjectList();
+    this.address_status_list = address_status.data;
+    this.address_status_list.unshift("ทั้งหมด");
   },
   methods: {
     async getProjectList() {

@@ -315,8 +315,6 @@
                   <tr>
                     <th class="text-left white--text">#</th>
                     <th class="text-left white--text">ชื่อ-สนามสกุล</th>
-                    <th class="text-left white--text">เครือข่าย</th>
-                    <th class="text-left white--text">ภาค</th>
                     <th class="text-left white--text">จังหวัด</th>
                     <th class="text-left white--text">หมวดการพัฒนา</th>
                     <th class="text-left white--text">สถานะการพัฒนา</th>
@@ -330,10 +328,10 @@
                       {{ item.form_unit }} {{ item.form_fname }}
                       {{ item.form_lname }}
                     </td>
-                    <td>{{ item.project_network_id }}</td>
+
                     <td>{{ item.form_province }}</td>
                     <td>{{ item.form_improvement }}</td>
-                    <td>เตรียมข้อมูล</td>
+                    <td>{{ item.rating_description }}</td>
                     <td class="text-center">
                       <v-btn
                         icon
@@ -355,7 +353,6 @@
                   <tr>
                     <th class="text-left white--text">#</th>
                     <th class="text-left white--text">ชื่อ-สนามสกุล</th>
-                    <th class="text-left white--text">เครือข่าย</th>
                     <th class="text-left white--text">จังหวัด</th>
                     <th class="text-left white--text">หมวดการพัฒนา</th>
                     <th class="text-left white--text">สถานะการพัฒนา</th>
@@ -369,10 +366,10 @@
                       {{ item.form_unit }} {{ item.form_fname }}
                       {{ item.form_lname }}
                     </td>
-                    <td>{{ item.project_network_id }}</td>
+
                     <td>{{ item.form_province }}</td>
                     <td>{{ item.form_improvement }}</td>
-                    <td>เตรียมข้อมูล</td>
+                    <td>{{ item.rating_description }}</td>
                     <td class="text-center">
                       <v-btn
                         icon
@@ -460,7 +457,6 @@
             ]"
             :items="houseList"
             :items-per-page="10"
-            hide-default-footer
             class="elevation-3"
           >
             <template v-slot:[`item.form_fname`]="{ item }">
@@ -607,20 +603,27 @@ export default {
     selected(value) {
       console.log("select : ", value);
     },
+    tab(value) {
+      this.getHosueInProject(value + 1);
+    },
   },
   mounted() {
     this.project_id = this.$route.query.id;
     this.getProject();
     this.getProjectNetWorkList();
     this.getProjectTypeList();
-    this.getHosueInProject();
   },
   methods: {
     async mapHouseProject() {
+      let house_list_id = [];
+      this.selected.forEach((element) => {
+        house_list_id.push(element.form_id);
+      });
+
       let body = {
         map_project_form_type: this.tab + 1,
         project_id: this.project_id,
-        form_id: this.selected[0].form_id,
+        form_id: house_list_id,
       };
       let data = await apiService.post({
         path: "mapprojectfrom",
@@ -641,19 +644,16 @@ export default {
       this.getHosueInProject();
       this.dialog = false;
     },
-    async getHosueInProject() {
+    async getHosueInProject(status) {
       this.houseTypeNewCreate = [];
       this.houseTypeUpdate = [];
       let data = await apiService.get({
-        path: "mapprojectfrom/list",
+        path: "mapprojectfrom/type",
+        param: status,
       });
-      data.data.forEach((element) => {
-        if (element.map_project_form_type == 1) {
-          this.houseTypeNewCreate.push(element);
-        } else {
-          this.houseTypeUpdate.push(element);
-        }
-      });
+      status == 1
+        ? (this.houseTypeNewCreate = data.data)
+        : (this.houseTypeUpdate = data.data);
     },
     async updateProject() {
       let body = {
@@ -719,7 +719,7 @@ export default {
     },
     async getHouseList() {
       let data = await apiService.get({
-        path: "form/list",
+        path: "form/notinproject ",
       });
       this.houseList = data.data;
     },

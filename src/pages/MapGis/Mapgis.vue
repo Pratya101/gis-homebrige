@@ -26,7 +26,7 @@
             :detail="item.detail"
             :icon="item.icon"
             :popup="item.popup"
-            :draggable="true"
+            :draggable="false"
           />
         </longdo-map>
       </v-col>
@@ -44,20 +44,71 @@
             <v-text-field
               placeholder="ชื่อ-นามสกุล"
               hide-detail
+              v-model.trim="search_name"
               solo
             ></v-text-field>
-            <v-select hide-detail placeholder="เครือข่าย" solo></v-select>
-            <v-select hide-detail placeholder="โครงการพัฒนา" solo></v-select>
-            <v-select hide-detail placeholder="ภาค" solo></v-select>
-            <v-select hide-detail placeholder="จังหวัด" solo></v-select>
-            <v-select hide-detail placeholder="อำเภอ/เขต" solo></v-select>
-            <v-select hide-detail placeholder="ตำบล/แขวง" solo></v-select>
+            <v-autocomplete
+              hide-detail
+              :items="projectNetworkList"
+              v-model.trim="network_id"
+              placeholder="เครือข่าย"
+              item-value="project_network_id"
+              item-text="project_network_name"
+              solo
+            ></v-autocomplete>
+            <v-autocomplete
+              hide-detail
+              :items="projectTypeList"
+              v-model="type_id"
+              placeholder="โครงการพัฒนา"
+              item-value="project_type_id"
+              item-text="project_type_name"
+              solo
+            ></v-autocomplete>
+            <v-autocomplete
+              hide-detail
+              :items="subDistrictsList"
+              v-model="subDistrictSelect"
+              item-value="SUB_DISTRICT_NAME"
+              item-text="SUB_DISTRICT_NAME"
+              placeholder="ตำบล/แขวง"
+              solo
+            ></v-autocomplete>
+            <v-autocomplete
+              hide-detail
+              :items="districtList"
+              v-model="districtSelect"
+              placeholder="อำเภอ/เขต"
+              item-value="DISTRICT_NAME"
+              item-text="DISTRICT_NAME"
+              solo
+            ></v-autocomplete>
+            <v-autocomplete
+              hide-detail
+              :items="provinceList"
+              v-model="provinceSelect"
+              placeholder="จังหวัด"
+              item-value="PROVINCE_NAME"
+              item-text="PROVINCE_NAME"
+              solo
+            ></v-autocomplete>
+            <v-autocomplete
+              hide-detail
+              :items="geographyList"
+              v-model="geoSelect"
+              placeholder="ภาค"
+              item-value="GEO_NAME"
+              item-text="GEO_NAME"
+              solo
+            ></v-autocomplete>
+
             <v-btn
               color="primary"
               class="rounded-lg elevation-4"
               outlined
               large
               block
+              @click="serachHosue"
             >
               <v-icon left>fa-search</v-icon>ค้นหา</v-btn
             >
@@ -96,6 +147,12 @@
 <script>
 import ApexChart from "vue-apexcharts";
 import config from "@/config";
+import { apiService } from "@/services/axios";
+import subDistricts from "@/data/subDistricts";
+import district from "@/data/districts";
+import province from "@/data/provinces";
+import geography from "@/data/geography";
+
 export default {
   components: {
     ApexChart,
@@ -103,6 +160,20 @@ export default {
   name: "Maps",
   data() {
     return {
+      subDistrictsList: subDistricts,
+      districtList: district,
+      provinceList: province,
+      geographyList: geography,
+
+      subDistrictSelect: "",
+      districtSelect: "",
+      provinceSelect: "",
+      geoSelect: "",
+
+      search_name: "",
+      network_id: "",
+      type_id: "",
+
       apexPieDonut: {
         series: [44, 55, 41, 17, 15],
         options: {
@@ -142,43 +213,83 @@ export default {
           ],
         },
       },
-
       locationStart: { lon: 102.82363467961038, lat: 16.432227961892437 },
-      markers: [
-        {
-          location: { lon: 100.58, lat: 13.761 },
-          icon: {
-            url: "https://image.flaticon.com/icons/png/512/25/25694.png",
-            offset: { x: 14, y: 10 },
-            size: { width: 30, height: 30 },
-          },
-          popup: {
-            title: "Hello world",
-            detail: "This is a detail",
-            size: { width: 200, height: 200 },
-          },
-        },
-        {
-          location: { lon: 102.82363467961038, lat: 16.432227961892437 },
-
-          icon: {
-            url: "https://image.flaticon.com/icons/png/512/25/25694.png",
-            offset: { x: 14, y: 10 },
-            size: { width: 30, height: 30 },
-          },
-          popup: {
-            title: "Hello world",
-            detail: "This is a detail",
-            size: { width: 200, height: 200 },
-          },
-        },
-      ],
+      markers: [],
+      projectTypeList: [],
+      projectNetworkList: [],
+      houseList: [],
     };
   },
+  mounted() {
+    this.getProjectNetWorkList();
+    this.getProjectTypeList();
+    this.subDistrictsList.unshift({ SUB_DISTRICT_NAME: "ทั้งหมด" });
+    this.subDistrictSelect = "ทั้งหมด";
+    this.districtList.unshift({ DISTRICT_NAME: "ทั้งหมด" });
+    this.districtSelect = "ทั้งหมด";
+    this.provinceList.unshift({ PROVINCE_NAME: "ทั้งหมด" });
+    this.provinceSelect = "ทั้งหมด";
+    this.geographyList.unshift({ GEO_NAME: "ทั้งหมด" });
+    this.geoSelect = "ทั้งหมด";
+    this.serachHosue();
+  },
   methods: {
+    async getProjectTypeList() {
+      let data = await apiService.get({
+        path: "projecttype/list",
+      });
+      this.projectTypeList = data.data;
+      this.projectTypeList.unshift({
+        project_type_id: "",
+        project_type_name: "ทั้งหมด",
+      });
+    },
+    async getProjectNetWorkList() {
+      let data = await apiService.get({
+        path: "projectnetwork/list",
+      });
+      this.projectNetworkList = data.data;
+      this.projectNetworkList.unshift({
+        project_network_id: "",
+        project_network_name: "ทั้งหมด",
+      });
+    },
+    async serachHosue() {
+      let body = {
+        search_name: this.search_name,
+        network_id: this.network_id,
+        type_id: this.type_id,
+        sub_district: this.subDistrictSelect,
+        district: this.districtSelect,
+        province: this.provinceSelect,
+        geo: this.geoSelect,
+      };
+      let data = await apiService.post({
+        path: "project/search",
+        body: body,
+      });
+      this.houseList = data.data;
+      data.data.forEach((element) => {
+        this.markers.push({
+          location: { lon: element.form_long, lat: element.form_lat },
+          icon: {
+            url: "https://image.flaticon.com/icons/png/512/25/25694.png",
+            offset: { x: 14, y: 10 },
+            size: { width: 30, height: 30 },
+          },
+          popup: {
+            title: `${element.form_unit} ${element.form_fname} ${element.form_lname}`,
+            detail: `${element.form_home_id} ${element.project_sub_district} ${element.project_district} ${element.project_province}
+            <br> <strong>สภาพที่อยู่ : </strong> ${element.form_living}`,
+            size: { width: 200, height: 100 },
+          },
+        });
+      });
+      console.log("marker : ", this.markers);
+    },
     event(map) {
       map.Event.bind("drag", function() {
-        console.log("map.location();", map.location());
+        // console.log("map.location();", map.location());
       });
     },
     appendData: function() {
