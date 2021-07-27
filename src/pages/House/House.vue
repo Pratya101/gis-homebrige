@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col cols="12" md="6" class="px-0">
+      <v-col cols="12" md="6">
         <h2>
           <v-icon
             style="background: #686868;
@@ -15,15 +15,7 @@
           รายการข้อมูลครัวเรื่อน
         </h2>
       </v-col>
-      <v-col cols="12" md="6" class="d-md-flex justify-md-end px-0">
-        <v-btn
-          color="success"
-          @click="search"
-          outlined
-          large
-          class="set-font-kanit rounded-lg elevation-4 me-2"
-          ><v-icon left>mdi-magnify</v-icon> ค้นหาข้อมูลครัวเรือน</v-btn
-        >
+      <v-col cols="12" md="6" class="d-md-flex justify-md-end">
         <v-btn
           color="primary"
           @click="$router.push('/formcheck')"
@@ -36,145 +28,84 @@
       </v-col>
     </v-row>
     <v-row class="pt-0 mt-0">
-      <v-col cols="12 px-0">
-        <v-simple-table class="material-table set-shadow">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left white--text">#</th>
-                <th class="text-left white--text">เลขบัตรประชาชน</th>
-                <th class="text-left white--text">ชื่อ-สนามสกุล</th>
-                <th class="text-left white--text">สภาพที่อยู่อาศัย</th>
-                <th class="text-left white--text">ตำบล</th>
-                <th class="text-left white--text">อำเภอ</th>
-                <th class="text-left white--text">จังหวัด</th>
-                <th class="text-left white--text">ภาค</th>
-                <th class="text-center white--text">ตำแหน่งที่อยู่</th>
-                <th class="text-center white--text">รายละเอียด</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in houseList" :key="index">
-                <td>{{ index + 1 }}</td>
-                <td>{{ item.form_id_card }}</td>
-                <td>{{ item.form_fname }} {{ item.form_lname }}</td>
-                <td>{{ item.form_living }}</td>
-                <td>{{ item.form_sub_district }}</td>
-                <td>{{ item.form_district }}</td>
-                <td>{{ item.form_province }}</td>
-                <td>{{ item.form_geo }}</td>
-                <td>{{ item.form_lat }},{{ item.form_long }}</td>
-
-                <td class="text-center">
-                  <v-btn
-                    icon
-                    color="primary"
-                    @click="map"
-                    style="cursor:pointer;"
-                    ><v-icon>mdi-map-marker-radius-outline</v-icon></v-btn
-                  >
-                  <v-btn
-                    icon
-                    color="primary"
-                    @click="detail(item.form_id)"
-                    style="cursor:pointer;"
-                    ><v-icon>mdi-information-outline</v-icon></v-btn
-                  >
-                </td>
-              </tr>
-            </tbody>
+      <v-col cols="12" md="6">
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="ค้นหาข้อมูล"
+          class="set-shadow"
+          placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
+          outlined
+          hide-details
+        ></v-text-field
+      ></v-col>
+      <v-col cols="12" md="6">
+        <v-select
+          v-model="search"
+          hide-details
+          class="set-shadow"
+          :items="address_status_list"
+          outlined
+          placeholder="เลือกสภาพที่อยู่อาศัย"
+          label="เลือกสภาพที่อยู่อาศัย"
+        ></v-select
+      ></v-col>
+      <v-col cols="12">
+        <v-data-table
+          :headers="headers"
+          :items="houseList"
+          :search="search"
+          class="material-table set-shadow"
+          :mobile-breakpoint="0"
+        >
+          <template v-slot:[`item.form_id`]="{ index }">
+            {{ index + 1 }}
           </template>
-        </v-simple-table>
-      </v-col>
-    </v-row>
-    <v-dialog v-model="dialog" max-width="750">
-      <v-card>
-        <v-card-title>
-          <h2>
-            <v-icon
-              style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-              >fa-search</v-icon
+          <template v-slot:[`item.form_fname`]="{ item }">
+            {{ item.form_unit }} {{ item.form_fname }} {{ item.form_lname }}
+          </template>
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-btn icon color="primary" @click="map" style="cursor:pointer;"
+              ><v-icon>mdi-map-marker-radius-outline</v-icon></v-btn
             >
-            ค้นหาข้อมูลครัวเรือน
-          </h2>
-        </v-card-title>
-        <v-divider class="mt-0"></v-divider>
-        <v-card-text>
-          <v-row class="mt-2">
-            <v-col cols="12" md="6">
-              <label for="">ชื่อ-นามสกุล</label>
-              <v-text-field hide-details solo></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <label for="">สภาพที่อยู่อาศัย</label
-              ><v-text-field hide-details solo></v-text-field
-            ></v-col>
-            <v-col cols="12" md="6"
-              ><label for="">ภาค</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-            <v-col cols="12" md="6">
-              <label for="">อำเภอ</label>
-              <v-select hide-details :items="[]" solo></v-select>
-            </v-col>
-            <v-col cols="12" md="6"
-              ><label for="">จังหวัด</label>
-              <v-select
-                hide-details
-                :items="[]"
-                label="Solo field"
-                solo
-              ></v-select
-            ></v-col>
-            <v-col cols="12" md="6"
-              ><label for="">ตำบล</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-          </v-row>
-        </v-card-text>
-        <v-divider class="mt-0"></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            x-large
-            color="primary"
-            class="set-font-kanit elevation-4 rounded-lg"
-            outlined
-          >
-            <v-icon small left>fa-search</v-icon> ค้นหา</v-btn
-          >
-          <v-btn
-            @click="dialog = false"
-            x-large
-            color="error"
-            class="set-font-kanit elevation-4 rounded-lg"
-            outlined
-          >
-            <v-icon small left>fa-close</v-icon>ปิด</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+            <v-btn
+              icon
+              color="primary"
+              @click="detail(item.form_id)"
+              style="cursor:pointer;"
+              ><v-icon>mdi-information-outline</v-icon></v-btn
+            >
+          </template>
+        </v-data-table></v-col
+      >
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { apiService } from "@/services/axios";
+import houseTableHeader from "./house-table-header";
+import address_status from "@/data/address_status.json";
 export default {
   name: "Icons",
   data() {
     return {
+      search: null,
+      headers: houseTableHeader,
+      address_status_list: [],
       dialog: false,
       houseList: [],
     };
   },
   mounted() {
     this.getHouseList();
+    this.address_status_list = address_status.data;
+    this.address_status_list.unshift("ทั้งหมด");
+  },
+  watch: {
+    search(value) {
+      value == "ทั้งหมด" ? (this.search = "") : value;
+    },
   },
   methods: {
     async getHouseList() {
@@ -192,7 +123,7 @@ export default {
         query: { id: id },
       });
     },
-    search() {
+    onSearch() {
       this.dialog = true;
     },
   },

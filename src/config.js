@@ -1,8 +1,8 @@
 const hostApi =
   process.env.NODE_ENV === "development"
     ? "http://13.250.101.172"
-    : "https://apiclinic.tk";
-const portApi = process.env.NODE_ENV === "development" ? "5000" : "";
+    : "http://13.250.101.172";
+const portApi = process.env.NODE_ENV === "development" ? "5000" : "5000";
 const baseURLApi = `${hostApi}${portApi ? `:${portApi}` : ``}`;
 const redirectUrl =
   process.env.NODE_ENV === "development"

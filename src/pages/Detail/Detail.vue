@@ -12,7 +12,7 @@
   font-size: 30px;"
             >mdi-card-account-details-outline</v-icon
           >
-          รายละเอียดข้อมูลของ นายปรัชญา โพธิ์ชา
+          รายละเอียดข้อมูลของ {{ perfix }} {{ fname }} {{ lname }}
         </h2>
       </v-col>
       <v-col
@@ -466,7 +466,7 @@
             @load="event"
             :location="locationStart"
             :lastView="false"
-            :zoom="10"
+            :zoom="16"
             class="set-shadow"
             style="height:615px"
           >
@@ -611,7 +611,6 @@ export default {
       this.mapData(response.data);
     },
     mapData(data) {
-      console.log("data :", data);
       this.idCard = data.form_id_card;
       this.perfix = data.form_unit;
       this.fname = data.form_fname;
@@ -628,6 +627,7 @@ export default {
       this.soilsSelection = data.form_land;
       this.lat = data.form_lat;
       this.lon = data.form_long;
+      this.locationStart = { lon: data.form_long, lat: data.form_lat };
       this.gpsLocation = `${data.form_lat},${data.form_long}`;
       this.address2 = {
         DISTRICT_NAME: data.form_district,
@@ -637,8 +637,6 @@ export default {
         SUB_DISTRICT_NAME: data.form_sub_district,
         ZIPCODE: data.form_zipcode,
       };
-      console.log("address list : ", this.locationList);
-      console.log("address : ", this.address2);
     },
     updateStatus() {
       this.dialog = true;

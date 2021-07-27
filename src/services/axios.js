@@ -1,7 +1,5 @@
-import config from "../config";
-
 const axios = require("axios");
-const www = config.baseURLApi + "/";
+const www = "http://13.250.101.172:5000/";
 let token = localStorage.getItem("token");
 
 const apiService = {
@@ -61,7 +59,6 @@ const apiService = {
       return "UPDATE ERROR";
     }
   },
-
   delete: async function(payload) {
     try {
       let { path, param } = payload;
