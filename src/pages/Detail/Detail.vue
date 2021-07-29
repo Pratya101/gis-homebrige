@@ -466,7 +466,7 @@
         <v-card-title>
           ตำแหน่ง :
           {{
-            gpsLocation ? gpsLocation : "เลื่อนแผนที่เพื่อระบุพิกัดครัวงเรือน"
+            gpsLocation ? gpsLocation : "เลื่อนแผนที่เพื่อระบุพิกัดครัวเรือน"
           }}
         </v-card-title>
         <v-divider></v-divider>
