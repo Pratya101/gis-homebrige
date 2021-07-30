@@ -13,7 +13,7 @@ import FormServiceManage from "@/pages/FormServiceManage/FormServiceManage";
 import DetailServiceManage from "@/pages/DetailServiceManage/DetailServiceManage";
 import Detail from "@/pages/Detail/Detail";
 import test from "@/pages/test";
-
+import Reports from "@/pages/Reports/Reports";
 import Error from "@/pages/Error/Error";
 import Login from "@/pages/Login/Login";
 
@@ -94,6 +94,11 @@ export default new Router({
           path: "/detailservicemange",
           name: "DetailServiceMange",
           component: DetailServiceManage,
+        },
+        {
+          path: "/reports",
+          name: "Reports",
+          component: Reports,
         },
       ],
     },

@@ -60,16 +60,13 @@
           <template v-slot:[`item.project_id`]="{ index }">
             {{ index + 1 }}
           </template>
-          <template v-slot:[`item.percent`]="{}">
+          <template v-slot:[`item.percent`]="{ item }">
             <v-progress-linear
-              v-model="skill"
+              v-model="item.project_profress"
               class="elevation-3 rounded-lg"
               color="warning"
               height="25"
             >
-              <template v-slot:default="{ value }">
-                <strong> {{ value }}% </strong>
-              </template>
             </v-progress-linear>
           </template>
           <template v-slot:[`item.actions`]="{ item }">

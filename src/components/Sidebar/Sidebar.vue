@@ -136,6 +136,11 @@ export default {
           icon: "mdi-chart-areaspline",
           link: "/servicemanage",
         },
+        {
+          title: "รายงาน",
+          icon: "mdi-file",
+          link: "/reports",
+        },
       ],
 
       sidebarWidth: 260,
