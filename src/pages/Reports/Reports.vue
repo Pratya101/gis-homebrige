@@ -15,7 +15,9 @@
           รายงาน
         </h2>
       </v-col>
-      <v-col cols="12" md="6" class="d-md-flex justify-md-end px-0"> </v-col>
+      <v-col cols="12" md="6" class="d-md-flex justify-md-end px-0">
+        <v-select solo :items="reportsType"></v-select>
+      </v-col>
     </v-row>
 
     <v-row class="pt-0 mt-0">
@@ -41,7 +43,9 @@ export default {
   data() {
     return {
       dialog: false,
-
+      reportType:[
+        ""
+      ],
       json_fields: {
         "Complete name": "name",
         City: "city",
