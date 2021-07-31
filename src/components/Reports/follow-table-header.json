@@ -1,0 +1,38 @@
+[
+  {
+    "text": "#",
+    "value": "form_id",
+    "class": "white--text"
+  },
+
+  {
+    "text": "เลขบัตรประชาชน",
+    "value": "form_id_card",
+    "class": "white--text"
+  },
+  {
+    "text": "ชื่อ-นามสกุล",
+    "value": "form_fname",
+    "class": "white--text"
+  },
+  {
+    "text": "สภาพที่อยู่อาศัย",
+    "value": "form_living",
+    "class": "white--text"
+  },
+  {
+    "text": "จังหวัด",
+    "value": "form_province",
+    "class": "white--text"
+  },
+  {
+    "text": "เครือข่าย",
+    "value": "project_network_name",
+    "class": "white--text"
+  },
+  {
+    "text": "สถานะการพัฒนา",
+    "value": "rating_description",
+    "class": "white--text"
+  }
+]

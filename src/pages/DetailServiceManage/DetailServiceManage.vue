@@ -398,7 +398,7 @@
                     <td class="text-right">
                       20,000
                       <v-tooltip color="#212121" top>
-                        <template v-slot:activator="{ on, attrs }"> 
+                        <template v-slot:activator="{ on, attrs }">
                           <v-btn v-bind="attrs" v-on="on" icon color="primary">
                             <v-icon>mdi-pencil-outline</v-icon>
                           </v-btn>
@@ -618,9 +618,7 @@ export default {
     search(value) {
       value == "ทั้งหมด" ? (this.search = "") : value;
     },
-    selected(value) {
-      console.log("select : ", value);
-    },
+
     tab(value) {
       this.getHosueInProject(value + 1);
     },

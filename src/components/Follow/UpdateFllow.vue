@@ -128,6 +128,7 @@ export default {
       dialog: false,
       form_id: "",
       current_status: "",
+      dataGetHouse: {},
     };
   },
   computed: {
@@ -156,7 +157,7 @@ export default {
         path: "mapprojectfrom",
         param: id,
       });
-      console.log("data", data);
+      this.dataGetHouse = data.data;
       this.dialog = true;
     },
     updateStatus() {

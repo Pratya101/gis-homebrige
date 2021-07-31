@@ -1,0 +1,39 @@
+[
+  {
+    "text": "#",
+    "value": "project_id",
+    "class": "white--text"
+  },
+  {
+    "text": "ชื่อโครงการ",
+    "value": "project_name",
+    "class": "white--text"
+  },
+  {
+    "text": "ประเภทโครงการ",
+    "value": "project_type_name",
+    "class": "white--text"
+  },
+  {
+    "text": "เครือข่าย",
+    "value": "project_network_name",
+    "class": "white--text"
+  },
+  {
+    "text": "จังหวัด",
+    "value": "project_province",
+    "class": "white--text"
+  },
+  {
+    "text": "ความคืบหน้า (%)",
+    "value": "project_profress",
+    "align": "center",
+    "class": "white--text"
+  },
+  {
+    "text": "งบประมาณที่ใช้",
+    "value": "project_budget",
+    "align": "end",
+    "class": "white--text"
+  }
+]

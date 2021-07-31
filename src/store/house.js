@@ -6,7 +6,6 @@ export default {
   mutations: {
     setStatusHouse(state, status) {
       state.statusUpdateHouse = status;
-      console.log("udpate house update : ", status);
     },
   },
   actions: {

@@ -376,11 +376,7 @@ export default {
       dialogSelectLocation: false,
     };
   },
-  watch: {
-    soilsSelection(value) {
-      console.log("value seletion : ", value);
-    },
-  },
+  watch: {},
   methods: {
     async sendForm() {
       let body = {

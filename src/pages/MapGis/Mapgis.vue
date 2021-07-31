@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col class="order-first pl-0" cols="12" md="9">
+      <v-col class="order-first" cols="12" md="9">
         <h2>
           <v-icon
             style="background: #686868;-webkit-background-clip: text;background-clip: text;color: transparent;text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;font-size: 30px;"
@@ -19,7 +19,6 @@
           v-if="!locationStart"
         ></v-skeleton-loader>
         <longdo-map
-          @load="event"
           v-if="locationStart"
           :location="locationStart"
           :lastView="false"
@@ -135,31 +134,52 @@
         </v-row>
       </v-col>
     </v-row>
-    <div class="pieCharts-page">
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-card class="mx-1 mb-1">
-            <v-card-title class="pa-5 pb-3">
-              <p>Donut Pie Chart</p>
-              <v-spacer></v-spacer>
-            </v-card-title>
-            <v-card-text class="pa-5 pt-0">
-              <v-row no-gutters>
-                <v-col>
-                  <ApexChart
-                    type="donut"
-                    :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
-                    :options="apexPieDonut.options"
-                    :series="apexPieDonut.series"
-                  >
-                  </ApexChart>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
+    <v-row class="mt-5">
+      <v-col cols="12" md="6">
+        <div class="set-shadow">
+          <h3 class="pt-3 pl-3">ครัวเรือนทั้งหมด</h3>
+          <ApexChart
+            type="donut"
+            :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
+            :options="apexPieDonut.options"
+            :series="apexPieDonut.series"
+          >
+          </ApexChart>
+        </div>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-skeleton-loader
+          class="mx-auto"
+          max-width="100%"
+          max-height="615"
+          height="615"
+          type="image"
+          v-if="!statusLoadData"
+        ></v-skeleton-loader>
+        <div class="set-shadow" v-if="statusLoadData">
+          <h3 class="pt-3 pl-3">การพัฒนาที่อยู่อาศัยระดับครัวเรือน</h3>
+          <ApexChart
+            type="donut"
+            :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
+            :options="houseDev.options"
+            :series="houseDev.series"
+          >
+          </ApexChart>
+        </div>
+      </v-col>
+      <v-col cols="12">
+        <div class="set-shadow">
+          <h3 class="pt-3 pl-3">ติดตามการก่อสร้าง</h3>
+          <ApexChart
+            type="bar"
+            height="350"
+            :options="apexBarGroup.options"
+            :series="apexBarGroup.series"
+          >
+          </ApexChart>
+        </div>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -188,15 +208,100 @@ export default {
       search_name: "",
       network_id: "",
       type_id: "",
-      apexPieDonut: {
-        series: [44, 55, 41, 17, 15],
+      apexBarGroup: {
+        series: [
+          {
+            data: [44, 55],
+          },
+          {
+            data: [53, 80],
+          },
+          {
+            data: [60, 100],
+          },
+        ],
+        options: {
+          chart: {
+            type: "bar",
+            height: 430,
+
+            toolbar: {
+              show: false,
+            },
+          },
+          colors: [
+            config.light.primary,
+            config.light.success,
+            config.light.error,
+          ],
+          legend: {
+            show: false,
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              dataLabels: {
+                position: "top",
+              },
+            },
+          },
+          dataLabels: {
+            enabled: true,
+            offsetX: -6,
+            style: {
+              fontSize: "12px",
+              colors: ["#fff"],
+            },
+          },
+          xaxis: {
+            categories: ["สร้างใหม่", "ปรับปรุง"],
+          },
+        },
+      },
+      houseDev: {
+        series: [],
         options: {
           chart: {
             type: "donut",
             labels: {
               show: true,
             },
-
+            height: 350,
+          },
+          labels: [],
+          colors: [
+            config.light.error,
+            config.light.warning,
+            config.light.success,
+          ],
+          responsive: [
+            {
+              breakpoint: 321,
+              options: {
+                chart: {
+                  height: 150,
+                },
+              },
+            },
+            {
+              breakpoint: 2561,
+              options: {
+                chart: {
+                  height: 350,
+                },
+              },
+            },
+          ],
+        },
+      },
+      apexPieDonut: {
+        series: [200, 111, 222, 300, 400],
+        options: {
+          chart: {
+            type: "donut",
+            labels: {
+              show: true,
+            },
             height: 350,
           },
           labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
@@ -234,6 +339,7 @@ export default {
       houseList: [],
       house_id: null,
       zoom: 6,
+      statusLoadData: false,
     };
   },
   mounted() {
@@ -254,8 +360,29 @@ export default {
       this.locationStart = { lon: 100.4996453, lat: 13.7597661 };
       this.serachHosue();
     }
+    this.getGraph();
   },
   methods: {
+    async getGraph() {
+      let data = await apiService.get({
+        path: "report/graph",
+      });
+      this.houseDev.series.push(data.data.progress.reporn_progress.prepare);
+      this.houseDev.series.push(data.data.progress.reporn_progress.progress);
+      this.houseDev.series.push(data.data.progress.reporn_progress.success);
+      this.houseDev.options.labels = await this.getDataLabels(
+        data.data.progress.reporn_progress
+      );
+      this.statusLoadData = true;
+    },
+    getDataLabels(labels) {
+      var label = [
+        `เตรียมข้อมูล ${labels.prepare} ครัวเรือน`,
+        `กำลังดำเนินการ ${labels.progress} ครัวเรือน`,
+        `เสร็จสิ้น ${labels.success} ครัวเรือน`,
+      ];
+      return label;
+    },
     async getHouse(id) {
       let data = await apiService.get({
         path: "form",
@@ -313,7 +440,6 @@ export default {
       this.addMarker(data.data);
     },
     addMarker(data) {
-      console.log("data", data);
       this.markers = [];
       data.forEach((element) => {
         this.markers.push({
@@ -330,11 +456,6 @@ export default {
             size: { width: 200, height: 100 },
           },
         });
-      });
-    },
-    event(map) {
-      map.Event.bind("drag", function() {
-        // console.log("map.location();", map.location());
       });
     },
     appendData: function() {

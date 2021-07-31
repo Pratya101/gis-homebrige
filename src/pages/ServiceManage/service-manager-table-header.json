@@ -27,16 +27,19 @@
   {
     "text": "ความคืบหน้า (%)",
     "value": "project_profress",
+    "align": "center",
     "class": "white--text"
   },
   {
     "text": "งบประมาณที่ใช้",
     "value": "project_budget",
+    "align": "end",
     "class": "white--text"
   },
   {
     "text": "ตัวเลือก",
     "value": "actions",
+    "align": "center",
     "class": "white--text",
     "width": 120
   }

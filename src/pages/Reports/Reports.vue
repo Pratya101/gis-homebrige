@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col cols="12" md="6" class="px-0">
+      <v-col cols="12" md="6">
         <h2>
           <v-icon
             style="background: #686868;
@@ -10,20 +10,34 @@
   color: transparent;
   text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
   font-size: 30px;"
-            >mdi-format-list-bulleted</v-icon
+            >mdi-file-excel-outline</v-icon
           >
           รายงาน
         </h2>
       </v-col>
-      <v-col cols="12" md="6" class="d-md-flex justify-md-end px-0">
+    </v-row>
+    <v-row>
+      <v-col cols="4" class="my-0">
         <v-select
           v-model="reportTypeSelect"
-          solo
+          outlined
+          label="เลือกประเภทรายงาน"
+          hide-details
           item-value="value"
           item-text="text"
-          dense
+          class="set-shadow"
           :items="reportsType"
         ></v-select>
+      </v-col>
+      <v-col cols="8" class="d-flex justify-md-end">
+        <v-btn large color="primary" class="rounded-lg elevation-3" outlined>
+          <v-icon left>mdi-file-excel-outline</v-icon>ออกรายงาน
+        </v-btn></v-col
+      >
+      <v-col cols="12" class="my-0">
+        <HouseReport v-if="reportTypeSelect == 1"></HouseReport>
+        <FollowReport v-if="reportTypeSelect == 2"></FollowReport>
+        <ProjectReport v-if="reportTypeSelect == 3"></ProjectReport>
       </v-col>
     </v-row>
   </v-container>
@@ -31,8 +45,12 @@
 
 <script>
 import { apiService } from "@/services/axios";
+import HouseReport from "@/components/Reports/HouseReport";
+import FollowReport from "@/components/Reports/FollowReport";
+import ProjectReport from "@/components/Reports/ProjectReport";
 export default {
   name: "Reports",
+  components: { HouseReport, FollowReport, ProjectReport },
   data() {
     return {
       dialog: false,
@@ -47,6 +65,7 @@ export default {
   mounted() {
     this.getHouseList();
   },
+
   methods: {
     async getHouseList() {
       let data = await apiService.get({
@@ -67,5 +86,3 @@ export default {
   },
 };
 </script>
-
-<style src="./Reports.scss" lang="scss" />

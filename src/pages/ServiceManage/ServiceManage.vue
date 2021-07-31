@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col cols="12" md="6" class="px-0">
+      <v-col cols="12" md="6">
         <h2>
           <v-icon
             style="background: #686868;
@@ -60,14 +60,18 @@
           <template v-slot:[`item.project_id`]="{ index }">
             {{ index + 1 }}
           </template>
-          <template v-slot:[`item.percent`]="{ item }">
+          <template v-slot:[`item.project_profress`]="{ item }">
             <v-progress-linear
               v-model="item.project_profress"
               class="elevation-3 rounded-lg"
               color="warning"
               height="25"
             >
+              {{ item.project_profress }} %
             </v-progress-linear>
+          </template>
+          <template v-slot:[`item.project_budget`]="{ item }">
+            {{ item.project_budget | formatPrice }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-btn
