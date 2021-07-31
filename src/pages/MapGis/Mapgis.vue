@@ -10,11 +10,20 @@
           >
           แผนที่ GIS
         </h2>
+        <v-skeleton-loader
+          class="mx-auto"
+          max-width="100%"
+          max-height="615"
+          height="615"
+          type="image"
+          v-if="!locationStart"
+        ></v-skeleton-loader>
         <longdo-map
           @load="event"
+          v-if="locationStart"
           :location="locationStart"
           :lastView="false"
-          :zoom="10"
+          :zoom="zoom"
           class="set-shadow"
           style="height:615px"
         >
@@ -40,7 +49,17 @@
           ค้นหา
         </h2>
         <v-row class="p-0 m-0">
-          <v-col cols="12" class="p-0 m-0 set-shadow mt-3">
+          <v-col cols="12" v-if="!locationStart">
+            <v-skeleton-loader
+              class="mx-auto"
+              max-width="100%"
+              max-height="615"
+              height="615"
+              type="list-item,list-item,list-item,list-item,list-item,list-item,list-item,actions"
+              v-if="!locationStart"
+            ></v-skeleton-loader>
+          </v-col>
+          <v-col cols="12" v-if="locationStart" class="p-0 m-0 set-shadow mt-3">
             <v-text-field
               placeholder="ชื่อ-นามสกุล"
               hide-detail
@@ -143,7 +162,6 @@
     </div>
   </v-container>
 </template>
-
 <script>
 import ApexChart from "vue-apexcharts";
 import config from "@/config";
@@ -152,7 +170,6 @@ import subDistricts from "@/data/subDistricts";
 import district from "@/data/districts";
 import province from "@/data/provinces";
 import geography from "@/data/geography";
-
 export default {
   components: {
     ApexChart,
@@ -164,16 +181,13 @@ export default {
       districtList: district,
       provinceList: province,
       geographyList: geography,
-
       subDistrictSelect: "",
       districtSelect: "",
       provinceSelect: "",
       geoSelect: "",
-
       search_name: "",
       network_id: "",
       type_id: "",
-
       apexPieDonut: {
         series: [44, 55, 41, 17, 15],
         options: {
@@ -213,27 +227,53 @@ export default {
           ],
         },
       },
-      locationStart: { lon: 102.82363467961038, lat: 16.432227961892437 },
+      locationStart: null,
       markers: [],
       projectTypeList: [],
       projectNetworkList: [],
       houseList: [],
+      house_id: null,
+      zoom: 6,
     };
   },
   mounted() {
     this.getProjectNetWorkList();
     this.getProjectTypeList();
     this.subDistrictsList.unshift({ SUB_DISTRICT_NAME: "ทั้งหมด" });
-    this.subDistrictSelect = "ทั้งหมด";
     this.districtList.unshift({ DISTRICT_NAME: "ทั้งหมด" });
-    this.districtSelect = "ทั้งหมด";
     this.provinceList.unshift({ PROVINCE_NAME: "ทั้งหมด" });
-    this.provinceSelect = "ทั้งหมด";
     this.geographyList.unshift({ GEO_NAME: "ทั้งหมด" });
+    this.subDistrictSelect = "ทั้งหมด";
+    this.districtSelect = "ทั้งหมด";
+    this.provinceSelect = "ทั้งหมด";
     this.geoSelect = "ทั้งหมด";
-    this.serachHosue();
+    if (this.$route.query.id) {
+      this.locationStart = null;
+      this.getHouse(this.$route.query.id);
+    } else {
+      this.locationStart = { lon: 100.4996453, lat: 13.7597661 };
+      this.serachHosue();
+    }
   },
   methods: {
+    async getHouse(id) {
+      let data = await apiService.get({
+        path: "form",
+        param: id,
+      });
+      this.locationStart = {
+        lon: data.data.form_long,
+        lat: data.data.form_lat,
+      };
+      this.search_name = `${data.data.form_unit} ${data.data.form_fname} ${data.data.form_lname}`;
+      this.subDistrictSelect = data.data.form_sub_district;
+      this.districtSelect = data.data.form_district;
+      this.provinceSelect = data.data.form_province;
+      this.geoSelect = data.data.form_geo;
+
+      this.zoom = 15;
+      this.addMarker([data.data]);
+    },
     async getProjectTypeList() {
       let data = await apiService.get({
         path: "projecttype/list",
@@ -269,7 +309,13 @@ export default {
         body: body,
       });
       this.houseList = data.data;
-      data.data.forEach((element) => {
+      this.zoom = 9;
+      this.addMarker(data.data);
+    },
+    addMarker(data) {
+      console.log("data", data);
+      this.markers = [];
+      data.forEach((element) => {
         this.markers.push({
           location: { lon: element.form_long, lat: element.form_lat },
           icon: {
@@ -279,13 +325,12 @@ export default {
           },
           popup: {
             title: `${element.form_unit} ${element.form_fname} ${element.form_lname}`,
-            detail: `${element.form_home_id} ${element.project_sub_district} ${element.project_district} ${element.project_province}
+            detail: `${element.form_home_id} ${element.form_sub_district} ${element.form_district} ${element.form_province}
             <br> <strong>สภาพที่อยู่ : </strong> ${element.form_living}`,
             size: { width: 200, height: 100 },
           },
         });
       });
-      console.log("marker : ", this.markers);
     },
     event(map) {
       map.Event.bind("drag", function() {

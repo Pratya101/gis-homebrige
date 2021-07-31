@@ -318,7 +318,8 @@
                     <th class="text-left white--text">จังหวัด</th>
                     <th class="text-left white--text">หมวดการพัฒนา</th>
                     <th class="text-left white--text">สถานะการพัฒนา</th>
-                    <th class="text-center white--text">รายละเอียด</th>
+                    <th class="text-center white--text">ระดับการสนับสนุน</th>
+                    <th class="text-right white--text">งบประมาณสนับสนุน</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -328,18 +329,30 @@
                       {{ item.form_unit }} {{ item.form_fname }}
                       {{ item.form_lname }}
                     </td>
-
                     <td>{{ item.form_province }}</td>
                     <td>{{ item.form_improvement }}</td>
                     <td>{{ item.rating_description }}</td>
                     <td class="text-center">
-                      <v-btn
-                        icon
-                        color="primary"
-                        @click="detail"
-                        style="cursor:pointer;"
-                        ><v-icon>mdi-information-outline</v-icon></v-btn
-                      >
+                      เฟส 1
+                      <v-tooltip color="#212121" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                            <v-icon>mdi-pencil-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>แก้ไขระดับการสนับสนุน</span>
+                      </v-tooltip>
+                    </td>
+                    <td class="text-right">
+                      20,000
+                      <v-tooltip color="#212121" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                            <v-icon>mdi-pencil-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>แก้ไขงบประมาณ</span>
+                      </v-tooltip>
                     </td>
                   </tr>
                 </tbody>
@@ -356,7 +369,8 @@
                     <th class="text-left white--text">จังหวัด</th>
                     <th class="text-left white--text">หมวดการพัฒนา</th>
                     <th class="text-left white--text">สถานะการพัฒนา</th>
-                    <th class="text-center white--text">รายละเอียด</th>
+                    <th class="text-center white--text">ระดับการสนับสนุน</th>
+                    <th class="text-right white--text">งบประมาณสนับสนุน</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -371,13 +385,26 @@
                     <td>{{ item.form_improvement }}</td>
                     <td>{{ item.rating_description }}</td>
                     <td class="text-center">
-                      <v-btn
-                        icon
-                        color="primary"
-                        @click="detail"
-                        style="cursor:pointer;"
-                        ><v-icon>mdi-information-outline</v-icon></v-btn
-                      >
+                      เฟส 1
+                      <v-tooltip color="#212121" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                            <v-icon>mdi-pencil-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>แก้ไขระดับการสนับสนุน</span>
+                      </v-tooltip>
+                    </td>
+                    <td class="text-right">
+                      20,000
+                      <v-tooltip color="#212121" top>
+                        <template v-slot:activator="{ on, attrs }"> 
+                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                            <v-icon>mdi-pencil-outline</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>แก้ไขงบประมาณ</span>
+                      </v-tooltip>
                     </td>
                   </tr>
                 </tbody>
@@ -390,80 +417,65 @@
     <v-dialog max-width="1000" v-model="dialog">
       <v-card>
         <v-card-title class="set-font-kanit mb-0 pb-0">
-          <v-row>
+          <v-row clamp>
             <v-col cols="12" md="6">
-              <h5><v-icon left>fa-search</v-icon>ค้นหาข้อมูลครัวเรือน</h5>
-            </v-col>
-            <v-col cols="12" md="6" class="d-md-flex justify-md-end">
-              <v-btn
-                color="success"
-                class="rounded-lg elevation-4"
-                large
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="ค้นหาข้อมูล"
+                class="set-shadow"
+                placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
                 outlined
-              >
-                <v-icon left>fa-search</v-icon>ค้นหา</v-btn
-              ></v-col
-            >
-          </v-row>
-        </v-card-title>
-        <v-card-text class="mt-0 pt-0">
-          <v-row class="mt-2">
-            <v-col cols="12" md="4">
-              <label for="">ชื่อ-นามสกุล</label>
-              <v-text-field hide-details solo></v-text-field>
-            </v-col>
-            <v-col cols="12" md="4">
-              <label for="">สภาพที่อยู่อาศัย</label
-              ><v-text-field hide-details solo></v-text-field
-            ></v-col>
-            <v-col cols="12" md="4"
-              ><label for="">ภาค</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
-            <v-col cols="12" md="4">
-              <label for="">อำเภอ</label>
-              <v-select hide-details :items="[]" solo></v-select>
-            </v-col>
-            <v-col cols="12" md="4"
-              ><label for="">จังหวัด</label>
-              <v-select
+                dense
                 hide-details
-                :items="[]"
-                label="Solo field"
-                solo
+              ></v-text-field
+            ></v-col>
+            <v-col cols="12" md="6">
+              <v-select
+                v-model="search"
+                hide-details
+                class="set-shadow"
+                :items="address_status_list"
+                outlined
+                dense
+                placeholder="เลือกสภาพที่อยู่อาศัย"
+                label="เลือกสภาพที่อยู่อาศัย"
               ></v-select
             ></v-col>
-            <v-col cols="12" md="4"
-              ><label for="">ตำบล</label
-              ><v-select hide-details :items="[]" solo></v-select
-            ></v-col>
           </v-row>
-          <v-divider class="my-5"></v-divider>
-          <h5><v-icon>fa-list</v-icon> ข้อมูลครัวเรือน</h5>
-          <v-data-table
-            v-model="selected"
-            show-select
-            item-key="form_id"
-            item-value="form_id"
-            :headers="[
-              {
-                text: 'ชื่อ-นามสกุล',
-                value: 'form_fname',
-              },
-              {
-                text: 'สภาพที่อยู่อาศัย',
-                value: 'form_living',
-              },
-            ]"
-            :items="houseList"
-            :items-per-page="10"
-            class="elevation-3"
-          >
-            <template v-slot:[`item.form_fname`]="{ item }">
-              {{ item.form_unit }} {{ item.form_fname }}
-              {{ item.form_lname }}
-            </template>
-          </v-data-table>
+        </v-card-title>
+        <v-divider class="my-3"></v-divider>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12">
+              <h5><v-icon>fa-list</v-icon> ข้อมูลครัวเรือน</h5>
+              <v-data-table
+                v-model="selected"
+                show-select
+                :search="search"
+                item-key="form_id"
+                item-value="form_id"
+                :headers="[
+                  {
+                    text: 'ชื่อ-นามสกุล',
+                    value: 'form_fname',
+                  },
+                  {
+                    text: 'สภาพที่อยู่อาศัย',
+                    value: 'form_living',
+                  },
+                ]"
+                :items="houseList"
+                :items-per-page="10"
+                class="elevation-3"
+              >
+                <template v-slot:[`item.form_fname`]="{ item }">
+                  {{ item.form_unit }} {{ item.form_fname }}
+                  {{ item.form_lname }}
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -570,11 +582,14 @@
 <script>
 import location_new from "@/data/locations.json";
 import { apiService } from "@/services/axios";
+import address_status from "@/data/address_status.json";
 export default {
   name: "Icons",
   data() {
     return {
       tab: "",
+      search: "",
+      address_status_list: [],
       locationList: location_new,
       typeName: "",
       dialogAddType: false,
@@ -600,6 +615,9 @@ export default {
     };
   },
   watch: {
+    search(value) {
+      value == "ทั้งหมด" ? (this.search = "") : value;
+    },
     selected(value) {
       console.log("select : ", value);
     },
@@ -612,6 +630,8 @@ export default {
     this.getProject();
     this.getProjectNetWorkList();
     this.getProjectTypeList();
+    this.address_status_list = address_status.data;
+    this.address_status_list.unshift("ทั้งหมด");
   },
   methods: {
     async mapHouseProject() {
@@ -619,7 +639,6 @@ export default {
       this.selected.forEach((element) => {
         house_list_id.push(element.form_id);
       });
-
       let body = {
         map_project_form_type: this.tab + 1,
         project_id: this.project_id,
@@ -648,8 +667,8 @@ export default {
       this.houseTypeNewCreate = [];
       this.houseTypeUpdate = [];
       let data = await apiService.get({
-        path: "mapprojectfrom/type",
-        param: status,
+        path: `mapprojectfrom/type/${status}`,
+        param: this.project_id,
       });
       status == 1
         ? (this.houseTypeNewCreate = data.data)

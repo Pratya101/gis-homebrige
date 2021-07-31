@@ -65,16 +65,35 @@
             {{ item.form_unit }} {{ item.form_fname }} {{ item.form_lname }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-btn icon color="primary" @click="map" style="cursor:pointer;"
-              ><v-icon>mdi-map-marker-radius-outline</v-icon></v-btn
-            >
-            <v-btn
-              icon
-              color="primary"
-              @click="detail(item.form_id)"
-              style="cursor:pointer;"
-              ><v-icon>mdi-information-outline</v-icon></v-btn
-            >
+            <v-tooltip color="#212121" top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  color="primary"
+                  @click="map(item.form_id)"
+                  style="cursor:pointer;"
+                  ><v-icon>mdi-map-marker-radius-outline</v-icon></v-btn
+                >
+              </template>
+              <span>ตำแหน่งที่อยู่</span>
+            </v-tooltip>
+
+            <v-tooltip color="#212121" top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  color="primary"
+                  @click="detail(item.form_id)"
+                  style="cursor:pointer;"
+                  ><v-icon>mdi-information-outline</v-icon></v-btn
+                >
+              </template>
+              <span>รายละเอียด</span>
+            </v-tooltip>
           </template>
         </v-data-table></v-col
       >
@@ -114,8 +133,11 @@ export default {
       });
       this.houseList = data.data;
     },
-    map() {
-      this.$router.push("/map");
+    map(id) {
+      this.$router.push({
+        name: "Map",
+        query: { id: id },
+      });
     },
     detail(id) {
       this.$router.push({

@@ -16,21 +16,14 @@
         </h2>
       </v-col>
       <v-col cols="12" md="6" class="d-md-flex justify-md-end px-0">
-        <v-select solo :items="reportsType"></v-select>
-      </v-col>
-    </v-row>
-
-    <v-row class="pt-0 mt-0">
-      <v-col cols="12 px-0">
-        <download-excel
-          class="btn btn-default"
-          :data="json_data"
-          :fields="json_fields"
-          worksheet="My Worksheet"
-          name="filename.xls"
-        >
-          Download Excel (you can customize this with html code!)
-        </download-excel>
+        <v-select
+          v-model="reportTypeSelect"
+          solo
+          item-value="value"
+          item-text="text"
+          dense
+          :items="reportsType"
+        ></v-select>
       </v-col>
     </v-row>
   </v-container>
@@ -43,49 +36,11 @@ export default {
   data() {
     return {
       dialog: false,
-      reportType:[
-        ""
-      ],
-      json_fields: {
-        "Complete name": "name",
-        City: "city",
-        Telephone: "phone.mobile",
-        "Telephone 2": {
-          field: "phone.landline",
-          callback: (value) => {
-            return `Landline Phone - ${value}`;
-          },
-        },
-      },
-      json_data: [
-        {
-          name: "Tony Peña",
-          city: "New York",
-          country: "United States",
-          birthdate: "1978-03-15",
-          phone: {
-            mobile: "1-541-754-3010",
-            landline: "(541) 754-3010",
-          },
-        },
-        {
-          name: "Thessaloniki",
-          city: "Athens",
-          country: "Greece",
-          birthdate: "1987-11-23",
-          phone: {
-            mobile: "+1 855 275 5071",
-            landline: "(2741) 2621-244",
-          },
-        },
-      ],
-      json_meta: [
-        [
-          {
-            key: "charset",
-            value: "utf-8",
-          },
-        ],
+      reportTypeSelect: 1,
+      reportsType: [
+        { value: 1, text: "รายงานข้อมูลครัวเรือน" },
+        { value: 2, text: "รายงานข้อมูลติดตามการพัฒนา" },
+        { value: 3, text: "รายงานข้อมูลการบริการโครงการ" },
       ],
     };
   },
@@ -97,7 +52,6 @@ export default {
       let data = await apiService.get({
         path: "form/list",
       });
-      console.log("data form :", data);
       this.houseList = data.data;
     },
 
