@@ -24,9 +24,17 @@
               md="6"
               class="pt-0 mt-0 d-md-flex justify-md-end set-font-kanit"
             >
-              <v-chip label color="error" class="rounded-lg elevation-4">{{
-                current_status
-              }}</v-chip>
+              <v-chip
+                label
+                :color="
+                  houseData.rating_description == 'เตรียมข้อมูล'
+                    ? 'error'
+                    : 'warning'
+                "
+                class="rounded-lg elevation-4"
+              >
+                {{ houseData.rating_description }}
+              </v-chip>
             </v-col>
           </v-row>
         </v-card-title>
@@ -38,9 +46,11 @@
             action="#"
             list-type="picture"
             drag
+            ref="upload"
             :auto-upload="false"
             :file-list="fileList"
             multiple
+            :on-change="getImage"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -48,7 +58,7 @@
             </div>
           </el-upload>
           <label class="mt-5">รายละเอียด</label>
-          <v-textarea solo rows="3"></v-textarea>
+          <v-textarea v-model="details" solo rows="3"></v-textarea>
         </v-card-text>
         <v-divider class="mt-0"></v-divider>
         <v-card-actions>
@@ -65,6 +75,7 @@
           <v-btn
             color="error"
             outlined
+            @click="dialog = false"
             class="rounded-lg elevation-4 set-font-kanit"
             x-large
           >
@@ -87,8 +98,17 @@
         <v-card-text>
           <h4>
             เมื่อกดปุ่มยืนยัน ระบบจะทำเปลี่ยนสถานะความคืบหน้าจาก
-            <strong>"เตรียมข้อมูล"</strong> เป็น
-            <strong>"กำลังกำเนินการ"</strong> !
+            <strong>"{{ houseData.rating_description }}"</strong> เป็น
+            <strong
+              >"
+              {{
+                houseData.rating_description == "เตรียมข้อมูล"
+                  ? "กำลังกำเนินการ"
+                  : "สำเร็จ"
+              }}
+              "</strong
+            >
+            !
           </h4>
         </v-card-text>
         <v-divider class="mt-0 pt-0 "></v-divider>
@@ -97,6 +117,7 @@
           <v-btn
             color="primary"
             outlined
+            @click="updateStatus"
             class="rounded-lg elevation-4 set-font-kanit"
             x-large
           >
@@ -128,7 +149,9 @@ export default {
       dialog: false,
       form_id: "",
       current_status: "",
-      dataGetHouse: {},
+      houseData: {},
+      details: "",
+      imageList: [],
     };
   },
   computed: {
@@ -142,26 +165,55 @@ export default {
     },
     statusUpdateHouse(value) {
       if (value) {
-        this.getHouse(value);
+        this.mapData(value);
       }
     },
   },
 
   methods: {
+    updateStatusSuccess() {
+      this.$notify.success({
+        title: "อัพเดทสถานะสำเร็จ",
+        message: "ทำการอัพเดทสถานะการคติตตามครัวเรือนเรียบร้อย",
+      });
+    },
+    updateStatusFailed(message) {
+      this.$notify.error({
+        title: "ผิดพลาด",
+        message: message,
+      });
+    },
     ...mapActions("house", ["updateStatusHouse"]),
     udpateStatue() {
       this.updateStatusHouse(null);
     },
-    async getHouse(id) {
-      let data = await apiService.get({
-        path: "mapprojectfrom",
-        param: id,
-      });
-      this.dataGetHouse = data.data;
+    mapData(data) {
+      this.houseData = data;
       this.dialog = true;
     },
-    updateStatus() {
-      this.dialog = true;
+    getImage(file, filelist) {
+      console.log("file : ", file);
+      this.imageList = filelist;
+    },
+    async updateStatus() {
+      let formdata = new FormData();
+      this.imageList.forEach((element) => {
+        formdata.append(`form_progress_image`, element.raw);
+      });
+      formdata.append("form_id", this.houseData.form_id);
+      formdata.append("form_progress_detail", this.details);
+      let data = await apiService.post({
+        path: "formprogress",
+        body: formdata,
+      });
+      data.code == 10000
+        ? this.updateStatusSuccess()
+        : this.updateStatusFailed(data.message);
+      this.$emit("update", data);
+      this.dialog = false;
+      this.confirm = false;
+      this.$refs.upload.clearFiles();
+      this.details = "";
     },
   },
 };

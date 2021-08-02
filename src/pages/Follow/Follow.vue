@@ -22,7 +22,8 @@
           v-model="search"
           append-icon="mdi-magnify"
           label="ค้นหาข้อมูล"
-          class="set-shadow"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
           outlined
           hide-details
@@ -32,7 +33,8 @@
         <v-select
           v-model="search"
           hide-details
-          class="set-shadow"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           :items="address_status_list"
           outlined
           placeholder="เลือกสภาพที่อยู่อาศัย"
@@ -66,7 +68,7 @@
               small
               label
               class="rounded-lg elevation-4"
-              v-if="item.rating_description == 'กำลังดำเนินการห'"
+              v-if="item.rating_description == 'กำลังดำเนินการ'"
               color="warning"
               >{{ item.rating_description }}
             </v-chip>
@@ -86,7 +88,8 @@
                   icon
                   v-bind="attrs"
                   v-on="on"
-                  @click="updateStatus(item.map_project_form_id)"
+                  :disabled="item.rating_description == 'สำเร็จ'"
+                  @click="updateStatus(item)"
                   color="primary"
                   style="cursor:pointer;"
                   ><v-icon>mdi-update</v-icon></v-btn
@@ -100,7 +103,7 @@
                   icon
                   v-bind="attrs"
                   v-on="on"
-                  @click="updateStatus(item.project_id)"
+                  @click="showDetail(item.map_project_form_id)"
                   color="primary"
                   style="cursor:pointer;"
                   ><v-icon>mdi-file</v-icon></v-btn
@@ -112,7 +115,8 @@
         </v-data-table>
       </v-col>
     </v-row>
-    <UpdateFllow></UpdateFllow>
+    <UpdateFllow v-on:update="getFollowList"></UpdateFllow>
+    <DetailFollow></DetailFollow>
   </v-container>
 </template>
 
@@ -121,11 +125,13 @@ import followTableHeader from "./follow-table-header.json";
 import { apiService } from "@/services/axios";
 import address_status from "@/data/address_status.json";
 import UpdateFllow from "@/components/Follow/UpdateFllow";
+import DetailFollow from "@/components/Follow/DetailFollow";
 import { mapActions } from "vuex";
 export default {
   name: "Follow",
   components: {
     UpdateFllow,
+    DetailFollow,
   },
   data() {
     return {
@@ -142,9 +148,12 @@ export default {
     this.address_status_list.unshift("ทั้งหมด");
   },
   methods: {
-    ...mapActions("house", ["updateStatusHouse"]),
-    updateStatus(id) {
-      this.updateStatusHouse(id);
+    ...mapActions("house", ["updateStatusHouse", "updateFollowData"]),
+    showDetail(data) {
+      this.updateFollowData(data);
+    },
+    updateStatus(data) {
+      this.updateStatusHouse(data);
     },
     async getFollowList() {
       let data = await apiService.get({

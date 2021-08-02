@@ -32,7 +32,8 @@
           v-model="search"
           append-icon="mdi-magnify"
           label="ค้นหาข้อมูล"
-          class="set-shadow"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
           outlined
           hide-details
@@ -42,7 +43,8 @@
         <v-select
           v-model="search"
           hide-details
-          class="set-shadow"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           :items="address_status_list"
           outlined
           placeholder="เลือกสภาพที่อยู่อาศัย"

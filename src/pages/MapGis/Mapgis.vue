@@ -16,15 +16,15 @@
           max-height="615"
           height="615"
           type="image"
-          v-if="!locationStart"
+          v-if="!statusLoadData"
         ></v-skeleton-loader>
         <longdo-map
-          v-if="locationStart"
+          v-if="statusLoadData"
           :location="locationStart"
           :lastView="false"
           :zoom="zoom"
           class="set-shadow"
-          style="height:615px"
+          style="height:670px"
         >
           <longdo-map-marker
             v-for="(item, i) in markers"
@@ -48,31 +48,39 @@
           ค้นหา
         </h2>
         <v-row class="p-0 m-0">
-          <v-col cols="12" v-if="!locationStart">
+          <v-col cols="12" v-if="!statusLoadData">
             <v-skeleton-loader
               class="mx-auto"
               max-width="100%"
               max-height="615"
               height="615"
-              type="list-item,list-item,list-item,list-item,list-item,list-item,list-item,actions"
-              v-if="!locationStart"
+              type="list-item,list-item,list-item,actions"
+              v-if="!statusLoadData"
             ></v-skeleton-loader>
           </v-col>
-          <v-col cols="12" v-if="locationStart" class="p-0 m-0 set-shadow mt-3">
+          <v-col
+            cols="12"
+            v-if="statusLoadData"
+            class="p-0 m-0 set-shadow mt-3"
+          >
             <v-text-field
               placeholder="ชื่อ-นามสกุล"
+              label="ชื่อ-นามสกุล"
+              background-color="#ffffff"
+              outlined
               hide-detail
               v-model.trim="search_name"
-              solo
             ></v-text-field>
             <v-autocomplete
               hide-detail
               :items="projectNetworkList"
               v-model.trim="network_id"
               placeholder="เครือข่าย"
+              label="เครือข่าย"
               item-value="project_network_id"
+              background-color="#ffffff"
               item-text="project_network_name"
-              solo
+              outlined
             ></v-autocomplete>
             <v-autocomplete
               hide-detail
@@ -81,7 +89,9 @@
               placeholder="โครงการพัฒนา"
               item-value="project_type_id"
               item-text="project_type_name"
-              solo
+              background-color="#ffffff"
+              label="โครงการพัฒนา"
+              outlined
             ></v-autocomplete>
             <v-autocomplete
               hide-detail
@@ -90,7 +100,9 @@
               item-value="SUB_DISTRICT_NAME"
               item-text="SUB_DISTRICT_NAME"
               placeholder="ตำบล/แขวง"
-              solo
+              label="ตำบล/แขวง"
+              background-color="#ffffff"
+              outlined
             ></v-autocomplete>
             <v-autocomplete
               hide-detail
@@ -98,26 +110,32 @@
               v-model="districtSelect"
               placeholder="อำเภอ/เขต"
               item-value="DISTRICT_NAME"
+              background-color="#ffffff"
               item-text="DISTRICT_NAME"
-              solo
+              label="อำเภอ/เขต"
+              outlined
             ></v-autocomplete>
             <v-autocomplete
               hide-detail
               :items="provinceList"
               v-model="provinceSelect"
               placeholder="จังหวัด"
+              background-color="#ffffff"
               item-value="PROVINCE_NAME"
               item-text="PROVINCE_NAME"
-              solo
+              label="จังหวัด"
+              outlined
             ></v-autocomplete>
             <v-autocomplete
               hide-detail
               :items="geographyList"
               v-model="geoSelect"
               placeholder="ภาค"
+              background-color="#ffffff"
               item-value="GEO_NAME"
               item-text="GEO_NAME"
-              solo
+              label="ภาค"
+              outlined
             ></v-autocomplete>
 
             <v-btn
@@ -136,13 +154,21 @@
     </v-row>
     <v-row class="mt-5">
       <v-col cols="12" md="6">
+        <v-skeleton-loader
+          class="mx-auto"
+          max-width="100%"
+          max-height="615"
+          height="615"
+          type="image"
+          v-if="!statusLoadData"
+        ></v-skeleton-loader>
         <div class="set-shadow">
           <h3 class="pt-3 pl-3">ครัวเรือนทั้งหมด</h3>
           <ApexChart
             type="donut"
             :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
-            :options="apexPieDonut.options"
-            :series="apexPieDonut.series"
+            :options="liveingeHouse.options"
+            :series="liveingeHouse.series"
           >
           </ApexChart>
         </div>
@@ -168,7 +194,15 @@
         </div>
       </v-col>
       <v-col cols="12">
-        <div class="set-shadow">
+        <v-skeleton-loader
+          class="mx-auto"
+          max-width="100%"
+          max-height="615"
+          height="615"
+          type="image"
+          v-if="!statusLoadData"
+        ></v-skeleton-loader>
+        <div class="set-shadow" v-if="statusLoadData">
           <h3 class="pt-3 pl-3">ติดตามการก่อสร้าง</h3>
           <ApexChart
             type="bar"
@@ -209,33 +243,22 @@ export default {
       network_id: "",
       type_id: "",
       apexBarGroup: {
-        series: [
-          {
-            data: [44, 55],
-          },
-          {
-            data: [53, 80],
-          },
-          {
-            data: [60, 100],
-          },
-        ],
+        series: [],
         options: {
           chart: {
             type: "bar",
             height: 430,
-
             toolbar: {
-              show: false,
+              show: true,
             },
           },
           colors: [
-            config.light.primary,
-            config.light.success,
             config.light.error,
+            config.light.warning,
+            config.light.success,
           ],
           legend: {
-            show: false,
+            show: true,
           },
           plotOptions: {
             bar: {
@@ -254,7 +277,7 @@ export default {
             },
           },
           xaxis: {
-            categories: ["สร้างใหม่", "ปรับปรุง"],
+            categories: [],
           },
         },
       },
@@ -263,10 +286,10 @@ export default {
         options: {
           chart: {
             type: "donut",
+
             labels: {
               show: true,
             },
-            height: 350,
           },
           labels: [],
           colors: [
@@ -274,61 +297,24 @@ export default {
             config.light.warning,
             config.light.success,
           ],
-          responsive: [
-            {
-              breakpoint: 321,
-              options: {
-                chart: {
-                  height: 150,
-                },
-              },
-            },
-            {
-              breakpoint: 2561,
-              options: {
-                chart: {
-                  height: 350,
-                },
-              },
-            },
-          ],
         },
       },
-      apexPieDonut: {
-        series: [200, 111, 222, 300, 400],
+      liveingeHouse: {
+        series: [],
         options: {
           chart: {
             type: "donut",
             labels: {
               show: true,
             },
-            height: 350,
           },
-          labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+          labels: ["บ้านทรุดโทรมทั้งหลัง", "บ้านทรุดโทรมบางส่วน", "แย่"],
           colors: [
             config.light.primary,
             config.light.success,
             config.light.warning,
             config.light.info,
             config.light.secondary,
-          ],
-          responsive: [
-            {
-              breakpoint: 321,
-              options: {
-                chart: {
-                  height: 150,
-                },
-              },
-            },
-            {
-              breakpoint: 2561,
-              options: {
-                chart: {
-                  height: 350,
-                },
-              },
-            },
           ],
         },
       },
@@ -367,12 +353,62 @@ export default {
       let data = await apiService.get({
         path: "report/graph",
       });
+      this.liveingeHouse.series.push(
+        data.data.formLiving[0].json_build_object.form_living_total
+      );
+      this.liveingeHouse.series.push(
+        data.data.formLiving[1].json_build_object.form_living_total
+      );
+      this.liveingeHouse.series.push(
+        data.data.formLiving[2].json_build_object.form_living_total
+      );
+
+      console.log(
+        "this.liveingeHouse.options.labels",
+        this.liveingeHouse.options.labels
+      );
       this.houseDev.series.push(data.data.progress.reporn_progress.prepare);
       this.houseDev.series.push(data.data.progress.reporn_progress.progress);
       this.houseDev.series.push(data.data.progress.reporn_progress.success);
       this.houseDev.options.labels = await this.getDataLabels(
         data.data.progress.reporn_progress
       );
+      console.log("report graph : ", data.data);
+      data.data.projectType.forEach((element) => {
+        this.apexBarGroup.options.xaxis.categories.push(
+          element.json_build_object.project_form_type
+        );
+      });
+
+      this.apexBarGroup.series = [
+        {
+          name: "เตรียมข้อมูล",
+          data: [
+            data.data.projectType[0].json_build_object.project_type_data
+              .prepare,
+            data.data.projectType[1].json_build_object.project_type_data
+              .prepare,
+          ],
+        },
+        {
+          name: "กำลังดำเนินการ",
+          data: [
+            data.data.projectType[0].json_build_object.project_type_data
+              .progress,
+            data.data.projectType[1].json_build_object.project_type_data
+              .progress,
+          ],
+        },
+        {
+          name: "เสร็จสื้น",
+          data: [
+            data.data.projectType[0].json_build_object.project_type_data
+              .success,
+            data.data.projectType[1].json_build_object.project_type_data
+              .success,
+          ],
+        },
+      ];
       this.statusLoadData = true;
     },
     getDataLabels(labels) {

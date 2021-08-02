@@ -23,9 +23,10 @@
           outlined
           label="เลือกประเภทรายงาน"
           hide-details
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           item-value="value"
           item-text="text"
-          class="set-shadow"
           :items="reportsType"
         ></v-select>
       </v-col>
