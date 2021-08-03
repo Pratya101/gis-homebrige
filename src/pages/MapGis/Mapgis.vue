@@ -19,7 +19,7 @@
           v-if="!statusLoadData"
         ></v-skeleton-loader>
         <longdo-map
-          v-if="statusLoadData"
+          v-if="statusLoadData && markers.length != 0"
           :location="locationStart"
           :lastView="false"
           :zoom="zoom"
@@ -434,7 +434,7 @@ export default {
       this.provinceSelect = data.data.form_province;
       this.geoSelect = data.data.form_geo;
 
-      this.zoom = 15;
+      this.zoom = 6;
       this.addMarker([data.data]);
     },
     async getProjectTypeList() {
@@ -472,7 +472,7 @@ export default {
         body: body,
       });
       this.houseList = data.data;
-      this.zoom = 9;
+      this.zoom = 6;
       this.addMarker(data.data);
     },
     addMarker(data) {

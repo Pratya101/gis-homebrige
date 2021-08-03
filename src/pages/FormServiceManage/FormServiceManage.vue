@@ -18,25 +18,31 @@
     </v-row>
 
     <v-row class="set-shadow mt-0">
-      <v-col cols="12" md="3">
-        <label>ชื่อโครงการ</label>
+      <v-col cols="12" md="6">
         <v-text-field
+          label="ชื่อโครงการ"
+          placeholder="ชื่อโครงการ"
           v-model.trim="projectName"
           hide-details
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>ประเภทโครงการ</label>
+      <v-col cols="12" md="6">
         <v-select
+          label="ประเภทโครงการ"
+          placeholder="ประเภทโครงการ"
           :items="projectTypeList"
           v-model.trim="projectType"
           hide-details
           item-text="project_type_name"
           item-value="project_type_id"
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         >
-          <template v-slot:append-outer>
+          <template v-slot:append>
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <v-icon
@@ -44,7 +50,7 @@
                   v-on="on"
                   @click="(typeName = ''), (dialogAddType = true)"
                   style="color:blue;cursor:pointer"
-                  >mdi-plus-box-multiple</v-icon
+                  >mdi-plus-circle-outline</v-icon
                 >
               </template>
               <span class="set-font-kanit">เพิ่มประเภทโครงการ</span>
@@ -52,17 +58,20 @@
           </template>
         </v-select>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>เครือข่าย</label>
+      <v-col cols="12" md="6">
         <v-select
+          label="เครือข่าย"
+          placeholder="เครือข่าย"
           item-text="project_network_name"
           item-value="project_network_id"
           v-model.trim="projectNetwork"
           :items="projectNetworkList"
           hide-details
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         >
-          <template v-slot:append-outer>
+          <template v-slot:append>
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <v-icon
@@ -70,7 +79,7 @@
                   v-on="on"
                   @click="(networkName = ''), (dialogAddNetwork = true)"
                   style="color:blue;cursor:pointer"
-                  >mdi-plus-box-multiple</v-icon
+                  >mdi-plus-circle-outline</v-icon
                 >
               </template>
               <span class="set-font-kanit">เพิ่มเครือข่าย</span>
@@ -78,23 +87,29 @@
           </template>
         </v-select>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>จำนวนงบประมาณ (100%)</label>
+      <v-col cols="12" md="6">
         <v-text-field
+          label="จำนวนงบประมาณ (100%)"
+          placeholder="จำนวนงบประมาณ (100%)"
           v-model.trim="budget"
           type="number"
           hide-details
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         ></v-text-field> </v-col
-      ><v-col cols="12" md="3">
-        <label>ตําบล/แขวง</label>
+      ><v-col cols="12" md="6">
         <v-autocomplete
+          label="ตําบล/แขวง"
+          placeholder="ตําบล/แขวง"
           v-model.trim="address"
           :items="locationList"
           hide-details
           item-text="SEARCH"
           return-object
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -103,15 +118,18 @@
             {{ item.SUB_DISTRICT_NAME }}
           </template>
         </v-autocomplete></v-col
-      ><v-col cols="12" md="3">
-        <label>อำเภอ/เขต</label>
+      ><v-col cols="12" md="6">
         <v-autocomplete
+          label="อำเภอ/เขต"
+          placeholder="อำเภอ/เขต"
           v-model.trim="address"
           :items="locationList"
           hide-details
           item-text="SEARCH"
           return-object
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -121,15 +139,18 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>จังหวัด</label>
+      <v-col cols="12" md="6">
         <v-autocomplete
+          label="จังหวัด"
+          placeholder="จังหวัด"
           v-model.trim="address"
           hide-details
           :items="locationList"
           item-text="SEARCH"
           return-object
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -139,15 +160,18 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>รหัสไปรษณีย์</label>
+      <v-col cols="12" md="6">
         <v-autocomplete
+          label="รหัสไปรษณีย์"
+          placeholder="รหัสไปรษณีย์"
           hide-details
           v-model.trim="address"
           :items="locationList"
           item-text="SEARCH"
           return-object
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -157,15 +181,18 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>ภาค</label>
+      <v-col cols="12" md="6">
         <v-autocomplete
+          label="ภาค"
+          placeholder="ภาค"
           v-model.trim="address"
           hide-details
           :items="locationList"
           item-text="SEARCH"
           return-object
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -175,21 +202,38 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>ผู้ประสานงาน</label>
-        <v-text-field v-model.trim="coordinate" hide-details solo>
+      <v-col cols="12" md="6">
+        <v-text-field
+          label="ผู้ประสานงาน"
+          placeholder="ผู้ประสานงาน"
+          v-model.trim="coordinate"
+          hide-details
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
+        >
         </v-text-field>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>เบอร์โทร</label>
-        <v-text-field v-model.trim="tel" hide-details solo></v-text-field>
-      </v-col>
-      <v-col cols="12" md="3">
-        <label>ข้อมูลจำนวนเป้าหมาย</label>
+      <v-col cols="12" md="6">
         <v-text-field
+          label="เบอร์โทร"
+          placeholder="เบอร์โทร"
+          v-model.trim="tel"
+          hide-details
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field
+          label="ข้อมูลจำนวนเป้าหมาย"
+          placeholder="ข้อมูลจำนวนเป้าหมาย"
           v-model.trim="dataAmountDistination"
           hide-details
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         ></v-text-field>
       </v-col>
       <v-col cols="12" class="pt-0 text-right">
@@ -225,7 +269,9 @@
           <label>ชื่อเครือข่าย</label>
           <v-text-field
             hide-details
-            solo
+            outlined
+            background-color="#ffffff"
+            class="elevation-3 rounded-lg"
             v-model.trim="networkName"
           ></v-text-field>
         </v-card-text>
@@ -265,7 +311,9 @@
           <label>ชื่อประเภทโครงการ</label>
           <v-text-field
             hide-details
-            solo
+            outlined
+            background-color="#ffffff"
+            class="elevation-3 rounded-lg"
             v-model.trim="typeName"
           ></v-text-field>
         </v-card-text>
@@ -323,7 +371,7 @@ export default {
         ZIPCODE: "",
         GEO_NAME: "",
       },
-      budget: 0,
+      budget: "",
     };
   },
   mounted() {

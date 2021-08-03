@@ -28,7 +28,7 @@
         </v-btn>
         <v-btn
           v-if="statusEdit"
-          @click="statusEdit = !statusEdit"
+          @click="(statusEdit = !statusEdit), getProject()"
           color="error"
           class="rounded-lg elevation-3"
           large
@@ -39,27 +39,33 @@
       </v-col>
     </v-row>
     <v-row class="set-shadow-form">
-      <v-col cols="12" md="3">
-        <label>ชื่อโครงการ</label>
+      <v-col cols="12" md="4">
         <v-text-field
+          placeholder="ชื่อโครงการ"
+          label="ชื่อโครงการ"
           :disabled="!statusEdit"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           v-model.trim="name"
           hide-details
-          solo
+          outlined
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>ประเภทโครงการ</label>
+      <v-col cols="12" md="4">
         <v-select
+          placeholder="ประเภทโครงการ"
+          label="ประเภทโครงการ"
           :items="projectTypeList"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           v-model.trim="projectType"
           hide-details
           item-text="project_type_name"
           item-value="project_type_id"
           :disabled="!statusEdit"
-          solo
+          outlined
         >
-          <template v-slot:append-outer>
+          <template v-slot:append>
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <v-icon
@@ -67,7 +73,7 @@
                   v-on="on"
                   @click="(typeName = ''), (dialogAddType = true)"
                   style="color:blue;cursor:pointer"
-                  >mdi-plus-box-multiple</v-icon
+                  >mdi-plus-circle-outline</v-icon
                 >
               </template>
               <span class="set-font-kanit">เพิ่มประเภทโครงการ</span>
@@ -75,18 +81,21 @@
           </template>
         </v-select>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>เครือข่าย</label>
+      <v-col cols="12" md="4">
         <v-select
+          label="เครือข่าย"
+          placeholder="เครือข่าย"
           item-text="project_network_name"
           item-value="project_network_id"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           v-model.trim="projectNetwork"
           :items="projectNetworkList"
           :disabled="!statusEdit"
           hide-details
-          solo
+          outlined
         >
-          <template v-slot:append-outer>
+          <template v-slot:append>
             <v-tooltip top>
               <template v-slot:activator="{ on, attrs }">
                 <v-icon
@@ -94,7 +103,7 @@
                   v-on="on"
                   @click="(networkName = ''), (dialogAddNetwork = true)"
                   style="color:blue;cursor:pointer"
-                  >mdi-plus-box-multiple</v-icon
+                  >mdi-plus-circle-outline</v-icon
                 >
               </template>
               <span class="set-font-kanit">เพิ่มเครือข่าย</span>
@@ -102,26 +111,20 @@
           </template>
         </v-select>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>จำนวนงบประมาณ (100%)</label>
-        <v-text-field
-          v-model.trim="budget"
-          type="number"
-          hide-details
-          :disabled="!statusEdit"
-          solo
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" md="3">
-        <label>ตําบล/แขวง</label>
+
+      <v-col cols="12" md="4">
         <v-autocomplete
+          placeholder="ตําบล/แขวง"
+          label="ตําบล/แขวง"
           v-model.trim="address"
           :items="locationList"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           hide-details
           item-text="SEARCH"
           :disabled="!statusEdit"
           return-object
-          solo
+          outlined
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -131,16 +134,19 @@
           </template>
         </v-autocomplete></v-col
       >
-      <v-col cols="12" md="3">
-        <label>อำเภอ/เขต</label>
+      <v-col cols="12" md="4">
         <v-autocomplete
+          label="อำเภอ/เขต"
+          placeholder="อำเภอ/เขต"
           v-model.trim="address"
           :items="locationList"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           :disabled="!statusEdit"
           item-text="SEARCH"
           return-object
           hide-details
-          solo
+          outlined
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -150,16 +156,19 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>จังหวัด</label>
+      <v-col cols="12" md="4">
         <v-autocomplete
+          placeholder="จังหวัด"
+          label="จังหวัด"
           v-model.trim="address"
           :disabled="!statusEdit"
           hide-details
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           :items="locationList"
           item-text="SEARCH"
           return-object
-          solo
+          outlined
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -169,16 +178,19 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>รหัสไปรษณีย์</label>
+      <v-col cols="12" md="4">
         <v-autocomplete
+          placeholder="รหัสไปรษณีย์"
+          label="รหัสไปรษณีย์"
           v-model.trim="address"
           :items="locationList"
           hide-details
           item-text="SEARCH"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           :disabled="!statusEdit"
           return-object
-          solo
+          outlined
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -188,16 +200,19 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>ภาค</label>
+      <v-col cols="12" md="4">
         <v-autocomplete
+          placeholder="ภาค"
+          label="ภาค"
           v-model.trim="address"
           :items="locationList"
           hide-details
           item-text="SEARCH"
           :disabled="!statusEdit"
           return-object
-          solo
+          outlined
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -207,40 +222,38 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>ผู้ประสานงาน</label>
+      <v-col cols="12" md="4">
         <v-text-field
+          placeholder="ผู้ประสานงาน"
+          label="ผู้ประสานงาน"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           :disabled="!statusEdit"
           v-model.trim="coordinate"
           hide-details
-          solo
+          outlined
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>เบอร์โทร</label>
+      <v-col cols="12" md="4">
         <v-text-field
+          placeholder="เบอร์โทร"
+          label="เบอร์โทร"
           :disabled="!statusEdit"
+          background-color="#ffffff"
+          class="elevation-3 rounded-lg"
           v-model.trim="tel"
           hide-details
-          solo
+          outlined
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="3">
-        <label>ข้อมูลจำนวเป้าหมาย</label>
-        <v-text-field
-          :disabled="!statusEdit"
-          v-model.trim="dataAmountDistination"
-          hide-details
-          solo
-        ></v-text-field>
-      </v-col>
-
-      <v-col cols="12" class="pt-0 text-right ">
+      <v-col cols="12" md="4"></v-col>
+      <v-col cols="12" md="4" class="text-right ">
         <v-fade-transition>
           <v-btn
             color="primary"
             x-large
             v-show="statusEdit"
+            background-color="#ffffff"
             @click="updateProject"
             class="set-font-kanit rounded-lg elevation-4 me-2"
             outlined
@@ -265,8 +278,8 @@
     </v-row>
     <v-divider class="mt-10"></v-divider>
     <v-row class="mt-1">
-      <v-col cols="12" md="4" class="px-0">
-        <h2 class="pt-1">
+      <v-col cols="12" md="7" class="d-md-flex">
+        <h2 class="pt-1 me-2">
           <v-icon
             style="background: #686868;
   -webkit-background-clip: text;
@@ -278,8 +291,47 @@
           >
           ข้อมูลการพัฒนาที่อยู่อาศัย
         </h2>
+        <span>
+          <v-text-field
+            v-model.trim="dataAmountDistination"
+            hide-details
+            dense
+            class="rounded-lg"
+            background-color="#ffffff"
+            style="width:300px"
+            type="number"
+            outlined
+            label="ข้อมูลจำนวนเป้าหมาย"
+            placeholder="ข้อมูลจำนวนเป้าหมาย"
+          >
+            <template v-slot:append-outer>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    @click="updateProject"
+                    v-bind="attrs"
+                    v-on="on"
+                    :disabled="oldHouseAmount == dataAmountDistination"
+                    style="color:blue;cursor:pointer"
+                    >fa-save</v-icon
+                  >
+                </template>
+                <span class="set-font-kanit">บันทึก</span>
+              </v-tooltip>
+            </template>
+          </v-text-field></span
+        >
       </v-col>
-      <v-col cols="12" md="8" class="d-md-flex justify-md-end px-0">
+      <v-col cols="12" md="5" class="d-md-flex justify-md-end px-0">
+        <v-btn
+          @click="dialogOtherValue = true"
+          color="success"
+          class="rounded-lg elevation-3 me-2"
+          large
+          outlined
+        >
+          <v-icon left>fa-plus</v-icon>ค่าสาธารณูปโภค
+        </v-btn>
         <v-btn
           @click="addHouse()"
           color="primary"
@@ -318,7 +370,19 @@
                     <th class="text-left white--text">จังหวัด</th>
                     <th class="text-left white--text">หมวดการพัฒนา</th>
                     <th class="text-left white--text">สถานะการพัฒนา</th>
-                    <th class="text-center white--text">ระดับการสนับสนุน</th>
+                    <th class="text-center white--text">
+                      ระดับการสนับสนุน
+                      <v-tooltip color="#212121" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                            <v-icon class="white--text"
+                              >mdi-order-bool-ascending-variant</v-icon
+                            >
+                          </v-btn>
+                        </template>
+                        <span>เลือกหลายครัวเรือน</span>
+                      </v-tooltip>
+                    </th>
                     <th class="text-right white--text">งบประมาณสนับสนุน</th>
                   </tr>
                 </thead>
@@ -414,6 +478,91 @@
         </v-tabs>
       </v-col>
     </v-row>
+    <v-dialog max-width="1000" v-model="dialogOtherValue">
+      <v-card>
+        <v-card-title class="set-font-kanit mb-0 pb-0">
+          ค่าสาธารณูปโภค
+        </v-card-title>
+        <v-divider class="my-3"></v-divider>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="จำนวนงบประมาณ (100%)"
+                placeholder="จำนวนงบประมาณ (100%)"
+                v-model.trim="budget"
+                type="number"
+                class="rounded-lg elevation-3"
+                hide-details
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                class="rounded-lg elevation-3"
+                label="ไฟฟ้า"
+                placeholder="ไฟฟ้า"
+                v-model.trim="electricity"
+                type="number"
+                hide-details
+                outlined
+              ></v-text-field> </v-col
+            ><v-col cols="12" md="6">
+              <v-text-field
+                label="ประปา"
+                placeholder="ประปา"
+                v-model.trim="water"
+                class="rounded-lg elevation-3"
+                type="number"
+                hide-details
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="สาธารณูปโภค"
+                placeholder="สาธารณูปโภค"
+                v-model.trim="utility"
+                type="number"
+                hide-details
+                class="rounded-lg elevation-3"
+                outlined
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="อื่นๆ"
+                class="rounded-lg elevation-3"
+                placeholder="อื่นๆ"
+                v-model.trim="other"
+                type="number"
+                hide-details
+                outlined
+              ></v-text-field>
+            </v-col> </v-row
+        ></v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            class="set-font-kanit rounded-lg elevation-4"
+            x-large
+            @click="updateProject"
+            outlined
+            ><v-icon left>fa-save</v-icon>บันทึก</v-btn
+          >
+          <v-btn
+            color="error"
+            @click="dialogOtherValue = false"
+            class="set-font-kanit rounded-lg elevation-4"
+            x-large
+            outlined
+            ><v-icon left>fa-times</v-icon>ยกเลิก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog max-width="1000" v-model="dialog">
       <v-card>
         <v-card-title class="set-font-kanit mb-0 pb-0">
@@ -421,9 +570,10 @@
             <v-col cols="12" md="6">
               <v-text-field
                 v-model="search"
-                append-icon="mdi-magnify"
+                prepend-inner-icon="mdi-magnify"
                 label="ค้นหาข้อมูล"
-                class="set-shadow"
+                class="rounded-lg elevation-3"
+                background-color="#ffffff"
                 placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
                 outlined
                 dense
@@ -434,7 +584,8 @@
               <v-select
                 v-model="search"
                 hide-details
-                class="set-shadow"
+                class="rounded-lg elevation-3"
+                background-color="#ffffff"
                 :items="address_status_list"
                 outlined
                 dense
@@ -509,7 +660,7 @@
           <label>ชื่อเครือข่าย</label>
           <v-text-field
             hide-details
-            solo
+            outlined
             v-model.trim="networkName"
           ></v-text-field>
         </v-card-text>
@@ -549,7 +700,7 @@
           <label>ชื่อประเภทโครงการ</label>
           <v-text-field
             hide-details
-            solo
+            outlined
             v-model.trim="typeName"
           ></v-text-field>
         </v-card-text>
@@ -587,6 +738,8 @@ export default {
   name: "Icons",
   data() {
     return {
+      dialogOtherValue: false,
+      editAmount: false,
       tab: "",
       search: "",
       address_status_list: [],
@@ -612,13 +765,17 @@ export default {
       selected: [],
       houseTypeNewCreate: [],
       houseTypeUpdate: [],
+      water: 0,
+      electricity: 0,
+      utility: 0,
+      other: 0,
+      oldHouseAmount: "",
     };
   },
   watch: {
     search(value) {
       value == "ทั้งหมด" ? (this.search = "") : value;
     },
-
     tab(value) {
       this.getHosueInProject(value + 1);
     },
@@ -634,32 +791,39 @@ export default {
   methods: {
     async mapHouseProject() {
       let house_list_id = [];
-      this.selected.forEach((element) => {
-        house_list_id.push(element.form_id);
-      });
-      let body = {
-        map_project_form_type: this.tab + 1,
-        project_id: this.project_id,
-        form_id: house_list_id,
-      };
-      let data = await apiService.post({
-        path: "mapprojectfrom",
-        body: body,
-      });
-      if (data.response) {
-        this.$notify.success({
-          title: "เพิ่มข้อมูลสำเร็จ",
-          message: "ทำการเพิ่มครัวเรือนลงในโครงการเรียบร้อย",
+      if (+this.dataAmountDistination > +this.oldHouseAmount) {
+        this.$notify.warning({
+          title: "ผิดพลาด",
+          message: "จำนวนบ้านมากกว่าจำนวนกลุ่มเป้าหมาย",
         });
       } else {
-        this.$notify.error({
-          title: "ผิดพลาด",
-          message: data.message,
+        this.selected.forEach((element) => {
+          house_list_id.push(element.form_id);
         });
+        let body = {
+          map_project_form_type: this.tab + 1,
+          project_id: this.project_id,
+          form_id: house_list_id,
+        };
+        let data = await apiService.post({
+          path: "mapprojectfrom",
+          body: body,
+        });
+        if (data.response) {
+          this.$notify.success({
+            title: "เพิ่มข้อมูลสำเร็จ",
+            message: "ทำการเพิ่มครัวเรือนลงในโครงการเรียบร้อย",
+          });
+        } else {
+          this.$notify.error({
+            title: "ผิดพลาด",
+            message: data.message,
+          });
+        }
+        this.selected = [];
+        this.getHosueInProject();
+        this.dialog = false;
       }
-      this.selected = [];
-      this.getHosueInProject();
-      this.dialog = false;
     },
     async getHosueInProject(status) {
       this.houseTypeNewCreate = [];
@@ -686,6 +850,10 @@ export default {
         project_tel: this.tel,
         project_target: this.dataAmountDistination,
         project_budget: this.budget,
+        project_electricity: this.electricity,
+        project_water: this.water,
+        project_other: this.other,
+        project_utility: this.utility,
       };
       let data = await apiService.put({
         path: "project",
@@ -705,6 +873,7 @@ export default {
       }
       this.getProject();
       this.statusEdit = false;
+      this.dialogOtherValue = false;
     },
     async getProject() {
       let data = await apiService.get({
@@ -729,6 +898,11 @@ export default {
       this.coordinate = data.project_coordinator;
       this.tel = data.project_tel;
       this.dataAmountDistination = data.project_target;
+      this.oldHouseAmount = data.project_target;
+      this.water = data.project_water;
+      this.other = data.project_other;
+      this.electricity = data.project_electricity;
+      this.utility = data.project_utility;
     },
     addHouse() {
       this.getHouseList();
@@ -740,7 +914,6 @@ export default {
       });
       this.houseList = data.data;
     },
-    detail() {},
     async addNetwork() {
       let body = {
         project_network_name: this.networkName,
