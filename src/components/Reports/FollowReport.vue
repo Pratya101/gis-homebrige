@@ -69,7 +69,7 @@ export default {
     },
     async getFollowList() {
       let data = await apiService.get({
-        path: "mapprojectfrom/list",
+        path: "report/formproject",
       });
       this.followList = data.data;
     },

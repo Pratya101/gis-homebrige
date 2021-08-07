@@ -42,7 +42,7 @@ export default {
   methods: {
     async getHouseList() {
       let data = await apiService.get({
-        path: "form/list",
+        path: "report/form",
       });
       this.houseList = data.data;
     },

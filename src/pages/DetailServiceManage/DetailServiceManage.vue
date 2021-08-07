@@ -374,7 +374,13 @@
                       ระดับการสนับสนุน
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                          <v-btn
+                            @click="updatePhaseList"
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                            color="primary"
+                          >
                             <v-icon class="white--text"
                               >mdi-order-bool-ascending-variant</v-icon
                             >
@@ -383,7 +389,25 @@
                         <span>เลือกหลายครัวเรือน</span>
                       </v-tooltip>
                     </th>
-                    <th class="text-right white--text">งบประมาณสนับสนุน</th>
+                    <th class="text-right white--text">
+                      งบประมาณสนับสนุน
+                      <v-tooltip color="#212121" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            @click="editCost"
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                            color="primary"
+                          >
+                            <v-icon class="white--text"
+                              >mdi-order-bool-ascending-variant</v-icon
+                            >
+                          </v-btn>
+                        </template>
+                        <span>เลือกหลายครัวเรือน</span>
+                      </v-tooltip>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -396,11 +420,22 @@
                     <td>{{ item.form_province }}</td>
                     <td>{{ item.form_improvement }}</td>
                     <td>{{ item.rating_description }}</td>
-                    <td class="text-center">
-                      เฟส 1
+                    <td class="text-center" style="width:200px">
+                      {{ item.phase_name }}
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                          <v-btn
+                            @click="
+                              editSinglePhase(
+                                item.phase_id,
+                                item.map_project_form_id
+                              )
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                            color="primary"
+                          >
                             <v-icon>mdi-pencil-outline</v-icon>
                           </v-btn>
                         </template>
@@ -408,10 +443,21 @@
                       </v-tooltip>
                     </td>
                     <td class="text-right">
-                      20,000
+                      {{ item.map_project_form_budget_support }}
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                          <v-btn
+                            @click="
+                              editUpdateSignleCost(
+                                item.map_project_form_id,
+                                item.map_project_form_budget_support
+                              )
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                            color="primary"
+                          >
                             <v-icon>mdi-pencil-outline</v-icon>
                           </v-btn>
                         </template>
@@ -433,8 +479,44 @@
                     <th class="text-left white--text">จังหวัด</th>
                     <th class="text-left white--text">หมวดการพัฒนา</th>
                     <th class="text-left white--text">สถานะการพัฒนา</th>
-                    <th class="text-center white--text">ระดับการสนับสนุน</th>
-                    <th class="text-right white--text">งบประมาณสนับสนุน</th>
+                    <th class="text-center white--text">
+                      ระดับการสนับสนุน
+                      <v-tooltip color="#212121" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            @click="updatePhaseList"
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                            color="primary"
+                          >
+                            <v-icon class="white--text"
+                              >mdi-order-bool-ascending-variant</v-icon
+                            >
+                          </v-btn>
+                        </template>
+                        <span>เลือกหลายครัวเรือน</span>
+                      </v-tooltip>
+                    </th>
+                    <th class="text-right white--text">
+                      งบประมาณสนับสนุน
+                      <v-tooltip color="#212121" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            @click="editCost"
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                            color="primary"
+                          >
+                            <v-icon class="white--text"
+                              >mdi-order-bool-ascending-variant</v-icon
+                            >
+                          </v-btn>
+                        </template>
+                        <span>เลือกหลายครัวเรือน</span>
+                      </v-tooltip>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -444,15 +526,25 @@
                       {{ item.form_unit }} {{ item.form_fname }}
                       {{ item.form_lname }}
                     </td>
-
                     <td>{{ item.form_province }}</td>
                     <td>{{ item.form_improvement }}</td>
                     <td>{{ item.rating_description }}</td>
-                    <td class="text-center">
-                      เฟส 1
+                    <td class="text-center" style="width:200px">
+                      {{ item.phase_name }}
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                          <v-btn
+                            @click="
+                              editSinglePhase(
+                                item.phase_id,
+                                item.map_project_form_id
+                              )
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                            color="primary"
+                          >
                             <v-icon>mdi-pencil-outline</v-icon>
                           </v-btn>
                         </template>
@@ -460,10 +552,21 @@
                       </v-tooltip>
                     </td>
                     <td class="text-right">
-                      20,000
+                      {{ item.map_project_form_budget_support }}
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn v-bind="attrs" v-on="on" icon color="primary">
+                          <v-btn
+                            @click="
+                              editUpdateSignleCost(
+                                item.map_project_form_id,
+                                item.map_project_form_budget_support
+                              )
+                            "
+                            v-bind="attrs"
+                            v-on="on"
+                            icon
+                            color="primary"
+                          >
                             <v-icon>mdi-pencil-outline</v-icon>
                           </v-btn>
                         </template>
@@ -615,6 +718,10 @@
                     text: 'สภาพที่อยู่อาศัย',
                     value: 'form_living',
                   },
+                  {
+                    text: 'ที่อยู่',
+                    value: 'form_home_id',
+                  },
                 ]"
                 :items="houseList"
                 :items-per-page="10"
@@ -623,6 +730,11 @@
                 <template v-slot:[`item.form_fname`]="{ item }">
                   {{ item.form_unit }} {{ item.form_fname }}
                   {{ item.form_lname }}
+                </template>
+                <template v-slot:[`item.form_home_id`]="{ item }">
+                  {{ item.form_home_id }} {{ item.form_sub_district }}
+                  {{ item.form_district }} {{ item.form_province }}
+                  {{ item.form_zipcode }}
                 </template>
               </v-data-table>
             </v-col>
@@ -645,6 +757,266 @@
             x-large
             outlined
             @click="dialog = false"
+            ><v-icon left>fa-times</v-icon>ยกเลิก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog max-width="1000" v-model="dialogEditPhase">
+      <v-card>
+        <v-card-title class="set-font-kanit mb-0 pb-0">
+          <v-row clamp>
+            <v-col cols="12" md="6">
+              <v-text-field
+                v-model="search"
+                prepend-inner-icon="mdi-magnify"
+                label="ค้นหาข้อมูล"
+                class="rounded-lg elevation-1"
+                background-color="#ffffff"
+                placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
+                outlined
+                dense
+                hide-details
+              ></v-text-field
+            ></v-col>
+            <v-col cols="12" md="6">
+              <v-select
+                v-model="search"
+                hide-details
+                class="rounded-lg elevation-1"
+                background-color="#ffffff"
+                :items="address_status_list"
+                outlined
+                dense
+                placeholder="เลือกสภาพที่อยู่อาศัย"
+                label="เลือกสภาพที่อยู่อาศัย"
+              ></v-select
+            ></v-col>
+          </v-row>
+        </v-card-title>
+        <v-divider class="my-3"></v-divider>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" class="">
+              <v-row>
+                <v-col cols="12" lg="6">
+                  <h5 class="pt-2"><v-icon>fa-list</v-icon> ข้อมูลครัวเรือน</h5>
+                </v-col>
+                <v-col
+                  cols="12"
+                  lg="6"
+                  class="d-md-flex justify-content-between"
+                  ><v-select
+                    outlined
+                    dense
+                    :items="phaseList"
+                    label="เลือกเฟส"
+                    class="set-font-kanit"
+                    placeholder="เลือกเฟส"
+                    hide-details
+                    style="width:100px"
+                    v-model="phaseSelect"
+                    item-value="phase_id"
+                    item-text="phase_name"
+                  ></v-select>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col cols="12" class="pt-0 mt-0">
+              <v-data-table
+                v-model="selected"
+                show-select
+                :search="search"
+                item-key="form_id"
+                item-value="form_id"
+                :headers="[
+                  {
+                    text: 'ชื่อ-นามสกุล',
+                    value: 'form_fname',
+                  },
+                  {
+                    text: 'สภาพที่อยู่อาศัย',
+                    value: 'form_living',
+                  },
+                  {
+                    text: 'ที่อยู่',
+                    value: 'form_home_id',
+                  },
+                  {
+                    text: 'ระดับการสบันสนุน',
+                    value: 'phase_name',
+                    align: 'center',
+                  },
+                  {
+                    text: 'งบประมาณสนับสนุน',
+                    value: 'map_project_form_budget_support',
+                    align: 'end',
+                  },
+                ]"
+                :items="statusHouse == 1 ? houseTypeNewCreate : houseTypeUpdate"
+                :items-per-page="10"
+                class="elevation-3"
+              >
+                <template v-slot:[`item.form_fname`]="{ item }">
+                  {{ item.form_unit }} {{ item.form_fname }}
+                  {{ item.form_lname }}
+                </template>
+                <template v-slot:[`item.form_home_id`]="{ item }">
+                  {{ item.form_home_id }} {{ item.form_sub_district }}
+                  {{ item.form_district }} {{ item.form_province }}
+                  {{ item.form_zipcode }}
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            class="set-font-kanit rounded-lg elevation-4"
+            x-large
+            outlined
+            :disabled="selected.length == 0"
+            @click="updatePhase"
+            ><v-icon left>fa-save</v-icon>บันทึก</v-btn
+          >
+          <v-btn
+            color="error"
+            class="set-font-kanit rounded-lg elevation-4"
+            x-large
+            outlined
+            @click="dialogEditPhase = false"
+            ><v-icon left>fa-times</v-icon>ยกเลิก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog max-width="1000" v-model="dialogEditCost">
+      <v-card>
+        <v-card-title class="set-font-kanit mb-0 pb-0">
+          <v-row clamp>
+            <v-col cols="12" md="6">
+              <v-text-field
+                v-model="search"
+                prepend-inner-icon="mdi-magnify"
+                label="ค้นหาข้อมูล"
+                class="rounded-lg elevation-1"
+                background-color="#ffffff"
+                placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
+                outlined
+                dense
+                hide-details
+              ></v-text-field
+            ></v-col>
+            <v-col cols="12" md="6">
+              <v-select
+                v-model="search"
+                hide-details
+                class="rounded-lg elevation-1"
+                background-color="#ffffff"
+                :items="address_status_list"
+                outlined
+                dense
+                placeholder="เลือกสภาพที่อยู่อาศัย"
+                label="เลือกสภาพที่อยู่อาศัย"
+              ></v-select
+            ></v-col>
+          </v-row>
+        </v-card-title>
+        <v-divider class="my-3"></v-divider>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" class="">
+              <v-row>
+                <v-col cols="12" lg="6">
+                  <h5 class="pt-2"><v-icon>fa-list</v-icon> ข้อมูลครัวเรือน</h5>
+                </v-col>
+                <v-col
+                  cols="12"
+                  lg="6"
+                  class="d-md-flex justify-content-between"
+                >
+                  <v-text-field
+                    outlined
+                    class="rounded-lg"
+                    label="งบประมาณสนับสนุน"
+                    dense
+                    type="number"
+                    hide-details
+                    placeholder="งบประมาณสนับสนุน"
+                    v-model="costAmount"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col cols="12" class="pt-0 mt-0">
+              <v-data-table
+                v-model="selected"
+                show-select
+                :search="search"
+                item-key="form_id"
+                item-value="form_id"
+                :headers="[
+                  {
+                    text: 'ชื่อ-นามสกุล',
+                    value: 'form_fname',
+                  },
+                  {
+                    text: 'สภาพที่อยู่อาศัย',
+                    value: 'form_living',
+                  },
+                  {
+                    text: 'ที่อยู่',
+                    value: 'form_home_id',
+                  },
+                  {
+                    text: 'ระดับการสบันสนุน',
+                    value: 'phase_name',
+                    align: 'center',
+                  },
+                  {
+                    text: 'งบประมาณสนับสนุน',
+                    value: 'map_project_form_budget_support',
+                    align: 'end',
+                  },
+                ]"
+                :items="statusHouse == 1 ? houseTypeNewCreate : houseTypeUpdate"
+                :items-per-page="10"
+                class="elevation-3"
+              >
+                <template v-slot:[`item.form_fname`]="{ item }">
+                  {{ item.form_unit }} {{ item.form_fname }}
+                  {{ item.form_lname }}
+                </template>
+                <template v-slot:[`item.form_home_id`]="{ item }">
+                  {{ item.form_home_id }} {{ item.form_sub_district }}
+                  {{ item.form_district }} {{ item.form_province }}
+                  {{ item.form_zipcode }}
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            class="set-font-kanit rounded-lg elevation-4"
+            x-large
+            outlined
+            :disabled="selected.length == 0"
+            @click="updateCost"
+            ><v-icon left>fa-save</v-icon>บันทึก</v-btn
+          >
+          <v-btn
+            color="error"
+            class="set-font-kanit rounded-lg elevation-4"
+            x-large
+            outlined
+            @click="dialogEditCost = false"
             ><v-icon left>fa-times</v-icon>ยกเลิก</v-btn
           >
         </v-card-actions>
@@ -728,6 +1100,84 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogUpdateSignlePhase" max-width="500">
+      <v-card>
+        <v-card-title class="set-font-kanit">
+          <v-icon left>mdi-pencil-outline</v-icon> แก้ไขเฟส</v-card-title
+        >
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-select
+            outlined
+            label="เลือกเฟส"
+            placeholder="เลือกเฟส"
+            :items="phaseList"
+            class="mt-2 rounded-lg set-font-kanit"
+            dense
+            hide-details
+            v-model="phaseSelect"
+            item-value="phase_id"
+            item-text="phase_name"
+          ></v-select>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="rounded-lg elevation-3 set-font-kanit"
+            color="primary"
+            @click="updateSignlePhase"
+            outlined
+            >บักทึก</v-btn
+          >
+          <v-btn
+            class="rounded-lg elevation-3 set-font-kanit"
+            color="error"
+            outlined
+            @click="dialogUpdateSignlePhase = false"
+            >ยกเลิก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogUpdateSignleCost" max-width="500">
+      <v-card>
+        <v-card-title class="set-font-kanit">
+          <v-icon left>mdi-pencil-outline</v-icon>แก้ไขงบประมาณ</v-card-title
+        >
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-text-field
+            outlined
+            class="mt-5 rounded-lg elevation-3"
+            label="งบประมาณสนับสนุน"
+            dense
+            type="number"
+            hide-details
+            placeholder="งบประมาณสนับสนุน"
+            v-model="costAmount"
+          ></v-text-field>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="rounded-lg elevation-3 set-font-kanit"
+            color="primary"
+            @click="updateSingleCost"
+            outlined
+            >บักทึก</v-btn
+          >
+          <v-btn
+            class="rounded-lg elevation-3 set-font-kanit"
+            color="error"
+            outlined
+            @click="dialogUpdateSignleCost = false"
+            >ยกเลิก</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -735,9 +1185,11 @@ import location_new from "@/data/locations.json";
 import { apiService } from "@/services/axios";
 import address_status from "@/data/address_status.json";
 export default {
-  name: "Icons",
+  name: "DetailServiceManager",
   data() {
     return {
+      statusEditPhase: false,
+      dialogEditPhase: false,
       dialogOtherValue: false,
       editAmount: false,
       tab: "",
@@ -770,6 +1222,15 @@ export default {
       utility: 0,
       other: 0,
       oldHouseAmount: "",
+      phaseList: [],
+      phaseSelect: 1,
+      statusHouse: 1,
+      dataPhaseUpdate: [],
+      dialogUpdateSignlePhase: false,
+      dialogUpdateSignleCost: false,
+      dialogEditCost: false,
+      costAmount: "",
+      statusGetHouse: 1,
     };
   },
   watch: {
@@ -778,6 +1239,7 @@ export default {
     },
     tab(value) {
       this.getHosueInProject(value + 1);
+      this.statusGetHouse = value + 1;
     },
   },
   mounted() {
@@ -789,6 +1251,129 @@ export default {
     this.address_status_list.unshift("ทั้งหมด");
   },
   methods: {
+    async updateCost() {
+      let house_list_id = [];
+      this.selected.forEach((element) => {
+        house_list_id.push(element.map_project_form_id);
+      });
+      let body = {
+        map_project_form_arr_id: house_list_id,
+        map_project_form_budget_support: this.costAmount,
+      };
+      let data = await apiService.put({
+        path: "mapprojectfrom/budgetsuppor",
+        body: body,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "แก้ไขข้อมูลสำเร็จ",
+          message: "ทำการแก้ไขข้อมูลงบประมาณเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.dialogEditCost = false;
+      this.getHosueInProject(this.statusGetHouse);
+    },
+    editCost() {
+      this.dialogEditCost = true;
+      this.costAmount = 0;
+      this.selected = [];
+    },
+    async updateSingleCost() {
+      let body = {
+        map_project_form_arr_id: this.dataPhaseUpdate,
+        map_project_form_budget_support: +this.costAmount,
+      };
+      let data = await apiService.put({
+        path: "mapprojectfrom/budgetsuppor",
+        body: body,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "แก้ไขข้อมูลสำเร็จ",
+          message: "ทำการแก้ไขข้อมูลงบประมาณเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.dialogUpdateSignleCost = false;
+      this.getHosueInProject(this.statusGetHouse);
+    },
+    editUpdateSignleCost(id, cost) {
+      this.dataPhaseUpdate.push(id);
+      this.costAmount = cost;
+      this.dialogUpdateSignleCost = true;
+    },
+    async updateSignlePhase() {
+      let body = {
+        map_project_form_arr_id: this.dataPhaseUpdate,
+        phase_id: this.phaseSelect,
+      };
+      let data = await apiService.put({
+        path: "phase/update",
+        body: body,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "แก้ไขข้อมูลสำเร็จ",
+          message: "ทำการแก้ไขข้อมูลเฟสเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.dialogUpdateSignlePhase = false;
+      this.getHosueInProject(this.statusGetHouse);
+    },
+    async editSinglePhase(phase, id) {
+      this.dataPhaseUpdate = [];
+      this.dataPhaseUpdate.push(id);
+      this.getPhase();
+      this.phaseSelect = phase;
+      this.dialogUpdateSignlePhase = true;
+    },
+    async getPhase() {
+      let data = await apiService.get({
+        path: "phase/list",
+      });
+      this.phaseList = data.data;
+    },
+    async updatePhase() {
+      let house_list_id = [];
+      this.selected.forEach((element) => {
+        house_list_id.push(element.map_project_form_id);
+      });
+      let body = {
+        map_project_form_arr_id: house_list_id,
+        phase_id: this.phaseSelect,
+      };
+      let data = await apiService.put({
+        path: "phase/update",
+        body: body,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "แก้ไขข้อมูลสำเร็จ",
+          message: "ทำการแก้ไขข้อมูลเฟสเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.dialogEditPhase = false;
+      this.getHosueInProject(this.statusGetHouse);
+    },
     async mapHouseProject() {
       let house_list_id = [];
       if (+this.dataAmountDistination > +this.oldHouseAmount) {
@@ -826,6 +1411,7 @@ export default {
       }
     },
     async getHosueInProject(status) {
+      this.statusHouse = status;
       this.houseTypeNewCreate = [];
       this.houseTypeUpdate = [];
       let data = await apiService.get({
@@ -906,9 +1492,24 @@ export default {
     },
     addHouse() {
       this.getHouseList();
+      this.selected = [];
       this.dialog = true;
     },
+    updatePhaseList() {
+      this.getHouses();
+      this.getPhase();
+      this.dialogEditPhase = true;
+      this.phaseSelect = 1;
+      this.selected = [];
+    },
+    async getHouses() {
+      let data = await apiService.get({
+        path: "form/list",
+      });
+      this.houseList = data.data;
+    },
     async getHouseList() {
+      console.log("get house ");
       let data = await apiService.get({
         path: "form/notinproject ",
       });
