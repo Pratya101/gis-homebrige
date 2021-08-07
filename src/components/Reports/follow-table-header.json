@@ -6,18 +6,18 @@
   },
 
   {
-    "text": "เลขบัตรประชาชน",
-    "value": "form_id_card",
-    "class": "white--text"
-  },
-  {
     "text": "ชื่อ-นามสกุล",
     "value": "form_fname",
     "class": "white--text"
   },
   {
-    "text": "สภาพที่อยู่อาศัย",
-    "value": "form_living",
+    "text": "บ้านเลขที่",
+    "value": "form_home_id",
+    "class": "white--text"
+  },
+  {
+    "text": "หมู่ที่",
+    "value": "form_village",
     "class": "white--text"
   },
   {
@@ -26,13 +26,13 @@
     "class": "white--text"
   },
   {
-    "text": "เครือข่าย",
-    "value": "project_network_name",
+    "text": "หมวดหมู่การพัฒนา",
+    "value": "form_improvement",
     "class": "white--text"
   },
   {
     "text": "สถานะการพัฒนา",
-    "value": "rating_description",
+    "value": "status_project",
     "class": "white--text"
   }
 ]

@@ -48,7 +48,7 @@
               v-for="(img, index) in followStatusList.prepare.images_prepare"
               :key="index"
             >
-              {{ img }}
+              <v-img :src="`${image_path}${img}`"></v-img>
             </v-col>
           </v-row>
           <h3>{{ followStatusList.progress.status_progress }}</h3>
@@ -103,6 +103,7 @@ export default {
       data: {},
       imageList: [],
       followStatusList: null,
+      image_path: "http://13.250.101.172:5000/assets/image/",
     };
   },
   computed: {

@@ -48,7 +48,7 @@ export default {
   methods: {
     async getProjectList() {
       let data = await apiService.get({
-        path: "project/list",
+        path: "report/project",
       });
       this.projectList = data.data;
     },

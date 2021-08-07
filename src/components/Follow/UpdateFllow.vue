@@ -29,7 +29,9 @@
                 :color="
                   houseData.rating_description == 'เตรียมข้อมูล'
                     ? 'error'
-                    : 'warning'
+                    : houseData.rating_description == 'กำลังดำเนินการ'
+                    ? 'warning'
+                    : 'success'
                 "
                 class="rounded-lg elevation-4"
               >
@@ -103,8 +105,10 @@
               >"
               {{
                 houseData.rating_description == "เตรียมข้อมูล"
-                  ? "กำลังกำเนินการ"
-                  : "สำเร็จ"
+                  ? "กำลังดำเนินการ"
+                  : houseData.rating_description == "กำลังดำเนินการ"
+                  ? "สำเร็จ"
+                  : "เสร็จสิ้นกำติมตาม"
               }}
               "</strong
             >

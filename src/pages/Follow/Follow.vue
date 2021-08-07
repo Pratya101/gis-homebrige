@@ -88,7 +88,7 @@
                   icon
                   v-bind="attrs"
                   v-on="on"
-                  :disabled="item.rating_description == 'สำเร็จ'"
+                  :disabled="item.rating_description == 'สำเร็จ ไปเเล้ว'"
                   @click="updateStatus(item)"
                   color="primary"
                   style="cursor:pointer;"

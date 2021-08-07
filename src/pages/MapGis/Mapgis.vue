@@ -16,10 +16,10 @@
           max-height="615"
           height="615"
           type="image"
-          v-if="!statusLoadData"
+          v-if="!statusLoadMap"
         ></v-skeleton-loader>
         <longdo-map
-          v-if="statusLoadData && markers.length != 0"
+          v-if="statusLoadMap && markers.length != 0"
           :location="locationStart"
           :lastView="false"
           :zoom="zoom"
@@ -48,21 +48,17 @@
           ค้นหา
         </h2>
         <v-row class="p-0 m-0">
-          <v-col cols="12" v-if="!statusLoadData">
+          <v-col cols="12" v-if="!statusLoadMap">
             <v-skeleton-loader
               class="mx-auto"
               max-width="100%"
               max-height="615"
               height="615"
               type="list-item,list-item,list-item,actions"
-              v-if="!statusLoadData"
+              v-if="!statusLoadMap"
             ></v-skeleton-loader>
           </v-col>
-          <v-col
-            cols="12"
-            v-if="statusLoadData"
-            class="p-0 m-0 set-shadow mt-3"
-          >
+          <v-col cols="12" v-if="statusLoadMap" class="p-0 m-0 set-shadow mt-3">
             <v-text-field
               placeholder="ชื่อ-นามสกุล"
               label="ชื่อ-นามสกุล"
@@ -326,6 +322,7 @@ export default {
       house_id: null,
       zoom: 6,
       statusLoadData: false,
+      statusLoadMap: false,
     };
   },
   mounted() {
@@ -458,6 +455,7 @@ export default {
       });
     },
     async serachHosue() {
+      this.statusLoadMap = false;
       let body = {
         search_name: this.search_name,
         network_id: this.network_id,
@@ -493,6 +491,7 @@ export default {
           },
         });
       });
+      this.statusLoadMap = true;
     },
     appendData: function() {
       var arr = this.apexDynamicChart.series.slice();
