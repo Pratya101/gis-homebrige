@@ -40,39 +40,88 @@
         </v-card-title>
         <v-divider class="mt-0"></v-divider>
         <v-card-text v-if="followStatusList">
-          <h3>{{ followStatusList.prepare.status_prepare }}</h3>
-          <v-row>
-            <v-col
-              cols="6"
-              md="5"
-              v-for="(img, index) in followStatusList.prepare.images_prepare"
-              :key="index"
-            >
-              <v-img :src="`${image_path}${img}`"></v-img>
-            </v-col>
-          </v-row>
-          <h3>{{ followStatusList.progress.status_progress }}</h3>
-          <v-row>
-            <v-col
-              cols="6"
-              md="5"
-              v-for="(img, index) in followStatusList.progress.images_progress"
-              :key="index"
-            >
-              {{ img }}
-            </v-col>
-          </v-row>
-          <h3>{{ followStatusList.success.status_success }}</h3>
-          <v-row>
-            <v-col
-              cols="6"
-              md="5"
-              v-for="(img, index) in followStatusList.success.images_success"
-              :key="index"
-            >
-              {{ img }}
-            </v-col>
-          </v-row>
+          <v-list subheader three-line>
+            <v-subheader>{{
+              followStatusList.prepare.status_prepare
+            }}</v-subheader>
+
+            <v-list-item>
+              <v-list-item-content>
+                <v-row>
+                  <v-col
+                    cols="6"
+                    md="4"
+                    v-for="(img, index) in followStatusList.prepare
+                      .images_prepare"
+                    :key="index"
+                  >
+                    <v-img
+                      @click="previewImage(img)"
+                      style="cursor:pointer"
+                      class="rounded-lg elevation-4"
+                      max-height="150"
+                      max-width="250"
+                      :src="img"
+                    ></v-img>
+                  </v-col>
+                </v-row>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider> </v-divider>
+            <v-subheader>{{
+              followStatusList.progress.status_progress
+            }}</v-subheader>
+
+            <v-list-item>
+              <v-list-item-content>
+                <v-row>
+                  <v-col
+                    cols="6"
+                    md="4"
+                    v-for="(img, index) in followStatusList.prepare
+                      .images_prepare"
+                    :key="index"
+                  >
+                    <v-img
+                      @click="previewImage(img)"
+                      style="cursor:pointer"
+                      class="rounded-lg elevation-4"
+                      max-height="150"
+                      max-width="250"
+                      :src="img"
+                    ></v-img>
+                  </v-col>
+                </v-row>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider> </v-divider>
+            <v-subheader>{{
+              followStatusList.success.status_success
+            }}</v-subheader>
+
+            <v-list-item>
+              <v-list-item-content>
+                <v-row>
+                  <v-col
+                    cols="6"
+                    md="4"
+                    v-for="(img, index) in followStatusList.success
+                      .images_success"
+                    :key="index"
+                  >
+                    <v-img
+                      @click="previewImage(img)"
+                      style="cursor:pointer"
+                      class="rounded-lg elevation-4"
+                      max-height="150"
+                      max-width="250"
+                      :src="img"
+                    ></v-img>
+                  </v-col>
+                </v-row>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
         </v-card-text>
         <v-divider class="mt-0"></v-divider>
         <v-card-actions>
@@ -89,6 +138,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="showImage" max-width="750">
+      <v-card>
+        <v-card-title></v-card-title>
+        <v-card-text>
+          <v-img :src="imageUrl" max-height="550" max-width="720"> </v-img>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="error"
+            class="rouded-lg elevation-3"
+            outlined
+            @click="showImage = false"
+            >ปิด</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -98,12 +165,13 @@ import { apiService } from "@/services/axios";
 export default {
   data() {
     return {
+      showImage: false,
       fileList: [],
       dialog: false,
       data: {},
       imageList: [],
       followStatusList: null,
-      image_path: "http://13.250.101.172:5000/assets/image/",
+      imageUrl: "",
     };
   },
   computed: {
@@ -123,6 +191,10 @@ export default {
   },
 
   methods: {
+    previewImage(url) {
+      this.imageUrl = url;
+      this.showImage = true;
+    },
     async getFollowDetail(id) {
       let data = await apiService.get({
         path: "mapprojectfrom",

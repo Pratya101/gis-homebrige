@@ -60,6 +60,14 @@
               small
               label
               class="rounded-lg elevation-4"
+              v-if="item.rating_description == 'ยังไม่ติดตาม'"
+              color="greyTint"
+              >{{ item.rating_description }}
+            </v-chip>
+            <v-chip
+              small
+              label
+              class="rounded-lg elevation-4"
               v-if="item.rating_description == 'เตรียมข้อมูล'"
               color="error"
               >{{ item.rating_description }}
@@ -88,7 +96,7 @@
                   icon
                   v-bind="attrs"
                   v-on="on"
-                  :disabled="item.rating_description == 'สำเร็จ ไปเเล้ว'"
+                  :disabled="item.rating_description == 'สำเร็จ'"
                   @click="updateStatus(item)"
                   color="primary"
                   style="cursor:pointer;"

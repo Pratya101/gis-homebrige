@@ -10,16 +10,8 @@
           >
           แผนที่ GIS
         </h2>
-        <v-skeleton-loader
-          class="mx-auto"
-          max-width="100%"
-          max-height="615"
-          height="615"
-          type="image"
-          v-if="!statusLoadMap"
-        ></v-skeleton-loader>
+
         <longdo-map
-          v-if="statusLoadMap && markers.length != 0"
           :location="locationStart"
           :lastView="false"
           :zoom="zoom"
@@ -48,17 +40,7 @@
           ค้นหา
         </h2>
         <v-row class="p-0 m-0">
-          <v-col cols="12" v-if="!statusLoadMap">
-            <v-skeleton-loader
-              class="mx-auto"
-              max-width="100%"
-              max-height="615"
-              height="615"
-              type="list-item,list-item,list-item,actions"
-              v-if="!statusLoadMap"
-            ></v-skeleton-loader>
-          </v-col>
-          <v-col cols="12" v-if="statusLoadMap" class="p-0 m-0 set-shadow mt-3">
+          <v-col cols="12" class="p-0 m-0 set-shadow mt-3">
             <v-text-field
               placeholder="ชื่อ-นามสกุล"
               label="ชื่อ-นามสกุล"
@@ -304,7 +286,7 @@ export default {
               show: true,
             },
           },
-          labels: ["บ้านทรุดโทรมทั้งหลัง", "บ้านทรุดโทรมบางส่วน", "แย่"],
+          labels: ["ทรุดโทรมทั้งหลัง", "ทรุดโทรมบางส่วน", "มีสภาพดี"],
           colors: [
             config.light.primary,
             config.light.success,
@@ -359,18 +341,12 @@ export default {
       this.liveingeHouse.series.push(
         data.data.formLiving[2].json_build_object.form_living_total
       );
-
-      console.log(
-        "this.liveingeHouse.options.labels",
-        this.liveingeHouse.options.labels
-      );
       this.houseDev.series.push(data.data.progress.reporn_progress.prepare);
       this.houseDev.series.push(data.data.progress.reporn_progress.progress);
       this.houseDev.series.push(data.data.progress.reporn_progress.success);
       this.houseDev.options.labels = await this.getDataLabels(
         data.data.progress.reporn_progress
       );
-      console.log("report graph : ", data.data);
       data.data.projectType.forEach((element) => {
         this.apexBarGroup.options.xaxis.categories.push(
           element.json_build_object.project_form_type
@@ -410,10 +386,11 @@ export default {
     },
     getDataLabels(labels) {
       var label = [
-        `เตรียมข้อมูล ${labels.prepare} ครัวเรือน`,
-        `กำลังดำเนินการ ${labels.progress} ครัวเรือน`,
-        `เสร็จสิ้น ${labels.success} ครัวเรือน`,
+        `เตรียมข้อมูล ${labels.prepare}`,
+        `กำลังดำเนินการ ${labels.progress}`,
+        `เสร็จสิ้น ${labels.success}`,
       ];
+      // var label = [`เตรียมข้อมูล`, `กำลังดำเนินการ`, `เสร็จสิ้น`];
       return label;
     },
     async getHouse(id) {
@@ -455,7 +432,7 @@ export default {
       });
     },
     async serachHosue() {
-      this.statusLoadMap = false;
+      this.markers = [];
       let body = {
         search_name: this.search_name,
         network_id: this.network_id,
@@ -469,9 +446,13 @@ export default {
         path: "project/search",
         body: body,
       });
+      console.log("data.data ", data.data.length);
       this.houseList = data.data;
       this.zoom = 6;
-      this.addMarker(data.data);
+
+      if (data.data.length > 0) {
+        this.addMarker(data.data);
+      }
     },
     addMarker(data) {
       this.markers = [];
@@ -479,7 +460,7 @@ export default {
         this.markers.push({
           location: { lon: element.form_long, lat: element.form_lat },
           icon: {
-            url: "https://image.flaticon.com/icons/png/512/25/25694.png",
+            url: element.color,
             offset: { x: 14, y: 10 },
             size: { width: 30, height: 30 },
           },

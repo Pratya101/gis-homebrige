@@ -11,6 +11,7 @@ import FormFollow from "@/pages/FormFollow/FormFollow";
 import ServiceManage from "@/pages/ServiceManage/ServiceManage";
 import FormServiceManage from "@/pages/FormServiceManage/FormServiceManage";
 import DetailServiceManage from "@/pages/DetailServiceManage/DetailServiceManage";
+import User from "@/pages/Users/User";
 import Detail from "@/pages/Detail/Detail";
 import test from "@/pages/test";
 import Reports from "@/pages/Reports/Reports";
@@ -99,6 +100,11 @@ export default new Router({
           path: "/reports",
           name: "Reports",
           component: Reports,
+        },
+        {
+          path: "/users",
+          name: "Users",
+          component: User,
         },
       ],
     },
