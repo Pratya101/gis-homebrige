@@ -87,7 +87,7 @@
           </template>
         </v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <!-- <v-col cols="12" md="6">
         <v-text-field
           label="จำนวนงบประมาณ (100%)"
           placeholder="จำนวนงบประมาณ (100%)"
@@ -98,7 +98,8 @@
           background-color="#ffffff"
           class="elevation-3 rounded-lg"
         ></v-text-field> </v-col
-      ><v-col cols="12" md="6">
+      > -->
+      <v-col cols="12" md="6">
         <v-autocomplete
           label="ตําบล/แขวง"
           placeholder="ตําบล/แขวง"

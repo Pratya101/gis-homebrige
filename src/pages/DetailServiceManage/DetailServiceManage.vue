@@ -1406,7 +1406,7 @@ export default {
           });
         }
         this.selected = [];
-        this.getHosueInProject();
+        this.getHosueInProject(this.tab+1);
         this.dialog = false;
       }
     },

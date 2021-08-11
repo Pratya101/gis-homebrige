@@ -31,7 +31,9 @@
                     ? 'error'
                     : houseData.rating_description == 'กำลังดำเนินการ'
                     ? 'warning'
-                    : 'success'
+                    : houseData.rating_description == 'สำเร็จ'
+                    ? 'success'
+                    : 'gray'
                 "
                 class="rounded-lg elevation-4"
               >
@@ -103,13 +105,7 @@
             <strong>"{{ houseData.rating_description }}"</strong> เป็น
             <strong
               >"
-              {{
-                houseData.rating_description == "เตรียมข้อมูล"
-                  ? "กำลังดำเนินการ"
-                  : houseData.rating_description == "กำลังดำเนินการ"
-                  ? "สำเร็จ"
-                  : "เสร็จสิ้นกำติมตาม"
-              }}
+              {{ houseData.progress_update }}
               "</strong
             >
             !

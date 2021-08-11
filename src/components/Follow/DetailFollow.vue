@@ -78,8 +78,8 @@
                   <v-col
                     cols="6"
                     md="4"
-                    v-for="(img, index) in followStatusList.prepare
-                      .images_prepare"
+                    v-for="(img, index) in followStatusList.progress
+                      .images_progress"
                     :key="index"
                   >
                     <v-img

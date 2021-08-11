@@ -332,14 +332,21 @@ export default {
       let data = await apiService.get({
         path: "report/graph",
       });
+
       this.liveingeHouse.series.push(
-        data.data.formLiving[0].json_build_object.form_living_total
+        data.data.formLiving[0]
+          ? data.data.formLiving[0].json_build_object.form_living_total
+          : ""
       );
       this.liveingeHouse.series.push(
-        data.data.formLiving[1].json_build_object.form_living_total
+        data.data.formLiving[1]
+          ? data.data.formLiving[1].json_build_object.form_living_total
+          : ""
       );
       this.liveingeHouse.series.push(
-        data.data.formLiving[2].json_build_object.form_living_total
+        data.data.formLiving[2]
+          ? data.data.formLiving[2].json_build_object.form_living_total
+          : ""
       );
       this.houseDev.series.push(data.data.progress.reporn_progress.prepare);
       this.houseDev.series.push(data.data.progress.reporn_progress.progress);
@@ -357,28 +364,40 @@ export default {
         {
           name: "เตรียมข้อมูล",
           data: [
-            data.data.projectType[0].json_build_object.project_type_data
-              .prepare,
-            data.data.projectType[1].json_build_object.project_type_data
-              .prepare,
+            data.data.projectType[0]
+              ? data.data.projectType[0].json_build_object.project_type_data
+                  .prepare
+              : "",
+            data.data.projectType[1]
+              ? data.data.projectType[1].json_build_object.project_type_data
+                  .prepare
+              : "",
           ],
         },
         {
           name: "กำลังดำเนินการ",
           data: [
-            data.data.projectType[0].json_build_object.project_type_data
-              .progress,
-            data.data.projectType[1].json_build_object.project_type_data
-              .progress,
+            data.data.projectType[0]
+              ? data.data.projectType[0].json_build_object.project_type_data
+                  .progress
+              : "",
+            data.data.projectType[1]
+              ? data.data.projectType[1].json_build_object.project_type_data
+                  .progress
+              : "",
           ],
         },
         {
           name: "เสร็จสื้น",
           data: [
-            data.data.projectType[0].json_build_object.project_type_data
-              .success,
-            data.data.projectType[1].json_build_object.project_type_data
-              .success,
+            data.data.projectType[0]
+              ? data.data.projectType[0].json_build_object.project_type_data
+                  .success
+              : "",
+            data.data.projectType[1]
+              ? data.data.projectType[1].json_build_object.project_type_data
+                  .success
+              : "",
           ],
         },
       ];
