@@ -13,7 +13,7 @@ import FormServiceManage from "@/pages/FormServiceManage/FormServiceManage";
 import DetailServiceManage from "@/pages/DetailServiceManage/DetailServiceManage";
 import User from "@/pages/Users/User";
 import Detail from "@/pages/Detail/Detail";
-import test from "@/pages/test";
+// import test from "@/pages/test";
 import Reports from "@/pages/Reports/Reports";
 import Error from "@/pages/Error/Error";
 import Login from "@/pages/Login/Login";
@@ -25,32 +25,18 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: "/login",
-      name: "Login",
-      component: Login,
-    },
-
-    {
-      path: "/test",
-      name: "test",
-      component: test,
-    },
-
-    {
       path: "/",
       redirect: "login",
       name: "Layout",
       component: Layout,
-      beforeEnter: (to, from, next) => {
-        let token = localStorage.getItem("token");
-        if (token) {
-          next();
-        } else {
-          next({ path: "/login" });
-        }
-        // isAuthenticated(token) ? next() : next({ path: "/login" });
-      },
+
       children: [
+        {
+          path: "/login",
+          name: "Login",
+          component: Login,
+        },
+
         {
           path: "/map",
           name: "Map",
@@ -60,51 +46,141 @@ export default new Router({
           path: "/house",
           name: "House",
           component: House,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/detail",
           name: "Detail",
           component: Detail,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/formcheck",
           name: "FormCheck",
           component: FormCheck,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/formfollow",
           name: "FormFollow",
           component: FormFollow,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/follow",
           name: "Follow",
           component: Follow,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/servicemanage",
           name: "ServiceMange",
           component: ServiceManage,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/fromservicemange",
           name: "FormServiceMange",
           component: FormServiceManage,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/detailservicemange",
           name: "DetailServiceMange",
           component: DetailServiceManage,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/reports",
           name: "Reports",
           component: Reports,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
         {
           path: "/users",
           name: "Users",
           component: User,
+          beforeEnter: (to, from, next) => {
+            let token = localStorage.getItem("token");
+            if (token) {
+              next();
+            } else {
+              next({ path: "/login" });
+            }
+            // isAuthenticated(token) ? next() : next({ path: "/login" });
+          },
         },
       ],
     },

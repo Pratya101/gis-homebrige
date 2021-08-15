@@ -56,61 +56,79 @@
         >
         หมวดข้อมูลในครัวเรือน
       </v-col>
-      <v-col cols="12" md="2">
-        <label>เลขบัตรประชาชน</label>
+      <v-col cols="12" md="6">
         <v-text-field
           :disabled="!statusEdit"
-          solo
+          outlined
+          label="เลขบัตรประชาชน"
+          placeholder="เลขบัตรประชาชน"
+          class="rounded-lg"
+          background-color="#ffffff"
           type="number"
+          hide-details
           v-model.trim="idCard"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="2">
-        <label>คำนำหน้า</label>
+      <v-col cols="12" md="6">
         <v-select
+          outlined
+          label="คำนำหน้า"
+          placeholder="คำนำหน้า"
+          class="rounded-lg"
+          background-color="#ffffff"
           v-model.trim="perfix"
           :items="perfixList"
           :disabled="!statusEdit"
           hide-details
-          solo
         ></v-select>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>ชื่อ</label>
+      <v-col cols="12" md="6">
         <v-text-field
+          outlined
+          label="ชื่อ"
+          placeholder="ชื่อ"
+          class="rounded-lg"
+          background-color="#ffffff"
           :disabled="!statusEdit"
           v-model.trim="fname"
           hide-details
-          solo
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="4"
-        ><label>นามสกุล</label
-        ><v-text-field
+      <v-col cols="12" md="6">
+        <v-text-field
+          outlined
+          label="นามสกุล"
+          placeholder="นามสกุล"
+          class="rounded-lg"
+          background-color="#ffffff"
           :disabled="!statusEdit"
           v-model.trim="lname"
           hide-details
-          solo
         ></v-text-field
       ></v-col>
       <v-col cols="12" md="6">
-        <label>ตําแหน่ง/สถานะภาพ</label>
         <v-select
+          outlined
+          label="ตําแหน่ง/สถานะภาพ"
+          placeholder="ตําแหน่ง/สถานะภาพ"
+          class="rounded-lg"
+          background-color="#ffffff"
           :items="memberStatusList"
           v-model.trim="memberStatus"
           :disabled="!statusEdit"
           hide-details
-          solo
         ></v-select>
       </v-col>
-      <v-col cols="12" md="6"
-        ><label>จำนวนสมาชิกในครัวเรือน</label>
+      <v-col cols="12" md="6">
         <v-select
-          solo
+          outlined
+          label="จำนวนสมาชิกในครัวเรือน"
+          placeholder="จำนวนสมาชิกในครัวเรือน"
+          class="rounded-lg"
+          background-color="#ffffff"
           :disabled="!statusEdit"
           :items="memberCountList"
           v-model.trim="memberCount"
-          form
         ></v-select>
       </v-col>
       <v-col cols="12"> <v-divider></v-divider> </v-col>
@@ -127,33 +145,43 @@
         >
         หมวดที่ตั้งครัวเรือน
       </v-col>
-      <v-col cols="12" md="2">
-        <label>บ้านเลขที่</label>
+      <v-col cols="12" md="6">
         <v-text-field
+          outlined
+          label="บ้านเลขที่"
+          placeholder="บ้านเลขที่"
+          class="rounded-lg"
+          background-color="#ffffff"
           :disabled="!statusEdit"
           v-model.trim="houseId"
           hide-details
-          solo
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="2">
-        <label>หมู่ที่</label>
+      <v-col cols="12" md="6">
         <v-text-field
           :disabled="!statusEdit"
           v-model.trim="villageId"
           hide-details
-          solo
+          outlined
+          label="หมู่ที่"
+          placeholder="หมู่ที่"
+          class="rounded-lg"
+          background-color="#ffffff"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>ตําบล/แขวง</label>
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="address2"
           :items="locationList"
           :disabled="!statusEdit"
           item-text="SEARCH"
           return-object
-          solo
+          outlined
+          label="ตําบล/แขวง"
+          hide-details
+          placeholder="ตําบล/แขวง"
+          class="rounded-lg"
+          background-color="#ffffff"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -163,15 +191,19 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>อำเภอ/เขต</label>
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="address2"
           :disabled="!statusEdit"
           :items="locationList"
           item-text="SEARCH"
           return-object
-          solo
+          hide-details
+          outlined
+          label="อำเภอ/เขต"
+          placeholder="อำเภอ/เขต"
+          class="rounded-lg"
+          background-color="#ffffff"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -181,15 +213,19 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>จังหวัด</label>
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="address2"
           :items="locationList"
           :disabled="!statusEdit"
           item-text="SEARCH"
           return-object
-          solo
+          hide-details
+          outlined
+          label="จังหวัด"
+          placeholder="จังหวัด"
+          class="rounded-lg"
+          background-color="#ffffff"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -199,15 +235,19 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>ภาค</label>
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="address2"
+          hide-details
           :items="locationList"
           item-text="SEARCH"
           :disabled="!statusEdit"
           return-object
-          solo
+          outlined
+          label="ภาค"
+          placeholder="ภาค"
+          class="rounded-lg"
+          background-color="#ffffff"
         >
           <template v-slot:item="{ item }">
             {{ item.SEARCH }}
@@ -217,13 +257,16 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>พิกัด GPS</label>
+      <v-col cols="12" md="6">
         <v-text-field
           :disabled="!statusEdit"
           v-model.trim="gpsLocation"
           hide-details
-          solo
+          outlined
+          label="พิกัด GPS"
+          placeholder="พิกัด GPS"
+          class="rounded-lg"
+          background-color="#ffffff"
         >
           <template v-slot:append>
             <v-icon @click="selectLocation" style="color:blue;cursor:pointer"
@@ -246,28 +289,33 @@
         >
         หมวดข้อมูลพัฒนาที่อยู่อาศัย
       </v-col>
-      <v-col cols="12" md="4">
-        <label>สภาพที่อยู่อาศัย</label>
+      <v-col cols="12" md="6">
         <v-select
           :disabled="!statusEdit"
           :items="addressStatusList"
           v-model.trim="addressStatus"
           hide-details
-          solo
+          outlined
+          label="สภาพที่อยู่อาศัย"
+          placeholder="สภาพที่อยู่อาศัย"
+          class="rounded-lg"
+          background-color="#ffffff"
         ></v-select>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>แนวทางการปรับปรุง</label>
+      <v-col cols="12" md="6">
         <v-select
           :disabled="!statusEdit"
           :items="restoreChanelList"
           v-model.trim="restoreChanel"
           hide-details
-          solo
+          outlined
+          label="แนวทางการปรับปรุง"
+          placeholder="แนวทางการปรับปรุง"
+          class="rounded-lg"
+          background-color="#ffffff"
         ></v-select>
       </v-col>
-      <v-col cols="12" md="4">
-        <label>ความต้องการทีอยู่อาศัย</label>
+      <v-col cols="12" md="6">
         <v-select
           :disabled="!statusEdit"
           :items="houseNeedList"
@@ -275,11 +323,14 @@
           item-value="text"
           item-text="text"
           hide-details
-          solo
+          outlined
+          label="ความต้องการทีอยู่อาศัย"
+          placeholder="ความต้องการทีอยู่อาศัย"
+          class="rounded-lg"
+          background-color="#ffffff"
         ></v-select>
       </v-col>
       <v-col cols="12" md="6">
-        <label>ลักษณะบ้าน</label>
         <v-select
           :items="houseFormatList"
           v-model="houseFormat"
@@ -287,11 +338,14 @@
           item-value="text"
           item-text="text"
           hide-details
-          solo
+          outlined
+          label="ลักษณะบ้าน"
+          placeholder="ลักษณะบ้าน"
+          class="rounded-lg"
+          background-color="#ffffff"
         ></v-select>
       </v-col>
       <v-col cols="12" md="6">
-        <label>กรรมสิทธิทีดินของบ้านปจจุบัน</label>
         <v-select
           :items="solidsList"
           v-model="solids"
@@ -299,7 +353,11 @@
           :disabled="!statusEdit"
           item-text="text"
           hide-details
-          solo
+          outlined
+          label="กรรมสิทธิทีดินของบ้านปจจุบัน"
+          placeholder="กรรมสิทธิทีดินของบ้านปจจุบัน"
+          class="rounded-lg"
+          background-color="#ffffff"
         ></v-select>
       </v-col>
 

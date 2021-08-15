@@ -1,21 +1,13 @@
 <template>
   <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col cols="12" md="4" class="px-0">
-        <h2 class="pt-1">
-          <v-icon
-            style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-            >mdi-file-document-edit-outline</v-icon
-          >
+      <v-col cols="12" md="4" class="px-0  pb-0">
+        <h3 class="pt-1">
+          <v-icon>mdi-file-document-edit-outline</v-icon>
           แบบฟอร์มเพิ่มโครงการ
-        </h2>
+        </h3>
       </v-col>
-      <v-col cols="12" md="8" class="d-md-flex justify-md-end px-0">
+      <v-col cols="12" md="8" class="d-md-flex justify-md-end px-0 mt-0 pt-0">
         <v-btn
           @click="statusEdit = !statusEdit"
           color="warning"
@@ -279,18 +271,10 @@
     <v-divider class="mt-10"></v-divider>
     <v-row class="mt-1">
       <v-col cols="12" md="7" class="d-md-flex">
-        <h2 class="pt-1 me-2">
-          <v-icon
-            style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-            >mdi-view-list-outline</v-icon
-          >
+        <h3 class="pt-1 me-2">
+          <v-icon>mdi-view-list-outline</v-icon>
           ข้อมูลการพัฒนาที่อยู่อาศัย
-        </h2>
+        </h3>
         <span>
           <v-text-field
             v-model.trim="dataAmountDistination"
@@ -1406,7 +1390,7 @@ export default {
           });
         }
         this.selected = [];
-        this.getHosueInProject(this.tab+1);
+        this.getHosueInProject(this.tab + 1);
         this.dialog = false;
       }
     },

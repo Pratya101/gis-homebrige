@@ -2,18 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="6">
-        <h2>
-          <v-icon
-            style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-            >mdi-format-list-bulleted</v-icon
-          >
+        <h3>
+          <v-icon>mdi-format-list-bulleted</v-icon>
           รายการบริหารโครงการ
-        </h2>
+        </h3>
       </v-col>
       <v-col cols="12" md="6" class="d-md-flex justify-md-end px-0">
         <v-btn
@@ -76,13 +68,20 @@
             {{ item.project_budget | formatPrice }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-btn
-              icon
-              color="primary"
-              @click="detail(item.project_id)"
-              style="cursor:pointer;"
-              ><v-icon>mdi-information-outline</v-icon></v-btn
-            >
+            <v-tooltip color="#212121" top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  color="primary"
+                  @click="detail(item.project_id)"
+                  style="cursor:pointer;"
+                  ><v-icon>mdi-information-outline</v-icon></v-btn
+                >
+              </template>
+              <span class="set-font-kanit">รายละเอียด</span>
+            </v-tooltip>
           </template>
         </v-data-table></v-col
       >

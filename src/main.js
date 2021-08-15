@@ -9,18 +9,19 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import locale from "element-ui/lib/locale/lang/th";
 import JsonExcel from "vue-json-excel";
+import LongdoMap from "longdo-map-vue";
 
 Vue.component("downloadExcel", JsonExcel);
 Vue.use(ElementUI, { locale });
-import LongdoMap from "longdo-map-vue";
 Vue.use(LongdoMap, {
   load: {
     apiKey: "4950658d2b8d1babc2e9f4b2515bd9d3",
+    // googleQuery: "key=AIzaSyAzEyvuAAHkVAZWF3VKDf3fKWwtqnjNVQo",
   },
 });
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyB7OXmzfQYua_1LEhRdqsoYzyJOPh9hGLg",
+    key: "AIzaSyAzEyvuAAHkVAZWF3VKDf3fKWwtqnjNVQo",
   },
 });
 Vue.mixin(AuthMixin);

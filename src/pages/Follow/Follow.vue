@@ -2,18 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="6">
-        <h2>
-          <v-icon
-            style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-            >mdi-format-list-bulleted</v-icon
-          >
+        <h3>
+          <v-icon>mdi-format-list-bulleted</v-icon>
           รายการติดตามการพัฒนาที่อยู่อาศัย
-        </h2>
+        </h3>
       </v-col>
     </v-row>
     <v-row class="pt-0 mt-0">
@@ -68,7 +60,7 @@
               small
               label
               class="rounded-lg elevation-4"
-              v-if="item.rating_description == 'เตรียมข้อมูล'"
+              v-else-if="item.rating_description == 'เตรียมข้อมูล'"
               color="error"
               >{{ item.rating_description }}
             </v-chip>
@@ -76,7 +68,7 @@
               small
               label
               class="rounded-lg elevation-4"
-              v-if="item.rating_description == 'กำลังดำเนินการ'"
+              v-else-if="item.rating_description == 'กำลังดำเนินการ'"
               color="warning"
               >{{ item.rating_description }}
             </v-chip>
@@ -84,7 +76,7 @@
               small
               label
               class="rounded-lg elevation-4"
-              v-if="item.rating_description == 'สำเร็จ'"
+              v-else
               color="success"
               >{{ item.rating_description }}
             </v-chip>

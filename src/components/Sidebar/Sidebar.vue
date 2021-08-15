@@ -107,49 +107,24 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-
 export default {
   props: {
     source: String,
   },
   data() {
     return {
-      items: [
-        {
-          title: "แผนที่ GIS",
-          icon: "mdi-map-marker-radius-outline",
-          link: "/map",
-        },
-        {
-          title: "ข้อมูลครัวเรือน",
-          icon: "mdi-home-group",
-          link: "/house",
-        },
-        {
-          title: "ข้อมูลติดตามการพัฒนา ฯ",
-          icon: "mdi-account-reactivate-outline",
-          link: "/follow",
-        },
-
-        {
-          title: "บริหารโครงการ",
-          icon: "mdi-chart-areaspline",
-          link: "/servicemanage",
-        },
-        {
-          title: "รายงาน",
-          icon: "mdi-file",
-          link: "/reports",
-        },
-      ],
-
+      items: [],
       sidebarWidth: 260,
       sidebarMinWidth: 96,
+      statusLogin: false,
     };
   },
   computed: {
     ...mapState("layout", {
       drawer: (state) => state.drawer,
+    }),
+    ...mapState("auth", {
+      loginStatus: (state) => state.loginStatus,
     }),
     DRAWER_STATE: {
       get() {
@@ -161,7 +136,60 @@ export default {
       },
     },
   },
+  watch: {
+    loginStatus(value) {
+      if (value) {
+        this.statusLogin = true;
+      } else {
+        this.statusLogin = false;
+      }
+      this.checkMenu();
+    },
+  },
+  mounted() {
+    this.checkMenu();
+  },
   methods: {
+    checkMenu() {
+      if (this.statusLogin) {
+        this.items = [
+          {
+            title: "แผนที่ GIS",
+            icon: "mdi-map-marker-radius-outline",
+            link: "/map",
+          },
+          {
+            title: "ข้อมูลครัวเรือน",
+            icon: "mdi-home-group",
+            link: "/house",
+          },
+          {
+            title: "ข้อมูลติดตามการพัฒนา ฯ",
+            icon: "mdi-account-reactivate-outline",
+            link: "/follow",
+          },
+
+          {
+            title: "บริหารโครงการ",
+            icon: "mdi-chart-areaspline",
+            link: "/servicemanage",
+          },
+          {
+            title: "รายงาน",
+            icon: "mdi-file",
+            link: "/reports",
+          },
+        ];
+      } else {
+        this.items = [
+          {
+            title: "แผนที่ GIS",
+            icon: "mdi-map-marker-radius-outline",
+            link: "/map",
+          },
+        ];
+      }
+    },
     ...mapActions("layout", ["TOGGLE_DRAWER"]),
     logOut: function() {
       window.localStorage.setItem("authenticated", false);

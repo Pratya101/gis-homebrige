@@ -1,23 +1,13 @@
 <template>
   <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col cols="12" md="6" class="mb-0">
-        <h2>
-          <v-icon
-            style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-            >mdi-file-excel-outline</v-icon
-          >
+      <v-col cols="12" class="mb-0 py-0">
+        <h3>
+          <v-icon>mdi-file-excel-outline</v-icon>
           รายงาน
-        </h2>
+        </h3>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="4" class="my-0">
+      <v-col cols="12" md="6" class="my-0 py-0">
         <v-select
           v-model="reportTypeSelect"
           outlined
@@ -30,7 +20,7 @@
           :items="reportsType"
         ></v-select>
       </v-col>
-      <v-col cols="8" class="d-flex justify-md-end">
+      <v-col cols="12" md="6" class="d-flex justify-md-end py-0">
         <download-excel
           :name="reportName"
           :data="reportList"
@@ -42,6 +32,8 @@
           </v-btn>
         </download-excel>
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12" class="my-0">
         <HouseReport v-if="reportTypeSelect == 1"></HouseReport>
         <FollowReport v-if="reportTypeSelect == 2"></FollowReport>

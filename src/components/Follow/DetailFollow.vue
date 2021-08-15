@@ -5,19 +5,10 @@
         <v-card-title>
           <v-row class="no-gutters">
             <v-col cols="12" md="6">
-              <h2>
-                <v-icon
-                  class="pb-1"
-                  style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-                  >mdi-file</v-icon
-                >
+              <h3>
+                <v-icon class="pb-1">mdi-file</v-icon>
                 ข้อมูลการติดตามการพัฒนา
-              </h2>
+              </h3>
             </v-col>
             <v-col
               cols="12"

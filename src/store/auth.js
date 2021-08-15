@@ -8,8 +8,12 @@ export default {
   state: {
     isFetching: false,
     errorMessage: "",
+    loginStatus: false,
   },
   mutations: {
+    SET_LOGIN_STATUS(state, status) {
+      state.loginStatus = status;
+    },
     LOGIN_FAILURE(state, payload) {
       state.isFetching = false;
       state.errorMessage = payload;
@@ -23,6 +27,9 @@ export default {
     },
   },
   actions: {
+    updateLoginStatus({ commit }, status) {
+      commit("SET_LOGIN_STATUS", status);
+    },
     loginUser({ dispatch }, creds) {
       if (!config.isBackend) {
         dispatch("receiveToken", "token");
@@ -70,6 +77,7 @@ export default {
     logoutUser() {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.clear();
       // document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
       // axios.defaults.headers.common["Authorization"] = "";
       router.push("/login");

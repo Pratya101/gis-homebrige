@@ -1,19 +1,15 @@
 <template>
   <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col cols="12">
-        <h2>
-          <v-icon
-            style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-            >mdi-file-document-edit-outline</v-icon
-          >
+      <v-col cols="12" md="6">
+        <h3>
+          <v-icon>mdi-file-document-edit-outline</v-icon>
           แบบฟอร์มเพิ่มโครงการ
-        </h2>
+        </h3> </v-col
+      ><v-col cols="12" md="6" class="d-md-flex justify-md-end rounded-lg">
+        <v-btn outlined color="secondary">
+          <v-icon left small>mdi-undo</v-icon> ย้อนกลับ</v-btn
+        >
       </v-col>
     </v-row>
 

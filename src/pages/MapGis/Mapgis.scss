@@ -1,4 +1,7 @@
 @import "../../styles/app";
+.mapContainer {
+  height: 600px;
+}
 
 .icon-list {
   margin-top: $spacer;
@@ -50,7 +53,7 @@ h2 {
   background-clip: text;
   color: transparent;
   text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 70px;
+  font-size: 1rem;
 }
 .set-font-shadow {
   background: #686868;

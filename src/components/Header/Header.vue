@@ -25,7 +25,21 @@
       >แบบประเมินชุมชนสลัม</v-toolbar-title
     >
     <v-spacer></v-spacer>
-    <v-menu min-width="180" offset-y bottom left nudge-bottom="10">
+    <v-btn
+      @click="$router.push('/login')"
+      outlined
+      class="light set-font-kanit"
+      v-if="statusLogin == false"
+      >เข้าสู่ระบบ</v-btn
+    >
+    <v-menu
+      v-if="statusLogin"
+      min-width="180"
+      offset-y
+      bottom
+      left
+      nudge-bottom="10"
+    >
       <template v-slot:activator="{ on, attrs }">
         <v-avatar size="40" v-bind="attrs" v-on="on" class="mr-3">
           <img src="@/assets/img/image.png" alt="ผู้ใช้งาน" />
@@ -52,13 +66,13 @@
             outlined
             color="primary"
             class="text-capitalize"
-            @click="logoutUser"
+            @click="logout"
             >ออกจากระบบ</v-btn
           >
         </div>
       </v-list>
     </v-menu>
-    <div class="greeting-text mr-3 d-none d-md-block">
+    <div v-if="statusLogin" class="greeting-text mr-3 d-none d-md-block">
       <span>John Smith</span>
     </div>
   </v-app-bar>
@@ -75,18 +89,46 @@ export default {
     account: [{ text: "โปรไฟล์", icon: "mdi-account", color: "greyTint" }],
     notificationsBadge: true,
     messageBadge: true,
+    statusLogin: false,
   }),
+  mounted() {
+    if (localStorage.getItem("token")) {
+      this.statusLogin = true;
+    } else {
+      this.statusLogin = false;
+    }
+  },
   computed: {
     ...mapState("layout", { drawer: (state) => state.drawer }),
+    ...mapState("auth", {
+      loginStatus: (state) => state.loginStatus,
+    }),
+
     DRAWER_STATE: {
       get() {
         return this.drawer;
       },
     },
   },
+  watch: {
+    loginStatus(value) {
+      if (value) {
+        this.statusLogin = true;
+      } else {
+        this.statusLogin = false;
+      }
+    },
+  },
+
   methods: {
+    logout() {
+      localStorage.clear();
+      this.statusLogin = false;
+      this.$router.push("/map");
+      this.updateLoginStatus(false);
+    },
     ...mapActions("layout", ["TOGGLE_DRAWER"]),
-    ...mapActions("auth", ["logoutUser"]),
+    ...mapActions("auth", ["logoutUser", "updateLoginStatus"]),
   },
 };
 </script>

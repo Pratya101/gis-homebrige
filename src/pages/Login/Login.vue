@@ -89,7 +89,12 @@ export default {
   },
   methods: {
     ...mapActions("register", ["registerUser", "registerError"]),
-    ...mapActions("auth", ["loginUser", "receiveToken", "receiveLogin"]),
+    ...mapActions("auth", [
+      "loginUser",
+      "receiveToken",
+      "receiveLogin",
+      "updateLoginStatus",
+    ]),
     async login() {
       // const email = this.email;
       // const password = this.password;
@@ -103,8 +108,12 @@ export default {
         path: "login",
         body: body,
       });
-
-      data.response ? this.$router.push("/map") : (this.alert = true);
+      if (data.response) {
+        this.updateLoginStatus(true);
+        this.$router.push("/map");
+      } else {
+        this.alert = true;
+      }
     },
     googleLogin() {
       this.loginUser({ social: "google" });

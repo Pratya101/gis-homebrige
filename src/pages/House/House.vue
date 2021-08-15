@@ -2,18 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="6">
-        <h2>
-          <v-icon
-            style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-            >mdi-format-list-bulleted</v-icon
-          >
+        <h3>
+          <v-icon>mdi-format-list-bulleted</v-icon>
           รายการข้อมูลครัวเรื่อน
-        </h2>
+        </h3>
       </v-col>
       <v-col cols="12" md="6" class="d-md-flex justify-md-end">
         <v-btn

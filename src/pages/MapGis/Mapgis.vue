@@ -1,16 +1,11 @@
 <template>
-  <v-container fluid class="icons-page mt-3">
+  <v-container class="icons-page mt-3">
     <v-row>
       <v-col class="order-first" cols="12" md="9">
-        <h2>
-          <v-icon
-            style="background: #686868;-webkit-background-clip: text;background-clip: text;color: transparent;text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;font-size: 30px;"
-          >
-            mdi-map-marker-radius-outline</v-icon
-          >
+        <h3>
+          <v-icon>mdi-map-marker-radius-outline</v-icon>
           แผนที่ GIS
-        </h2>
-
+        </h3>
         <longdo-map
           :location="locationStart"
           :lastView="false"
@@ -31,105 +26,99 @@
         </longdo-map>
       </v-col>
       <v-col class="order-last" cols="12" md="3">
-        <h2>
-          <v-icon
-            style="background: #686868;-webkit-background-clip: text;background-clip: text;color: transparent;text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;font-size: 30px;"
-          >
-            fa-search</v-icon
-          >
+        <h3>
+          <v-icon>mdi-magnify</v-icon>
           ค้นหา
-        </h2>
-        <v-row class="p-0 m-0">
-          <v-col cols="12" class="p-0 m-0 set-shadow mt-3">
-            <v-text-field
-              placeholder="ชื่อ-นามสกุล"
-              label="ชื่อ-นามสกุล"
-              background-color="#ffffff"
-              outlined
-              hide-detail
-              v-model.trim="search_name"
-            ></v-text-field>
-            <v-autocomplete
-              hide-detail
-              :items="projectNetworkList"
-              v-model.trim="network_id"
-              placeholder="เครือข่าย"
-              label="เครือข่าย"
-              item-value="project_network_id"
-              background-color="#ffffff"
-              item-text="project_network_name"
-              outlined
-            ></v-autocomplete>
-            <v-autocomplete
-              hide-detail
-              :items="projectTypeList"
-              v-model="type_id"
-              placeholder="โครงการพัฒนา"
-              item-value="project_type_id"
-              item-text="project_type_name"
-              background-color="#ffffff"
-              label="โครงการพัฒนา"
-              outlined
-            ></v-autocomplete>
-            <v-autocomplete
-              hide-detail
-              :items="subDistrictsList"
-              v-model="subDistrictSelect"
-              item-value="SUB_DISTRICT_NAME"
-              item-text="SUB_DISTRICT_NAME"
-              placeholder="ตำบล/แขวง"
-              label="ตำบล/แขวง"
-              background-color="#ffffff"
-              outlined
-            ></v-autocomplete>
-            <v-autocomplete
-              hide-detail
-              :items="districtList"
-              v-model="districtSelect"
-              placeholder="อำเภอ/เขต"
-              item-value="DISTRICT_NAME"
-              background-color="#ffffff"
-              item-text="DISTRICT_NAME"
-              label="อำเภอ/เขต"
-              outlined
-            ></v-autocomplete>
-            <v-autocomplete
-              hide-detail
-              :items="provinceList"
-              v-model="provinceSelect"
-              placeholder="จังหวัด"
-              background-color="#ffffff"
-              item-value="PROVINCE_NAME"
-              item-text="PROVINCE_NAME"
-              label="จังหวัด"
-              outlined
-            ></v-autocomplete>
-            <v-autocomplete
-              hide-detail
-              :items="geographyList"
-              v-model="geoSelect"
-              placeholder="ภาค"
-              background-color="#ffffff"
-              item-value="GEO_NAME"
-              item-text="GEO_NAME"
-              label="ภาค"
-              outlined
-            ></v-autocomplete>
+        </h3>
 
-            <v-btn
-              color="primary"
-              class="rounded-lg elevation-4"
-              outlined
-              large
-              block
-              @click="serachHosue"
-            >
-              <v-icon left>fa-search</v-icon>ค้นหา</v-btn
-            >
-          </v-col>
-        </v-row>
+        <v-text-field
+          placeholder="ชื่อ-นามสกุล"
+          label="ชื่อ-นามสกุล"
+          background-color="#ffffff"
+          outlined
+          hide-detail
+          v-model.trim="search_name"
+        ></v-text-field>
+        <v-autocomplete
+          hide-detail
+          :items="projectNetworkList"
+          v-model.trim="network_id"
+          placeholder="เครือข่าย"
+          label="เครือข่าย"
+          item-value="project_network_id"
+          background-color="#ffffff"
+          item-text="project_network_name"
+          outlined
+        ></v-autocomplete>
+        <v-autocomplete
+          hide-detail
+          :items="projectTypeList"
+          v-model="type_id"
+          placeholder="โครงการพัฒนา"
+          item-value="project_type_id"
+          item-text="project_type_name"
+          background-color="#ffffff"
+          label="โครงการพัฒนา"
+          outlined
+        ></v-autocomplete>
+        <v-autocomplete
+          hide-detail
+          :items="subDistrictsList"
+          v-model="subDistrictSelect"
+          item-value="SUB_DISTRICT_NAME"
+          item-text="SUB_DISTRICT_NAME"
+          placeholder="ตำบล/แขวง"
+          label="ตำบล/แขวง"
+          background-color="#ffffff"
+          outlined
+        ></v-autocomplete>
+        <v-autocomplete
+          hide-detail
+          :items="districtList"
+          v-model="districtSelect"
+          placeholder="อำเภอ/เขต"
+          item-value="DISTRICT_NAME"
+          background-color="#ffffff"
+          item-text="DISTRICT_NAME"
+          label="อำเภอ/เขต"
+          outlined
+        ></v-autocomplete>
+        <v-autocomplete
+          hide-detail
+          :items="provinceList"
+          v-model="provinceSelect"
+          placeholder="จังหวัด"
+          background-color="#ffffff"
+          item-value="PROVINCE_NAME"
+          item-text="PROVINCE_NAME"
+          label="จังหวัด"
+          outlined
+        ></v-autocomplete>
+        <v-autocomplete
+          hide-detail
+          :items="geographyList"
+          v-model="geoSelect"
+          placeholder="ภาค"
+          background-color="#ffffff"
+          item-value="GEO_NAME"
+          item-text="GEO_NAME"
+          label="ภาค"
+          outlined
+        ></v-autocomplete>
+
+        <v-btn
+          color="primary"
+          class="rounded-lg elevation-4"
+          outlined
+          large
+          block
+          @click="serachHosue"
+        >
+          <v-icon left>fa-search</v-icon>ค้นหา</v-btn
+        >
       </v-col>
     </v-row>
+
     <v-row class="mt-5">
       <v-col cols="12" md="6">
         <v-skeleton-loader
@@ -161,7 +150,7 @@
           v-if="!statusLoadData"
         ></v-skeleton-loader>
         <div class="set-shadow" v-if="statusLoadData">
-          <h3 class="pt-3 pl-3">การพัฒนาที่อยู่อาศัยระดับครัวเรือน</h3>
+          <h3>การพัฒนาที่อยู่อาศัยระดับครัวเรือน</h3>
           <ApexChart
             type="donut"
             :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
@@ -328,6 +317,11 @@ export default {
     this.getGraph();
   },
   methods: {
+    event(map) {
+      map.Layers.externalOptions({
+        googleQuery: "key=AIzaSyAzEyvuAAHkVAZWF3VKDf3fKWwtqnjNVQo",
+      });
+    },
     async getGraph() {
       let data = await apiService.get({
         path: "report/graph",
