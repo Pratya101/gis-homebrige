@@ -26,7 +26,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "login",
+      redirect: "Map",
       name: "Layout",
       component: Layout,
 
