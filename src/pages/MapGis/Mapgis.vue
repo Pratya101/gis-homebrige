@@ -150,7 +150,7 @@
           v-if="!statusLoadData"
         ></v-skeleton-loader>
         <div class="set-shadow" v-if="statusLoadData">
-          <h3>การพัฒนาที่อยู่อาศัยระดับครัวเรือน</h3>
+          <h3 class="pt-3 pl-3">การพัฒนาที่อยู่อาศัยระดับครัวเรือน</h3>
           <ApexChart
             type="donut"
             :height="$vuetify.breakpoint.smAndDown ? 300 : 350"

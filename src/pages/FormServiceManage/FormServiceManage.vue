@@ -7,7 +7,11 @@
           แบบฟอร์มเพิ่มโครงการ
         </h3> </v-col
       ><v-col cols="12" md="6" class="d-md-flex justify-md-end rounded-lg">
-        <v-btn outlined color="secondary">
+        <v-btn
+          @click="$router.push('/servicemanage')"
+          outlined
+          color="secondary"
+        >
           <v-icon left small>mdi-undo</v-icon> ย้อนกลับ</v-btn
         >
       </v-col>

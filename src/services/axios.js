@@ -1,5 +1,5 @@
 const axios = require("axios");
-const www = "http://13.250.39.5:5000/";
+const www = "https://gis-homebrige.org/api/";
 let token = localStorage.getItem("token");
 
 const apiService = {

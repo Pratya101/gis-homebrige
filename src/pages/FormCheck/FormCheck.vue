@@ -8,7 +8,6 @@
         </h3>
       </v-col>
     </v-row>
-
     <v-row class="set-shadow mt-0">
       <v-col cols="12 set-text-shadow">
         <v-icon
@@ -347,7 +346,7 @@
         >
       </v-col>
     </v-row>
-    <v-dialog v-model="dialogSelectLocation" max-width="600">
+    <v-dialog v-model="dialogSelectLocation" max-width="1200">
       <v-card>
         <v-card-title>
           ตำแหน่ง :
@@ -390,6 +389,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogther"></v-dialog>
   </v-container>
 </template>
 

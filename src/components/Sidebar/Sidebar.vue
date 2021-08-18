@@ -147,6 +147,11 @@ export default {
     },
   },
   mounted() {
+    if (localStorage.getItem("token")) {
+      this.statusLogin = true;
+    } else {
+      this.statusLogin = false;
+    }
     this.checkMenu();
   },
   methods: {

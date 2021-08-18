@@ -1,8 +1,8 @@
 const hostApi =
   process.env.NODE_ENV === "development"
-    ? "http://13.250.39.5"
-    : "http://13.250.39.5";
-const portApi = process.env.NODE_ENV === "development" ? "5000" : "5000";
+    ? "https://gis-homebrige.org/api"
+    : "https://gis-homebrige.org/api";
+const portApi = process.env.NODE_ENV === "development" ? "" : "";
 const baseURLApi = `${hostApi}${portApi ? `:${portApi}` : ``}`;
 const redirectUrl =
   process.env.NODE_ENV === "development"

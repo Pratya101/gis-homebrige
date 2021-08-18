@@ -113,9 +113,9 @@ export default {
           พิกัดLon: "form_long",
           หมวดการพัฒนา: "form_improvement",
           สถานะการพัฒนา: "status_project",
-          รูปภาพขั้นเตรียมข้อมูล: "",
-          รูปภาพขั้นตอนกำลังดำเนินงาน: "",
-          รูปภาพขั้นตอนดำเนินเสร็จสิ้น: "",
+          รูปภาพขั้นเตรียมข้อมูล: "images_prepare",
+          รูปภาพขั้นตอนกำลังดำเนินงาน: "images_progress",
+          รูปภาพขั้นตอนดำเนินเสร็จสิ้น: "images_success",
         };
         this.getFollowList();
       } else {
@@ -156,7 +156,18 @@ export default {
       let data = await apiService.get({
         path: "report/formproject",
       });
+      console.log("data report :", data.data);
       this.reportList = data.data;
+      data.data.images.images_prepare.forEach((element) => {
+        this.reportList.images_prepare.push(element);
+      });
+      data.data.images.images_progress.forEach((element) => {
+        this.reportList.images_progress.push(element);
+      });
+      data.data.images.images_success.forEach((element) => {
+        this.reportList.images_success.push(element);
+      });
+      console.log("report list : ", this.reportList);
     },
     async getHouseList() {
       let data = await apiService.get({
