@@ -9,8 +9,11 @@
         <longdo-map
           :location="locationStart"
           :lastView="false"
-          :zoom="zoom"
+          @load="event"
+          :zoom="6"
+          :zoomRange="rangs"
           class="set-shadow"
+          stringlanguage="en"
           style="height:670px"
         >
           <longdo-map-marker
@@ -183,6 +186,7 @@
     </v-row>
   </v-container>
 </template>
+
 <script>
 import ApexChart from "vue-apexcharts";
 import config from "@/config";
@@ -191,13 +195,21 @@ import subDistricts from "@/data/subDistricts";
 import district from "@/data/districts";
 import province from "@/data/provinces";
 import geography from "@/data/geography";
+import { LongdoMap, LongdoMapMarker } from "longdo-map-vue";
+
+LongdoMap.init({ apiKey: "4950658d2b8d1babc2e9f4b2515bd9d3" });
 export default {
   components: {
     ApexChart,
+    LongdoMap,
+    LongdoMapMarker,
   },
   name: "Maps",
   data() {
     return {
+      layers: {
+        base: "GOOGLE_SATELLITE",
+      },
       subDistrictsList: subDistricts,
       districtList: district,
       provinceList: province,
@@ -286,6 +298,7 @@ export default {
         },
       },
       locationStart: null,
+      rangs: { min: 3, max: 19 },
       markers: [],
       projectTypeList: [],
       projectNetworkList: [],
@@ -317,9 +330,9 @@ export default {
     this.getGraph();
   },
   methods: {
-    event(map) {
-      map.Layers.externalOptions({
-        googleQuery: "key=AIzaSyAzEyvuAAHkVAZWF3VKDf3fKWwtqnjNVQo",
+    async event(map) {
+      await map.Layers.externalOptions({
+        googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
       });
     },
     async getGraph() {

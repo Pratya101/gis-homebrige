@@ -405,11 +405,17 @@ import house_need from "@/data/house_need.json";
 import house_format from "@/data/house_format.json";
 import solids from "@/data/solids.json";
 import { apiService } from "@/services/axios";
+import { LongdoMap } from "longdo-map-vue";
+LongdoMap.init({ apiKey: "4950658d2b8d1babc2e9f4b2515bd9d3" });
 export default {
+  components: {
+    LongdoMap,
+  },
   name: "Icons",
   data() {
     return {
       //data for select
+      dialogther: false,
       locationList: location_new,
       perfixList: perfix_data.data,
       memberStatusList: member_status.data,
@@ -500,7 +506,11 @@ export default {
     selectLocation() {
       this.dialogSelectLocation = true;
     },
+
     event(map) {
+      map.Layers.externalOptions({
+        googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
+      });
       map.Event.bind("drag", () => {
         this.lat = map.location().lat;
         this.lon = map.location().lon;
