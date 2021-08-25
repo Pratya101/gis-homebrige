@@ -319,7 +319,7 @@ export default {
     this.districtSelect = "ทั้งหมด";
     this.provinceSelect = "ทั้งหมด";
     this.geoSelect = "ทั้งหมด";
-    event()
+    // this.event()
     if (this.$route.query.id) {
       this.locationStart = null;
       this.getHouse(this.$route.query.id);
