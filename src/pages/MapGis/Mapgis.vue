@@ -14,7 +14,7 @@
           :zoomRange="rangs"
           class="set-shadow"
           stringlanguage="en"
-          style="height:670px"
+          style="height:580px"
         >
           <longdo-map-marker
             v-for="(item, i) in markers"
@@ -38,16 +38,28 @@
           placeholder="ชื่อ-นามสกุล"
           label="ชื่อ-นามสกุล"
           background-color="#ffffff"
+          dense
           outlined
-          hide-detail
           v-model.trim="search_name"
         ></v-text-field>
+        <v-autocomplete
+          :items="addressStatusList"
+          v-model.trim="addressStatus"
+          item-value="project_network_name"
+          item-text="project_network_name"
+          outlined
+          label="สภาพที่อยู่อาศัย"
+          dense
+          placeholder="สภาพที่อยู่อาศัย"
+          background-color="#ffffff"
+        ></v-autocomplete>
         <v-autocomplete
           hide-detail
           :items="projectNetworkList"
           v-model.trim="network_id"
           placeholder="เครือข่าย"
           label="เครือข่าย"
+          dense
           item-value="project_network_id"
           background-color="#ffffff"
           item-text="project_network_name"
@@ -57,6 +69,7 @@
           hide-detail
           :items="projectTypeList"
           v-model="type_id"
+          dense
           placeholder="โครงการพัฒนา"
           item-value="project_type_id"
           item-text="project_type_name"
@@ -72,6 +85,7 @@
           item-text="SUB_DISTRICT_NAME"
           placeholder="ตำบล/แขวง"
           label="ตำบล/แขวง"
+          dense
           background-color="#ffffff"
           outlined
         ></v-autocomplete>
@@ -79,6 +93,7 @@
           hide-detail
           :items="districtList"
           v-model="districtSelect"
+          dense
           placeholder="อำเภอ/เขต"
           item-value="DISTRICT_NAME"
           background-color="#ffffff"
@@ -95,6 +110,7 @@
           item-value="PROVINCE_NAME"
           item-text="PROVINCE_NAME"
           label="จังหวัด"
+          dense
           outlined
         ></v-autocomplete>
         <v-autocomplete
@@ -107,6 +123,7 @@
           item-text="GEO_NAME"
           label="ภาค"
           outlined
+          dense
         ></v-autocomplete>
 
         <v-btn
@@ -186,7 +203,10 @@
     </v-row>
   </v-container>
 </template>
-
+<script
+  type="text/javascript"
+  src="https://api.longdo.com/map/?key=4950658d2b8d1babc2e9f4b2515bd9d3"
+></script>
 <script>
 import ApexChart from "vue-apexcharts";
 import config from "@/config";
@@ -195,8 +215,8 @@ import subDistricts from "@/data/subDistricts";
 import district from "@/data/districts";
 import province from "@/data/provinces";
 import geography from "@/data/geography";
+import address_status from "@/data/address_status.json";
 import { LongdoMap, LongdoMapMarker } from "longdo-map-vue";
-
 LongdoMap.init({ apiKey: "4950658d2b8d1babc2e9f4b2515bd9d3" });
 export default {
   components: {
@@ -207,9 +227,8 @@ export default {
   name: "Maps",
   data() {
     return {
-      layers: {
-        base: "GOOGLE_SATELLITE",
-      },
+      addressStatusList: [],
+      addressStatus: "",
       subDistrictsList: subDistricts,
       districtList: district,
       provinceList: province,
@@ -310,6 +329,9 @@ export default {
     };
   },
   mounted() {
+    this.addressStatusList = address_status.data;
+    this.addressStatusList.unshift("ทั้งหมด");
+    this.addressStatus = "ทั้งหมด";
     this.getProjectNetWorkList();
     this.getProjectTypeList();
     this.subDistrictsList.unshift({ SUB_DISTRICT_NAME: "ทั้งหมด" });
@@ -334,6 +356,7 @@ export default {
       await map.Layers.externalOptions({
         googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
       });
+      map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
     },
     async getGraph() {
       let data = await apiService.get({

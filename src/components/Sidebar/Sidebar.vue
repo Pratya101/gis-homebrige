@@ -184,6 +184,11 @@ export default {
             icon: "mdi-file",
             link: "/reports",
           },
+          {
+            title: "ผู้ใช้งาน",
+            icon: "mdi-account-supervisor-outline",
+            link: "/users",
+          },
         ];
       } else {
         this.items = [

@@ -324,6 +324,44 @@
           </v-col>
         </v-radio-group>
       </v-col>
+      <v-col cols="12">
+         <label>อัพโหลดรูปภาพครัวเรือน</label>
+        <el-upload action="#" list-type="picture-card" :auto-upload="false">
+          <i slot="default" class="el-icon-plus"></i>
+          <div slot="file" slot-scope="{ file }">
+            <img
+              class="el-upload-list__item-thumbnail"
+              :src="file.url"
+              alt=""
+            />
+            <span class="el-upload-list__item-actions">
+              <span
+                class="el-upload-list__item-preview"
+                @click="handlePictureCardPreview(file)"
+              >
+                <i class="el-icon-zoom-in"></i>
+              </span>
+              <span
+                v-if="!disabled"
+                class="el-upload-list__item-delete"
+                @click="handleDownload(file)"
+              >
+                <i class="el-icon-download"></i>
+              </span>
+              <span
+                v-if="!disabled"
+                class="el-upload-list__item-delete"
+                @click="handleRemove(file)"
+              >
+                <i class="el-icon-delete"></i>
+              </span>
+            </span>
+          </div>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="100%" :src="dialogImageUrl" alt="" />
+        </el-dialog>
+      </v-col>
       <v-col cols="12" class="pt-0 text-right">
         <v-btn
           color="primary"
@@ -392,7 +430,10 @@
     <v-dialog v-model="dialogther"></v-dialog>
   </v-container>
 </template>
-
+<script
+  type="text/javascript"
+  src="https://api.longdo.com/map/?key=4950658d2b8d1babc2e9f4b2515bd9d3"
+></script>
 <script>
 import location_new from "@/data/locations.json";
 import perfix_data from "@/data/perfix_data.json";
@@ -414,6 +455,9 @@ export default {
   name: "Icons",
   data() {
     return {
+      dialogImageUrl: "",
+      dialogVisible: false,
+      disabled: false,
       //data for select
       dialogther: false,
       locationList: location_new,
@@ -459,6 +503,16 @@ export default {
   },
   watch: {},
   methods: {
+    handleRemove(file) {
+      console.log(file);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
+    },
     async sendForm() {
       let body = {
         form_id_card: this.idCard,
@@ -511,6 +565,7 @@ export default {
       map.Layers.externalOptions({
         googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
       });
+      map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
       map.Event.bind("drag", () => {
         this.lat = map.location().lat;
         this.lon = map.location().lon;

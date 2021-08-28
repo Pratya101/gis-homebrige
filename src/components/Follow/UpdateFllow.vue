@@ -79,7 +79,7 @@
           <v-btn
             color="error"
             outlined
-            @click="dialog = false"
+            @click="close()"
             class="rounded-lg elevation-4 set-font-kanit"
             x-large
           >
@@ -171,6 +171,10 @@ export default {
   },
 
   methods: {
+    close() {
+      this.dialog = false;
+      this.imageList = [];
+    },
     updateStatusSuccess() {
       this.$notify.success({
         title: "อัพเดทสถานะสำเร็จ",
@@ -185,6 +189,7 @@ export default {
     },
     ...mapActions("house", ["updateStatusHouse"]),
     udpateStatue() {
+      this.$refs.upload.clearFiles();
       this.updateStatusHouse(null);
     },
     mapData(data) {
@@ -192,7 +197,6 @@ export default {
       this.dialog = true;
     },
     getImage(file, filelist) {
-      console.log("file : ", file);
       this.imageList = filelist;
     },
     async updateStatus() {

@@ -10,35 +10,25 @@
     "value": "form_id_card",
     "class": "white--text"
   },
+
   {
     "text": "ชื่อ-นามสกุล",
     "value": "form_fname",
     "class": "white--text"
   },
   {
-    "text": "สภาพที่อยู่อาศัย",
+    "text": "Username",
     "value": "form_living",
     "class": "white--text"
   },
   {
-    "text": "ตำบล",
+    "text": "Password",
     "value": "form_sub_district",
     "class": "white--text"
   },
   {
-    "text": "อำเภอ",
-    "value": "form_district",
-    "class": "white--text"
-  },
-  {
-    "text": "จังหวัด",
-    "value": "form_province",
-    "class": "white--text"
-  },
-  {
     "text": "ตัวเลือก",
-    "value": "actions",
-    "class": "white--text",
-    "width": 120
+    "value": "form_sub_district",
+    "class": "white--text"
   }
 ]
