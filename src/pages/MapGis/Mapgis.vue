@@ -203,10 +203,14 @@
     </v-row>
   </v-container>
 </template>
+<<<<<<< HEAD
 <script
   type="text/javascript"
   src="https://api.longdo.com/map/?key=4950658d2b8d1babc2e9f4b2515bd9d3"
 ></script>
+=======
+<script type="text/javascript" src="https://api.longdo.com/map/?key=4950658d2b8d1babc2e9f4b2515bd9d3"></script>
+>>>>>>> b86e2ecb809584d17c19b4e0fb2e438e984644d9
 <script>
 import ApexChart from "vue-apexcharts";
 import config from "@/config";
@@ -342,6 +346,7 @@ export default {
     this.districtSelect = "ทั้งหมด";
     this.provinceSelect = "ทั้งหมด";
     this.geoSelect = "ทั้งหมด";
+    // this.event()
     if (this.$route.query.id) {
       this.locationStart = null;
       this.getHouse(this.$route.query.id);
@@ -353,10 +358,21 @@ export default {
   },
   methods: {
     async event(map) {
+<<<<<<< HEAD
       await map.Layers.externalOptions({
         googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
       });
       map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
+=======
+      let resExternalOptions = await map.Layers.externalOptions({
+          googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
+       });
+      //  console.log('r ---  : ' , map.Layers.list()) 
+       if(resExternalOptions) {
+          await map.Layers.setBase(longdo.Layers.GOOGLE_HYBRID);
+       }
+  
+>>>>>>> b86e2ecb809584d17c19b4e0fb2e438e984644d9
     },
     async getGraph() {
       let data = await apiService.get({
