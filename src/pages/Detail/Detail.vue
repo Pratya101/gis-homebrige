@@ -2,18 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="8">
-        <h2>
-          <v-icon
-            style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 30px;"
-            >mdi-card-account-details-outline</v-icon
-          >
+        <h3>
+          <v-icon>mdi-card-account-details-outline</v-icon>
           รายละเอียดข้อมูลของ {{ perfix }} {{ fname }} {{ lname }}
-        </h2>
+        </h3>
       </v-col>
       <v-col
         cols="12"
@@ -23,7 +15,7 @@
         <v-btn
           @click="statusEdit = !statusEdit"
           color="warning"
-          class="rounded-lg elevation-3"
+          class="rounded-lg elevation-3 mb-2"
           large
           v-if="!statusEdit"
           outlined
@@ -34,7 +26,7 @@
           v-if="statusEdit"
           @click="statusEdit = !statusEdit"
           color="error"
-          class="rounded-lg elevation-3"
+          class="rounded-lg elevation-3 mb-2"
           large
           outlined
         >
@@ -375,10 +367,84 @@
           </v-col>
         </v-radio-group>
       </v-col>
-      <v-col cols="12" class="pt-0 text-right">
+      <v-col cols="12">
+        <label>รูปภาพ</label>
+
+        <v-row>
+          <v-col cols="12" v-if="imageList.length == 0">
+            <strong class="error--text">ไม่มีรูปภาพ !</strong>
+          </v-col>
+          <v-col
+            v-else
+            cols="6"
+            md="4"
+            lg="3"
+            v-for="(item, index) in imageList"
+            :key="index"
+          >
+            <v-card>
+              <v-img height="150" :src="item"></v-img>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-tooltip color="#212121" bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      :disabled="!statusEdit"
+                      v-bind="attrs"
+                      v-on="on"
+                      small
+                      class="me-2"
+                      @click="showSelectEditImage(item)"
+                      color="primary"
+                      ><v-icon>mdi-pencil-outline</v-icon></v-btn
+                    >
+                  </template>
+                  <span>แก้ไขรูปภาพ</span>
+                </v-tooltip>
+                <v-tooltip color="#212121" bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      :disabled="!statusEdit"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="handleRemoveImage(item)"
+                      small
+                      class="px-1"
+                      color="error"
+                      ><v-icon>mdi-delete-outline</v-icon></v-btn
+                    >
+                  </template>
+                  <span>ลบไขรูปภาพ</span>
+                </v-tooltip>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" md="6" class="pt-0">
+        <input
+          type="file"
+          style="display:none;"
+          @change="previewFiles"
+          ref="selectImage"
+        />
         <v-btn
           color="primary"
           x-large
+          :disabled="!statusEdit"
+          class="set-font-kanit rounded-lg elevation-4 me-2"
+          @click="showSelectImage"
+          outlined
+        >
+          <v-icon left>fa-plus</v-icon>
+          เพิ่มรูปภาพ</v-btn
+        >
+      </v-col>
+      <v-col cols="12" md="6" class="pt-0 text-right">
+        <v-btn
+          color="primary"
+          x-large
+          :disabled="!statusEdit"
           @click="updateFormData"
           class="set-font-kanit rounded-lg elevation-4 me-2"
           outlined
@@ -389,6 +455,7 @@
         <v-btn
           color="error"
           x-large
+          :disabled="!statusEdit"
           class="set-font-kanit rounded-lg elevation-4"
           outlined
         >
@@ -500,14 +567,90 @@ export default {
       districtName: "",
       provinceName: "",
       geoName: "",
+      imageList: [],
+      file: null,
+      statusEditImage: false,
+      oldFileEdit: "",
     };
   },
   mounted() {
     this.form_id = this.$route.query.id;
     this.getFormData();
   },
-
   methods: {
+    showSelectEditImage(file) {
+      console.log("file edit : ", file);
+      this.oldFileEdit = file;
+      this.statusEditImage = true;
+      this.$refs.selectImage.click();
+    },
+    showSelectImage() {
+      this.$refs.selectImage.click();
+    },
+    previewFiles(event) {
+      this.file = event.target.files[event.target.files.length - 1];
+      if (this.statusEditImage) {
+        this.updateImage();
+      } else {
+        this.addImage();
+      }
+    },
+    async updateImage() {
+      let formData = new FormData();
+      formData.append("images", this.file);
+      formData.append("old_images", this.oldFileEdit);
+      let data = await apiService.put({
+        path: "form/images/edit",
+        param: this.form_id,
+        body: formData,
+      });
+      data.response
+        ? this.$notify.success({
+            title: "สำเร็จ",
+            message: "แก้ไขรูปภาพเรียบร้อยแล้ว",
+          })
+        : this.$notify.error({
+            title: "ผิดพลาด",
+            message: data.message,
+          });
+      this.getFormData();
+      this.statusEditImage = false;
+    },
+    async addImage() {
+      let formData = new FormData();
+      formData.append(`images`, this.file);
+      let data = await apiService.put({
+        path: "form/images",
+        param: this.form_id,
+        body: formData,
+      });
+      data.response
+        ? this.$notify.success({
+            title: "สำเร็จ",
+            message: "เพิ่มรูปภาพเรียบร้อยแล้ว",
+          })
+        : this.$notify.error({
+            title: "ผิดพลาด",
+            message: data.message,
+          });
+      this.getFormData();
+    },
+    async deleteAll() {
+      let data = await apiService.delete({
+        path: "form/images",
+        param: this.form_id,
+      });
+      data.response
+        ? this.$notify.success({
+            title: "สำเร็จ",
+            message: "ลบรูปภาพเรียบร้อยแล้ว",
+          })
+        : this.$notify.error({
+            title: "ผิดพลาด",
+            message: data.message,
+          });
+      this.getFormData();
+    },
     async updateFormData() {
       let body = {
         form_id_card: this.idCard,
@@ -583,6 +726,7 @@ export default {
         SUB_DISTRICT_NAME: data.form_sub_district,
         ZIPCODE: data.form_zipcode,
       };
+      this.imageList = data.images;
     },
     selectLocation() {
       this.dialogSelectLocation = true;
@@ -594,6 +738,27 @@ export default {
 
         this.gpsLocation = `${map.location().lat},${map.location().lon}`;
       });
+    },
+    async handleRemoveImage(file) {
+      let images = file.replace(
+        `https://gis-homebrige.org/api/assets/images/form/`,
+        ""
+      );
+
+      let data = await apiService.delete({
+        path: "form/images",
+        param: `${this.form_id}/${images}`,
+      });
+      data.response
+        ? this.$notify.success({
+            title: "สำเร็จ",
+            message: "ลบรูปภาพ เรียบร้อยแล้ว",
+          })
+        : this.$notify.error({
+            title: "ผิดพลาด",
+            message: data.message,
+          });
+      this.getFormData();
     },
   },
 };

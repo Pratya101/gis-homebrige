@@ -28,6 +28,7 @@
 import { apiService } from "@/services/axios";
 import serviceManagerTableHeader from "./service-manager-table-header";
 import address_status from "@/data/address_status.json";
+import { mapState } from "vuex";
 export default {
   name: "Icons",
   data() {
@@ -40,15 +41,24 @@ export default {
       address_status_list: [],
     };
   },
+  computed: {
+    ...mapState("house", ["searDataReport"]),
+  },
+  watch: {
+    searDataReport(value) {
+      this.getProjectList(value);
+    },
+  },
   mounted() {
     this.getProjectList();
     this.address_status_list = address_status.data;
     this.address_status_list.unshift("ทั้งหมด");
   },
   methods: {
-    async getProjectList() {
-      let data = await apiService.get({
+    async getProjectList(body) {
+      let data = await apiService.post({
         path: "report/project",
+        body: body,
       });
       this.projectList = data.data;
     },

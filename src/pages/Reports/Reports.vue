@@ -1,40 +1,79 @@
 <template>
   <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col cols="12" class="mb-0 py-0">
-        <h3>
-          <v-icon>mdi-file-excel-outline</v-icon>
-          รายงาน
-        </h3>
+      <v-col cols="12" md="7" class="mb-0 py-0">
+        <h3 class="mt-5"><v-icon>mdi-file-excel-outline</v-icon> รายงาน</h3>
       </v-col>
-      <v-col cols="12" md="6" class="my-0 py-0">
+      <v-col cols="12" md="5" class="mb-0 py-0 d-flex justify-content-end">
         <v-select
           v-model="reportTypeSelect"
           outlined
           label="เลือกประเภทรายงาน"
           hide-details
           background-color="#ffffff"
-          class="elevation-3 rounded-lg"
+          class="rounded-lg pt-4 me-2"
           item-value="value"
           item-text="text"
           :items="reportsType"
         ></v-select>
-      </v-col>
-      <v-col cols="12" md="6" class="d-flex justify-md-end py-0">
         <download-excel
           :name="reportName"
           :data="reportList"
           :fields="title"
+          v-if="reportTypeSelect != 0"
           class="pt-4"
         >
-          <v-btn large color="primary" class=" rounded-lg elevation-3" outlined>
+          <v-btn
+            x-large
+            color="primary"
+            class=" rounded-lg elevation-3"
+            outlined
+          >
             <v-icon left>mdi-file-excel-outline</v-icon>ออกรายงาน
           </v-btn>
         </download-excel>
       </v-col>
+      <v-col cols="12" v-if="reportTypeSelect == 0">
+        <div class="text-center mt-10">
+          <v-icon
+            style="background: #686868;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
+  font-size: 120px;"
+            >mdi-file-document-outline</v-icon
+          >
+          <div
+            style="background: #686868;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
+  font-size: 80px;"
+          >
+            รายงาน
+          </div>
+        </div>
+      </v-col>
     </v-row>
+    <SearchHouseReport
+      v-on:onSearch="getHouseList"
+      class="mt-6"
+      v-if="reportTypeSelect == 1"
+    ></SearchHouseReport>
+    <SearchFollowReport
+      v-on:onSearch="getFollowList"
+      class="my-6"
+      v-if="reportTypeSelect == 2"
+    ></SearchFollowReport>
+    <SearchProjectReport
+      v-on:onSearch="getProjectList"
+      class="my-6"
+      v-if="reportTypeSelect == 3"
+    ></SearchProjectReport>
     <v-row>
-      <v-col cols="12" class="my-0">
+      <v-col cols="12 mt-0 pt-0">
         <HouseReport v-if="reportTypeSelect == 1"></HouseReport>
         <FollowReport v-if="reportTypeSelect == 2"></FollowReport>
         <ProjectReport v-if="reportTypeSelect == 3"></ProjectReport>
@@ -48,30 +87,55 @@ import { apiService } from "@/services/axios";
 import HouseReport from "@/components/Reports/HouseReport";
 import FollowReport from "@/components/Reports/FollowReport";
 import ProjectReport from "@/components/Reports/ProjectReport";
+import SearchHouseReport from "@/components/Reports/SearchHouseReport";
+import SearchFollowReport from "@/components/Reports/SearchFollowReport";
+import SearchProjectReport from "@/components/Reports/SearchProjectReport";
+import { mapState } from "vuex";
 export default {
   name: "Reports",
-  components: { HouseReport, FollowReport, ProjectReport },
+  components: {
+    HouseReport,
+    FollowReport,
+    ProjectReport,
+    SearchHouseReport,
+    SearchFollowReport,
+    SearchProjectReport,
+  },
   data() {
     return {
       dialog: false,
-      reportTypeSelect: 1,
+      reportTypeSelect: 0,
       title: {},
       reportsType: [
+        { value: 0, text: "เลือกรายงาน" },
         { value: 1, text: "รายงานข้อมูลครัวเรือน" },
         { value: 2, text: "รายงานข้อมูลติดตามการพัฒนา" },
         { value: 3, text: "รายงานข้อมูลการบริการโครงการ" },
       ],
       reportList: [],
-      reportName: "",
+      reportName: "รายงานข้อมูลครัวเรือน",
     };
+  },
+  computed: {
+    ...mapState("house", ["searDataReport"]),
   },
   mounted() {
     this.getHouseList();
   },
   watch: {
+    searDataReport(value) {
+      console.log("data report type");
+      if (this.reportTypeSelect == 1) {
+        this.getHouseList(value);
+      } else if (this.reportTypeSelect == 2) {
+        this.getFollowList(value);
+      } else if (this.reportTypeSelect == 3) {
+        this.getProjectList(value);
+      }
+    },
     reportTypeSelect(value) {
-      console.log("report type select : ", value);
       if (value == 1) {
+        this.reportName = "รายงานข้อมูลครัวเรือน";
         this.title = {
           เลขประจำตัวประชาชน: "form_id_card",
           คำนำหน้า: "form_unit",
@@ -95,8 +159,6 @@ export default {
           สถานะที่ดิน: "form_land",
           รูปภาพที่อยู่อาศัย: "home_img",
         };
-        this.reportName = "รายงานข้อมูลครัวเรือน";
-        this.getHouseList();
       } else if (value == 2) {
         this.reportName = "รายงานข้อมูลติดตามการพัฒนา";
         this.title = {
@@ -117,8 +179,7 @@ export default {
           รูปภาพขั้นตอนกำลังดำเนินงาน: "images_progress",
           รูปภาพขั้นตอนดำเนินเสร็จสิ้น: "images_success",
         };
-        this.getFollowList();
-      } else {
+      } else if (value == 3) {
         this.title = {
           ชื่อโครงการ: "project_name",
           ประเภทโครงการ: "project_type_name",
@@ -141,37 +202,28 @@ export default {
           อื่นๆ: "project_budget",
         };
         this.reportName = "รายงานข้อมูลการบริการโครงการ";
-        this.getProjectList();
       }
     },
   },
   methods: {
-    async getProjectList() {
-      let data = await apiService.get({
+    async getProjectList(body) {
+      let data = await apiService.post({
         path: "report/project",
+        body: body,
       });
       this.reportList = data.data;
     },
-    async getFollowList() {
-      let data = await apiService.get({
+    async getFollowList(body) {
+      let data = await apiService.post({
         path: "report/formproject",
+        body: body,
       });
-      console.log("data report :", data.data);
       this.reportList = data.data;
-      data.data.images.images_prepare.forEach((element) => {
-        this.reportList.images_prepare.push(element);
-      });
-      data.data.images.images_progress.forEach((element) => {
-        this.reportList.images_progress.push(element);
-      });
-      data.data.images.images_success.forEach((element) => {
-        this.reportList.images_success.push(element);
-      });
-      console.log("report list : ", this.reportList);
     },
-    async getHouseList() {
-      let data = await apiService.get({
+    async getHouseList(body) {
+      let data = await apiService.post({
         path: "report/form",
+        body: body,
       });
       this.reportList = data.data;
     },

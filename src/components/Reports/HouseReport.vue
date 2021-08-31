@@ -1,28 +1,30 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="houseList"
-    :search="search"
-    class="material-table set-shadow"
-    :mobile-breakpoint="0"
-  >
-    <template v-slot:[`item.form_id`]="{ index }">
-      {{ index + 1 }}
-    </template>
-    <template v-slot:[`item.form_fname`]="{ item }">
-      {{ item.form_unit }} {{ item.form_fname }} {{ item.form_lname }}
-    </template>
-  </v-data-table>
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="houseList"
+      class="material-table set-shadow"
+      :mobile-breakpoint="0"
+    >
+      <template v-slot:[`item.form_id`]="{ index }">
+        {{ index + 1 }}
+      </template>
+      <template v-slot:[`item.form_fname`]="{ item }">
+        {{ item.form_unit }} {{ item.form_fname }} {{ item.form_lname }}
+      </template>
+    </v-data-table>
+  </div>
 </template>
 <script>
 import { apiService } from "@/services/axios";
 import houseTableHeader from "./house-table-header";
 import address_status from "@/data/address_status.json";
+import { mapState } from "vuex";
 export default {
   name: "Icons",
+
   data() {
     return {
-      search: null,
       headers: houseTableHeader,
       address_status_list: [],
       dialog: false,
@@ -30,20 +32,29 @@ export default {
     };
   },
   mounted() {
-    this.getHouseList();
     this.address_status_list = address_status.data;
     this.address_status_list.unshift("ทั้งหมด");
   },
+  computed: {
+    ...mapState("house", ["searDataReport"]),
+  },
+
   watch: {
+    searDataReport(value) {
+      this.getHouseList(value);
+    },
     search(value) {
       value == "ทั้งหมด" ? (this.search = "") : value;
     },
   },
   methods: {
-    async getHouseList() {
-      let data = await apiService.get({
+    async getHouseList(body) {
+      console.log("data get hosue : ", body);
+      let data = await apiService.post({
         path: "report/form",
+        body: body,
       });
+      console.log("tabel ", body);
       this.houseList = data.data;
     },
     map(id) {

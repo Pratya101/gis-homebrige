@@ -42,11 +42,11 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-avatar size="40" v-bind="attrs" v-on="on" class="mr-3">
-          <img src="@/assets/img/image.png" alt="ผู้ใช้งาน" />
+          <img src="@/assets/img/profile.jpg" alt="ผู้ใช้งาน" />
         </v-avatar>
       </template>
       <v-list>
-        <v-list-item-group color="primary">
+        <!-- <v-list-item-group color="primary">
           <v-list-item v-for="(item, i) in account" :key="i">
             <v-list-item-icon class="mr-4">
               <v-icon :color="item.color" v-text="item.icon"></v-icon>
@@ -58,7 +58,7 @@
               ></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-        </v-list-item-group>
+        </v-list-item-group> -->
         <div class="d-flex justify-center my-3">
           <v-btn
             width="80%"
@@ -73,13 +73,16 @@
       </v-list>
     </v-menu>
     <div v-if="statusLogin" class="greeting-text mr-3 d-none d-md-block">
-      <span>John Smith</span>
+      <span v-if="user != null"
+        >{{ user.user_fname }} {{ user.user_lname }}</span
+      >
     </div>
   </v-app-bar>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { apiService } from "@/services/axios";
 import config from "../../config";
 
 export default {
@@ -90,6 +93,7 @@ export default {
     notificationsBadge: true,
     messageBadge: true,
     statusLogin: false,
+    user: null,
   }),
   mounted() {
     if (localStorage.getItem("token")) {
@@ -118,9 +122,21 @@ export default {
         this.statusLogin = false;
       }
     },
+    statusLogin(value) {
+      if (value) {
+        this.getUsers();
+      }
+    },
   },
 
   methods: {
+    async getUsers() {
+      let data = await apiService.get({
+        path: "user/tokhen",
+      });
+      this.user = data.data;
+    },
+
     logout() {
       localStorage.clear();
       this.statusLogin = false;

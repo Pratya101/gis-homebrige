@@ -107,6 +107,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { apiService } from "@/services/axios";
 export default {
   props: {
     source: String,
@@ -117,6 +118,7 @@ export default {
       sidebarWidth: 260,
       sidebarMinWidth: 96,
       statusLogin: false,
+      role_id: "",
     };
   },
   computed: {
@@ -145,16 +147,34 @@ export default {
       }
       this.checkMenu();
     },
+    statusLogin(value) {
+      if (value) {
+        this.getUsers();
+      }
+    },
   },
   mounted() {
     if (localStorage.getItem("token")) {
       this.statusLogin = true;
+      this.getUsers();
     } else {
       this.statusLogin = false;
     }
     this.checkMenu();
   },
   methods: {
+    async getUsers() {
+      let data = await apiService.get({
+        path: "user/tokhen",
+      });
+      if (data.data.role_id == 1) {
+        this.items.push({
+          title: "ผู้ใช้งาน",
+          icon: "mdi-account-supervisor-outline",
+          link: "/users",
+        });
+      }
+    },
     checkMenu() {
       if (this.statusLogin) {
         this.items = [
@@ -183,11 +203,6 @@ export default {
             title: "รายงาน",
             icon: "mdi-file",
             link: "/reports",
-          },
-          {
-            title: "ผู้ใช้งาน",
-            icon: "mdi-account-supervisor-outline",
-            link: "/users",
           },
         ];
       } else {

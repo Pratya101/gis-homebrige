@@ -1,34 +1,33 @@
 [
   {
     "text": "#",
-    "value": "form_id",
-    "class": "white--text"
-  },
-
-  {
-    "text": "เลขบัตรประชาชน",
-    "value": "form_id_card",
-    "class": "white--text"
-  },
-
-  {
-    "text": "ชื่อ-นามสกุล",
-    "value": "form_fname",
+    "value": "id",
     "class": "white--text"
   },
   {
     "text": "Username",
-    "value": "form_living",
+    "value": "username",
     "class": "white--text"
   },
   {
-    "text": "Password",
-    "value": "form_sub_district",
+    "text": "เลขบัตรประชาชน",
+    "value": "user_id_card",
+    "class": "white--text"
+  },
+  {
+    "text": "ชื่อ-นามสกุล",
+    "value": "user_fname",
+    "class": "white--text"
+  },
+
+  {
+    "text": "เบอร์โทร",
+    "value": "user_tel",
     "class": "white--text"
   },
   {
     "text": "ตัวเลือก",
-    "value": "form_sub_district",
+    "value": "option",
     "class": "white--text"
   }
 ]

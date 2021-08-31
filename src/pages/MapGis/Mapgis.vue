@@ -149,7 +149,7 @@
           type="image"
           v-if="!statusLoadData"
         ></v-skeleton-loader>
-        <div class="set-shadow">
+        <div class="set-shadow" v-if="statusLoadData">
           <h3 class="pt-3 pl-3">ครัวเรือนทั้งหมด</h3>
           <ApexChart
             type="donut"
@@ -203,14 +203,10 @@
     </v-row>
   </v-container>
 </template>
-<<<<<<< HEAD
 <script
   type="text/javascript"
   src="https://api.longdo.com/map/?key=4950658d2b8d1babc2e9f4b2515bd9d3"
 ></script>
-=======
-<script type="text/javascript" src="https://api.longdo.com/map/?key=4950658d2b8d1babc2e9f4b2515bd9d3"></script>
->>>>>>> b86e2ecb809584d17c19b4e0fb2e438e984644d9
 <script>
 import ApexChart from "vue-apexcharts";
 import config from "@/config";
@@ -288,12 +284,8 @@ export default {
         options: {
           chart: {
             type: "donut",
-
-            labels: {
-              show: true,
-            },
           },
-          labels: [],
+          labels: ["เตรียมข้อมูล", "กำลังดำเนินการ", "เสร็จสิ้น"],
           colors: [
             config.light.error,
             config.light.warning,
@@ -330,6 +322,7 @@ export default {
       zoom: 6,
       statusLoadData: false,
       statusLoadMap: false,
+      graphData: {},
     };
   },
   mounted() {
@@ -354,31 +347,18 @@ export default {
       this.locationStart = { lon: 100.4996453, lat: 13.7597661 };
       this.serachHosue();
     }
-    this.getGraph();
   },
   methods: {
     async event(map) {
-<<<<<<< HEAD
       await map.Layers.externalOptions({
         googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
       });
       map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
-=======
-      let resExternalOptions = await map.Layers.externalOptions({
-          googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
-       });
-      //  console.log('r ---  : ' , map.Layers.list()) 
-       if(resExternalOptions) {
-          await map.Layers.setBase(longdo.Layers.GOOGLE_HYBRID);
-       }
-  
->>>>>>> b86e2ecb809584d17c19b4e0fb2e438e984644d9
     },
     async getGraph() {
-      let data = await apiService.get({
-        path: "report/graph",
-      });
-
+      let data = {};
+      data.data = this.graphData;
+      console.log("data ", data.data);
       this.liveingeHouse.series.push(
         data.data.formLiving[0]
           ? data.data.formLiving[0].json_build_object.form_living_total
@@ -394,12 +374,9 @@ export default {
           ? data.data.formLiving[2].json_build_object.form_living_total
           : ""
       );
-      this.houseDev.series.push(data.data.progress.reporn_progress.prepare);
-      this.houseDev.series.push(data.data.progress.reporn_progress.progress);
-      this.houseDev.series.push(data.data.progress.reporn_progress.success);
-      this.houseDev.options.labels = await this.getDataLabels(
-        data.data.progress.reporn_progress
-      );
+      this.houseDev.series.push(data.data.progress.prepare);
+      this.houseDev.series.push(data.data.progress.progress);
+      this.houseDev.series.push(data.data.progress.success);
       data.data.projectType.forEach((element) => {
         this.apexBarGroup.options.xaxis.categories.push(
           element.json_build_object.project_form_type
@@ -449,15 +426,7 @@ export default {
       ];
       this.statusLoadData = true;
     },
-    getDataLabels(labels) {
-      var label = [
-        `เตรียมข้อมูล ${labels.prepare}`,
-        `กำลังดำเนินการ ${labels.progress}`,
-        `เสร็จสิ้น ${labels.success}`,
-      ];
-      // var label = [`เตรียมข้อมูล`, `กำลังดำเนินการ`, `เสร็จสิ้น`];
-      return label;
-    },
+
     async getHouse(id) {
       let data = await apiService.get({
         path: "form",
@@ -467,14 +436,13 @@ export default {
         lon: data.data.form_long,
         lat: data.data.form_lat,
       };
-      this.search_name = `${data.data.form_unit} ${data.data.form_fname} ${data.data.form_lname}`;
+      this.search_name = `${data.data.form_fname}`;
       this.subDistrictSelect = data.data.form_sub_district;
       this.districtSelect = data.data.form_district;
       this.provinceSelect = data.data.form_province;
       this.geoSelect = data.data.form_geo;
 
-      this.zoom = 6;
-      this.addMarker([data.data]);
+      this.serachHosue();
     },
     async getProjectTypeList() {
       let data = await apiService.get({
@@ -496,7 +464,86 @@ export default {
         project_network_name: "ทั้งหมด",
       });
     },
+    clearData() {
+      this.apexBarGroup = {
+        series: [],
+        options: {
+          chart: {
+            type: "bar",
+            height: 430,
+            toolbar: {
+              show: true,
+            },
+          },
+          colors: [
+            config.light.error,
+            config.light.warning,
+            config.light.success,
+          ],
+          legend: {
+            show: true,
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              dataLabels: {
+                position: "top",
+              },
+            },
+          },
+          dataLabels: {
+            enabled: true,
+            offsetX: -6,
+            style: {
+              fontSize: "12px",
+              colors: ["#fff"],
+            },
+          },
+          xaxis: {
+            categories: [],
+          },
+        },
+      };
+      this.houseDev = {
+        series: [],
+        options: {
+          chart: {
+            type: "donut",
+
+            labels: {
+              show: true,
+            },
+          },
+          labels: ["เตรียมข้อมูล", "กำลังดำเนินการ", "เสร็จสิ้น"],
+          colors: [
+            config.light.error,
+            config.light.warning,
+            config.light.success,
+          ],
+        },
+      };
+      this.liveingeHouse = {
+        series: [],
+        options: {
+          chart: {
+            type: "donut",
+            labels: {
+              show: true,
+            },
+          },
+          labels: ["ทรุดโทรมทั้งหลัง", "ทรุดโทรมบางส่วน", "มีสภาพดี"],
+          colors: [
+            config.light.primary,
+            config.light.success,
+            config.light.warning,
+            config.light.info,
+            config.light.secondary,
+          ],
+        },
+      };
+    },
     async serachHosue() {
+      this.clearData();
       this.markers = [];
       let body = {
         search_name: this.search_name,
@@ -511,13 +558,14 @@ export default {
         path: "project/search",
         body: body,
       });
-      console.log("data.data ", data.data.length);
       this.houseList = data.data;
+      this.graphData = data.graph;
       this.zoom = 6;
 
       if (data.data.length > 0) {
         this.addMarker(data.data);
       }
+      this.getGraph();
     },
     addMarker(data) {
       this.markers = [];

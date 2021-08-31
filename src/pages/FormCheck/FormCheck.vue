@@ -325,8 +325,13 @@
         </v-radio-group>
       </v-col>
       <v-col cols="12">
-         <label>อัพโหลดรูปภาพครัวเรือน</label>
-        <el-upload action="#" list-type="picture-card" :auto-upload="false">
+        <label>อัพโหลดรูปภาพครัวเรือน</label>
+        <el-upload
+          :on-change="saveFile"
+          action="#"
+          list-type="picture-card"
+          :auto-upload="false"
+        >
           <i slot="default" class="el-icon-plus"></i>
           <div slot="file" slot-scope="{ file }">
             <img
@@ -464,7 +469,7 @@ export default {
       perfixList: perfix_data.data,
       memberStatusList: member_status.data,
       memberCountList: member_count.data,
-      addressStatusList: address_status.data,
+      addressStatusList: [],
       restoreChanelList: restore_chanel.data,
       houseNeedList: house_need.data,
       houseFormatList: house_format.data,
@@ -499,10 +504,19 @@ export default {
       locationStart: { lon: 102.82363467961038, lat: 16.432227961892437 },
       row: "",
       dialogSelectLocation: false,
+      fileImageUpload: [],
     };
   },
   watch: {},
+  mounted() {
+    this.addressStatusList = address_status.data;
+  },
   methods: {
+    saveFile(file, fileList) {
+      console.log("file ", file);
+      console.log("file list : ", fileList);
+      this.fileImageUpload = fileList;
+    },
     handleRemove(file) {
       console.log(file);
     },
@@ -541,6 +555,20 @@ export default {
         path: "form",
         body: body,
       });
+      data.response
+        ? this.uploadImage(data.data.form_id)
+        : this.saveHouseFailed();
+    },
+    async uploadImage(id) {
+      let formData = new FormData();
+      this.fileImageUpload.forEach((element) => {
+        formData.append(`images`, element.raw);
+      });
+      let data = await apiService.put({
+        path: "form/images",
+        param: id,
+        body: formData,
+      });
       data.response ? this.saveHouseSuccess() : this.saveHouseFailed();
     },
     saveHouseSuccess() {
@@ -556,11 +584,9 @@ export default {
         message: "ไม่สามารถบันทึกข้อมูลได้",
       });
     },
-
     selectLocation() {
       this.dialogSelectLocation = true;
     },
-
     event(map) {
       map.Layers.externalOptions({
         googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",

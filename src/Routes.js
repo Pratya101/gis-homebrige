@@ -29,7 +29,6 @@ export default new Router({
       redirect: "Map",
       name: "Layout",
       component: Layout,
-
       children: [
         {
           path: "/login",

@@ -5,7 +5,7 @@
 
     <v-main>
       <router-view />
-      <Footer />
+      <!-- <Footer /> -->
       <!-- <Helper /> -->
     </v-main>
   </v-app>
@@ -14,12 +14,12 @@
 <script>
 import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import Footer from "@/components/Footer/Footer";
+// import Footer from "@/components/Footer/Footer";
 // import Helper from "@/components/Helper/Helper";
 
 export default {
   name: "Layout",
-  components: { Header, Sidebar, Footer },
+  components: { Header, Sidebar },
 };
 </script>
 
