@@ -7,6 +7,7 @@
           แผนที่ GIS
         </h3>
         <longdo-map
+          v-if="statusLoadMap"
           :location="locationStart"
           :lastView="false"
           @load="event"
@@ -227,6 +228,7 @@ export default {
   name: "Maps",
   data() {
     return {
+      statusLoadMap: true,
       addressStatusList: [],
       addressStatus: "",
       subDistrictsList: subDistricts,
@@ -321,7 +323,6 @@ export default {
       house_id: null,
       zoom: 6,
       statusLoadData: false,
-      statusLoadMap: false,
       graphData: {},
     };
   },
@@ -348,12 +349,14 @@ export default {
       this.serachHosue();
     }
   },
+
   methods: {
     async event(map) {
       await map.Layers.externalOptions({
         googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
       });
       map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
+      this.statusLoadMap = true;
     },
     async getGraph() {
       let data = {};
@@ -585,7 +588,6 @@ export default {
           },
         });
       });
-      this.statusLoadMap = true;
     },
     appendData: function() {
       var arr = this.apexDynamicChart.series.slice();

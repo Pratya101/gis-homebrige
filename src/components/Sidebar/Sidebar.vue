@@ -167,7 +167,7 @@ export default {
       let data = await apiService.get({
         path: "user/tokhen",
       });
-      if (data.data.role_id == 1) {
+      if (data.data.role_id == 1 && this.items.length <= 5) {
         this.items.push({
           title: "ผู้ใช้งาน",
           icon: "mdi-account-supervisor-outline",
