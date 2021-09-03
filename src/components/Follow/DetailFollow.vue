@@ -56,6 +56,10 @@
                     ></v-img>
                   </v-col>
                 </v-row>
+                <p class="mt-3 ml-2">
+                  <strong>รายละเอียด : </strong>
+                  {{ followStatusList.prepare.detail_prepare }}
+                </p>
               </v-list-item-content>
             </v-list-item>
             <v-divider> </v-divider>
@@ -83,6 +87,10 @@
                     ></v-img>
                   </v-col>
                 </v-row>
+                <p class="mt-3 ml-2">
+                  <strong>รายละเอียด : </strong>
+                  {{ followStatusList.progress.detail_progress }}
+                </p>
               </v-list-item-content>
             </v-list-item>
             <v-divider> </v-divider>
@@ -110,6 +118,10 @@
                     ></v-img>
                   </v-col>
                 </v-row>
+                <p class="mt-3 ml-2">
+                  <strong>รายละเอียด : </strong>
+                  {{ followStatusList.success.detail_success }}
+                </p>
               </v-list-item-content>
             </v-list-item>
           </v-list>

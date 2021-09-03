@@ -11,7 +11,7 @@
           :location="locationStart"
           :lastView="false"
           @load="event"
-          :zoom="6"
+          :zoom="zoom"
           :zoomRange="rangs"
           class="set-shadow"
           stringlanguage="en"
@@ -133,7 +133,7 @@
           outlined
           large
           block
-          @click="serachHosue"
+          @click="serachHosue(1)"
         >
           <v-icon left>fa-search</v-icon>ค้นหา</v-btn
         >
@@ -305,13 +305,7 @@ export default {
             },
           },
           labels: ["ทรุดโทรมทั้งหลัง", "ทรุดโทรมบางส่วน", "มีสภาพดี"],
-          colors: [
-            config.light.primary,
-            config.light.success,
-            config.light.warning,
-            config.light.info,
-            config.light.secondary,
-          ],
+          colors: ["#ff0000", "#f45d13", "#2621f7"],
         },
       },
       locationStart: null,
@@ -324,6 +318,7 @@ export default {
       zoom: 6,
       statusLoadData: false,
       graphData: {},
+      form_id: "",
     };
   },
   mounted() {
@@ -431,6 +426,7 @@ export default {
     },
 
     async getHouse(id) {
+      this.statusLoadMap = false;
       let data = await apiService.get({
         path: "form",
         param: id,
@@ -444,6 +440,7 @@ export default {
       this.districtSelect = data.data.form_district;
       this.provinceSelect = data.data.form_province;
       this.geoSelect = data.data.form_geo;
+      this.form_id = data.data.form_id;
 
       this.serachHosue();
     },
@@ -535,24 +532,21 @@ export default {
             },
           },
           labels: ["ทรุดโทรมทั้งหลัง", "ทรุดโทรมบางส่วน", "มีสภาพดี"],
-          colors: [
-            config.light.primary,
-            config.light.success,
-            config.light.warning,
-            config.light.info,
-            config.light.secondary,
-          ],
+          colors: ["#ff0000", "#f45d13", "#2621f7"],
         },
       };
     },
-    async serachHosue() {
+    async serachHosue(status) {
+      this.statusLoadMap = false;
       this.clearData();
       this.markers = [];
       let body = {
+        form_id: status == 1 ? "" : this.form_id,
         search_name: this.search_name,
         network_id: this.network_id,
         type_id: this.type_id,
         sub_district: this.subDistrictSelect,
+        form_living: this.addressStatus,
         district: this.districtSelect,
         province: this.provinceSelect,
         geo: this.geoSelect,
@@ -563,15 +557,16 @@ export default {
       });
       this.houseList = data.data;
       this.graphData = data.graph;
-      this.zoom = 6;
-
       if (data.data.length > 0) {
         this.addMarker(data.data);
+      } else {
+        this.statusLoadMap = true;
       }
       this.getGraph();
     },
-    addMarker(data) {
+    async addMarker(data) {
       this.markers = [];
+
       data.forEach((element) => {
         this.markers.push({
           location: { lon: element.form_long, lat: element.form_lat },
@@ -583,11 +578,20 @@ export default {
           popup: {
             title: `${element.form_unit} ${element.form_fname} ${element.form_lname}`,
             detail: `${element.form_home_id} ${element.form_sub_district} ${element.form_district} ${element.form_province}
-            <br> <strong>สภาพที่อยู่ : </strong> ${element.form_living}`,
+            <br> <strong>สภาพที่อยู่ : </strong> ${element.form_living} <br> <strong>ชื่อโครงการ : </strong> ${element.project_name}`,
             size: { width: 200, height: 100 },
           },
         });
       });
+      console.log("this.markers", this.markers.length);
+      if (this.markers.length == 1) {
+        this.zoom = await 18;
+        this.locationStart = this.markers[0].location;
+      } else {
+        this.zoom = await 6;
+      }
+      this.statusLoadMap = true;
+      // this.markers.length == 1 ? (this.zoom = 18) : (this.zoom = 6);
     },
     appendData: function() {
       var arr = this.apexDynamicChart.series.slice();

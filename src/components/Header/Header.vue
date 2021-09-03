@@ -118,6 +118,7 @@ export default {
     loginStatus(value) {
       if (value) {
         this.statusLogin = true;
+        this.getUsers();
       } else {
         this.statusLogin = false;
       }

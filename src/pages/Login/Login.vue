@@ -49,7 +49,7 @@
       </v-row>
     </v-container>
     <v-snackbar v-model="alert" color="error">
-      {{ message }}
+      Username หรือ Password ไม่ถูกต้อง
       <template v-slot:action="{ attrs }">
         <v-btn dark text v-bind="attrs" @click="alert = false">
           Close
