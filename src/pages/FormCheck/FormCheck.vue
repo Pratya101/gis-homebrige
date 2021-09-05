@@ -26,13 +26,19 @@
         <v-text-field
           outlined
           hide-details
-          label="เลขบัตรประชาชน"
           placeholder="เลขบัตรประชาชน"
           background-color="#ffffff"
           class="rounded-lg "
           type="number"
           v-model.trim="idCard"
-        ></v-text-field>
+        >
+          <template slot="label" v-if="idCard == ''">
+            <span class="error--text">* โปรดระบุเลขบัตรประชาชน</span>
+          </template>
+          <template slot="label" v-else>
+            เลขบัตรประชาชน *
+          </template>
+        </v-text-field>
       </v-col>
       <v-col cols="12" md="6">
         <v-select
@@ -333,35 +339,6 @@
           :auto-upload="false"
         >
           <i slot="default" class="el-icon-plus"></i>
-          <div slot="file" slot-scope="{ file }">
-            <img
-              class="el-upload-list__item-thumbnail"
-              :src="file.url"
-              alt=""
-            />
-            <span class="el-upload-list__item-actions">
-              <span
-                class="el-upload-list__item-preview"
-                @click="handlePictureCardPreview(file)"
-              >
-                <i class="el-icon-zoom-in"></i>
-              </span>
-              <span
-                v-if="!disabled"
-                class="el-upload-list__item-delete"
-                @click="handleDownload(file)"
-              >
-                <i class="el-icon-download"></i>
-              </span>
-              <span
-                v-if="!disabled"
-                class="el-upload-list__item-delete"
-                @click="handleRemove(file)"
-              >
-                <i class="el-icon-delete"></i>
-              </span>
-            </span>
-          </div>
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="" />
@@ -371,6 +348,7 @@
         <v-btn
           color="primary"
           x-large
+          :disabled="idCard == ''"
           @click="sendForm"
           class="set-font-kanit rounded-lg elevation-4 me-2"
           outlined
@@ -432,7 +410,48 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogther"></v-dialog>
+    <v-dialog v-model="dialogther" max-width="500">
+      <v-card>
+        <v-card-title>
+          อื่นๆ (โปรดระบุ)
+        </v-card-title>
+        <v-divider class="mt-5"></v-divider>
+        <v-card-text>
+          <v-text-field
+            outlined
+            label="อื่นๆ"
+            placeholder="อื่นๆ"
+            background-color="#ffffff"
+            class="rounded-lg"
+            autofocus
+            v-model.trim="other"
+            hide-details
+          ></v-text-field>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            @click="saveOther"
+            class="rounded-lg button-shadow set-font-kanit"
+            outlined
+            large
+          >
+            บันทึก
+          </v-btn>
+          <v-btn
+            color="error"
+            @click="dialogther = false"
+            class="rounded-lg button-shadow set-font-kanit"
+            outlined
+            large
+          >
+            ยกเลิก
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script
@@ -505,28 +524,79 @@ export default {
       row: "",
       dialogSelectLocation: false,
       fileImageUpload: [],
+      other: "",
+      statysCheckSelect: 1,
     };
   },
-  watch: {},
+  watch: {
+    houseNeed(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 1;
+        this.dialogther = true;
+      }
+    },
+    houseFormat(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 2;
+        this.dialogther = true;
+      }
+    },
+    solids(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 3;
+        this.dialogther = true;
+      }
+    },
+    soilsSelection(value) {
+      if (value == "อื่นๆ") {
+        this.other = "";
+        this.statysCheckSelect = 4;
+        this.dialogther = true;
+      }
+    },
+  },
   mounted() {
     this.addressStatusList = address_status.data;
   },
   methods: {
+    saveOther() {
+      if (this.statysCheckSelect == 1) {
+        this.houseNeedList.unshift({
+          value: this.houseNeedList.length + 1,
+          text: this.other,
+        });
+        this.houseNeed = this.other;
+      } else if (this.statysCheckSelect == 2) {
+        this.houseFormatList.unshift({
+          value: this.houseFormatList.length + 1,
+          text: this.other,
+        });
+        this.houseFormat = this.other;
+      } else if (this.statysCheckSelect == 3) {
+        this.solidsList.unshift({
+          value: this.solidsList.length + 1,
+          text: this.other,
+        });
+        this.solids = this.other;
+      } else if (this.statysCheckSelect == 4) {
+        this.soils.unshift(this.other);
+        this.soilsSelection = this.other;
+      }
+      this.dialogther = false;
+    },
+
     saveFile(file, fileList) {
-      console.log("file ", file);
-      console.log("file list : ", fileList);
       this.fileImageUpload = fileList;
     },
-    handleRemove(file) {
-      console.log(file);
-    },
+
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    handleDownload(file) {
-      console.log(file);
-    },
+
     async sendForm() {
       let body = {
         form_id_card: this.idCard,
@@ -557,7 +627,7 @@ export default {
       });
       data.response
         ? this.uploadImage(data.data.form_id)
-        : this.saveHouseFailed();
+        : this.saveHouseFailed(data.message);
     },
     async uploadImage(id) {
       let formData = new FormData();
@@ -578,10 +648,10 @@ export default {
       });
       this.$router.push("/house");
     },
-    saveHouseFailed() {
+    saveHouseFailed(message) {
       this.$notify.error({
         title: "ผิดพลาด",
-        message: "ไม่สามารถบันทึกข้อมูลได้",
+        message: message,
       });
     },
     selectLocation() {

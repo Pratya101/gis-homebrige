@@ -257,15 +257,10 @@ export default {
     toFontAwesomeText(name) {
       return "fa-" + name.toLowerCase();
     },
-    handleRemove(file) {
-      console.log(file);
-    },
+
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
-    },
-    handleDownload(file) {
-      console.log(file);
     },
   },
 };

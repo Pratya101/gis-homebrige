@@ -96,7 +96,6 @@ export default {
     };
   },
   mounted() {
-    console.log("serach follow report");
     this.subDistrictsList.unshift({ SUB_DISTRICT_NAME: "ทั้งหมด" });
     this.districtList.unshift({ DISTRICT_NAME: "ทั้งหมด" });
     this.provinceList.unshift({ PROVINCE_NAME: "ทั้งหมด" });
@@ -135,7 +134,6 @@ export default {
         status_project: this.statusDevSelect,
         improvement: this.restoreChanel,
       };
-      console.log("send data serach : ", data);
       this.updateSearchDataReport(data);
     },
   },

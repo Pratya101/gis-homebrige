@@ -49,12 +49,10 @@ export default {
   },
   methods: {
     async getHouseList(body) {
-      console.log("data get hosue : ", body);
       let data = await apiService.post({
         path: "report/form",
         body: body,
       });
-      console.log("tabel ", body);
       this.houseList = data.data;
     },
     map(id) {

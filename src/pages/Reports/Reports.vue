@@ -173,6 +173,7 @@ export default {
           ภาค: "form_geo",
           พิกัดLat: "form_lat",
           พิกัดLon: "form_long",
+          ชื่อโครงการ: "project_name",
           หมวดการพัฒนา: "form_improvement",
           สถานะการพัฒนา: "status_project",
           รูปภาพขั้นเตรียมข้อมูล: "images_prepare",

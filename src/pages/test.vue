@@ -119,9 +119,6 @@ export default {
         location_new[index].GEO_NAME = await "ภาคใต้";
       }
     });
-    setTimeout(() => {
-      console.log("location_new", JSON.stringify(location_new));
-    }, 10000);
   },
 };
 </script>

@@ -151,7 +151,7 @@
           v-if="!statusLoadData"
         ></v-skeleton-loader>
         <div class="set-shadow" v-if="statusLoadData">
-          <h3 class="pt-3 pl-3">ครัวเรือนทั้งหมด</h3>
+          <h3 class="pt-3 pl-3">ครัวเรือนทั้งหมด {{ houseTotal }} ครัวเรือน</h3>
           <ApexChart
             type="donut"
             :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
@@ -171,7 +171,9 @@
           v-if="!statusLoadData"
         ></v-skeleton-loader>
         <div class="set-shadow" v-if="statusLoadData">
-          <h3 class="pt-3 pl-3">การพัฒนาที่อยู่อาศัยระดับครัวเรือน</h3>
+          <h3 class="pt-3 pl-3">
+            การพัฒนาที่อยู่อาศัยระดับครัวเรือน {{ total }} ครัวเรือน
+          </h3>
           <ApexChart
             type="donut"
             :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
@@ -305,7 +307,7 @@ export default {
             },
           },
           labels: ["ทรุดโทรมทั้งหลัง", "ทรุดโทรมบางส่วน", "มีสภาพดี"],
-          colors: ["#ff0000", "#f45d13", "#2621f7"],
+          colors: ["#ff0000", "#f0ff00", "#00d40f"],
         },
       },
       locationStart: null,
@@ -319,6 +321,8 @@ export default {
       statusLoadData: false,
       graphData: {},
       form_id: "",
+      houseTotal: 0,
+      total: 0,
     };
   },
   mounted() {
@@ -356,7 +360,6 @@ export default {
     async getGraph() {
       let data = {};
       data.data = this.graphData;
-      console.log("data ", data.data);
       this.liveingeHouse.series.push(
         data.data.formLiving[0]
           ? data.data.formLiving[0].json_build_object.form_living_total
@@ -532,7 +535,7 @@ export default {
             },
           },
           labels: ["ทรุดโทรมทั้งหลัง", "ทรุดโทรมบางส่วน", "มีสภาพดี"],
-          colors: ["#ff0000", "#f45d13", "#2621f7"],
+          colors: ["#ff0000", "#f0ff00", "#00d40f"],
         },
       };
     },
@@ -555,6 +558,15 @@ export default {
         path: "project/search",
         body: body,
       });
+
+      data.graph.formLiving.forEach((item) => {
+        this.houseTotal =
+          this.houseTotal + item.json_build_object.form_living_total;
+      });
+      this.total =
+        data.graph.progress.prepare +
+        data.graph.progress.progress +
+        data.graph.progress.success;
       this.houseList = data.data;
       this.graphData = data.graph;
       if (data.data.length > 0) {
@@ -583,7 +595,6 @@ export default {
           },
         });
       });
-      console.log("this.markers", this.markers.length);
       if (this.markers.length == 1) {
         this.zoom = await 18;
         this.locationStart = this.markers[0].location;
