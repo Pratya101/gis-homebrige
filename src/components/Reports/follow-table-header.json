@@ -26,6 +26,11 @@
     "class": "white--text"
   },
   {
+    "text": "ชื่อโครงการ",
+    "value": "project_name",
+    "class": "white--text"
+  },
+  {
     "text": "หมวดหมู่การพัฒนา",
     "value": "form_improvement",
     "class": "white--text"

@@ -26,6 +26,11 @@
     "class": "white--text"
   },
   {
+    "text": "ชื่อโครงการ",
+    "value": "project_name",
+    "class": "white--text"
+  },
+  {
     "text": "เครือข่าย",
     "value": "project_network_name",
     "class": "white--text"
