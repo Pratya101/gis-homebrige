@@ -173,6 +173,7 @@ export default {
           พิกัดLat: "form_lat",
           พิกัดLon: "form_long",
           ชื่อโครงการ: "project_name",
+          เครือข่าย: "project_network_name",
           หมวดการพัฒนา: "form_improvement",
           สถานะการพัฒนา: "status_project",
           รูปภาพขั้นเตรียมข้อมูล: "images_prepare",

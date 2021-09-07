@@ -40,6 +40,7 @@
           :search="search"
           class="material-table set-shadow"
           :mobile-breakpoint="0"
+          disable-sort
         >
           <template v-slot:[`item.form_id`]="{ index }">
             {{ index + 1 }}
@@ -80,6 +81,7 @@
               color="success"
               >{{ item.rating_description }}
             </v-chip>
+            
           </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-tooltip color="#212121" top>

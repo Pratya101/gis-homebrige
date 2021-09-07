@@ -5,6 +5,7 @@
       :items="houseList"
       class="material-table set-shadow"
       :mobile-breakpoint="0"
+      disable-sort
     >
       <template v-slot:[`item.form_id`]="{ index }">
         {{ index + 1 }}

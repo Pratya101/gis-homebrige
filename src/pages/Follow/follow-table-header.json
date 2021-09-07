@@ -44,6 +44,7 @@
     "text": "ตัวเลือก",
     "value": "actions",
     "class": "white--text",
-    "width": 200
+    "align": "center",
+    "width": 110
   }
 ]

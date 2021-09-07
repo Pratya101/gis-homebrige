@@ -32,16 +32,16 @@
           v-model.trim="idCard"
         >
           <template slot="label" v-if="idCard == ''">
-            <span class="error--text">* ระบุเลขบัตรประชาชน 13 ตัว</span>
+            <span class="error--text">ระบุเลขบัตรประชาชน 13 ตัว *</span>
           </template>
           <template slot="placeholder" v-if="idCard == ''">
-            <span class="error--text">* ระบุเลขบัตรประชาชน 13 ตัว</span>
+            <span class="error--text">ระบุเลขบัตรประชาชน 13 ตัว *</span>
           </template>
           <template slot="label" v-if="idCard.length != 13 && idCard != ''">
-            <span class="error--text">* ระบุเลขบัตรประชาชน 13 ตัว</span>
+            <span class="error--text">ระบุเลขบัตรประชาชน 13 ตัว *</span>
           </template>
           <template slot="label" v-if="idCard.length == 13 && idCard != ''">
-            <span class="success--text">* เลขบัตรประชาชนถูกต้อง</span>
+            <span class="success--text">เลขบัตรประชาชนถูกต้อง *</span>
           </template>
           <template
             slot="placeholder"
@@ -55,36 +55,48 @@
         <v-select
           outlined
           hide-details
-          label="คำนำหน้า"
-          placeholder="คำนำหน้า"
+          label="คำนำหน้า *"
+          placeholder="คำนำหน้า *"
           background-color="#ffffff"
           class="rounded-lg "
           v-model.trim="perfix"
           :items="perfixList"
-        ></v-select>
+        >
+          <template slot="label" v-if="perfix == ''">
+            <span class="error--text">คำนำหน้า *</span>
+          </template>
+        </v-select>
       </v-col>
       <v-col cols="12" md="6">
         <v-text-field
           hide-details
           outlined
-          label="ชื่อ"
-          placeholder="ชื่อ"
+          label="ชื่อ *"
+          placeholder="ชื่อ *"
           background-color="#ffffff"
           class="rounded-lg "
           v-model.trim="fname"
-        ></v-text-field>
+        >
+          <template slot="label" v-if="fname == ''">
+            <span class="error--text">ชื่อ *</span>
+          </template>
+        </v-text-field>
       </v-col>
       <v-col cols="12" md="6"
         ><v-text-field
           outlined
-          label="นามสกุล"
-          placeholder="นามสกุล"
+          label="นามสกุล *"
+          placeholder="นามสกุล *"
           background-color="#ffffff"
           class="rounded-lg "
           v-model.trim="lname"
           hide-details
-        ></v-text-field
-      ></v-col>
+        >
+          <template slot="label" v-if="lname == ''">
+            <span class="error--text">นามสกุล *</span>
+          </template>
+        </v-text-field></v-col
+      >
       <v-col cols="12" md="6">
         <v-select
           :items="memberStatusList"
@@ -359,7 +371,13 @@
         <v-btn
           color="primary"
           x-large
-          :disabled="idCard == '' || idCard.length != 13"
+          :disabled="
+            idCard == '' ||
+              idCard.length != 13 ||
+              prefix == '' ||
+              fname == '' ||
+              lname == ''
+          "
           @click="sendForm"
           class="set-font-kanit rounded-lg elevation-4 me-2"
           outlined
@@ -423,10 +441,10 @@
     </v-dialog>
     <v-dialog v-model="dialogther" max-width="500">
       <v-card>
-        <v-card-title>
+        <v-card-title class="set-font-kanit">
           อื่นๆ (โปรดระบุ)
         </v-card-title>
-        <v-divider class="mt-5"></v-divider>
+        <v-divider class="mb-5"></v-divider>
         <v-card-text>
           <v-text-field
             outlined
@@ -636,9 +654,15 @@ export default {
         path: "form",
         body: body,
       });
-      data.response
-        ? this.uploadImage(data.data.form_id)
-        : this.saveHouseFailed(data.message);
+      if (data.response) {
+        if (this.fileImageUpload.length != 0) {
+          this.uploadImage(data.data.form_id);
+        } else {
+          this.saveHouseSuccess();
+        }
+      } else {
+        this.saveHouseFailed(data.message);
+      }
     },
     async uploadImage(id) {
       let formData = new FormData();
