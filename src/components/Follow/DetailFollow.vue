@@ -205,7 +205,6 @@ export default {
       });
       this.data = data.data;
       this.followStatusList = data.data.data_progress;
-      console.log("data", this.data);
     },
     ...mapActions("house", ["updateFollowData"]),
     udpateStatue() {

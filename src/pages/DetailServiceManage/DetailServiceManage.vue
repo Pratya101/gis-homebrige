@@ -1493,7 +1493,6 @@ export default {
       this.houseList = data.data;
     },
     async getHouseList() {
-      console.log("get house ");
       let data = await apiService.get({
         path: "form/notinproject ",
       });

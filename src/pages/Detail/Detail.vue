@@ -579,7 +579,6 @@ export default {
   },
   methods: {
     showSelectEditImage(file) {
-      console.log("file edit : ", file);
       this.oldFileEdit = file;
       this.statusEditImage = true;
       this.$refs.selectImage.click();

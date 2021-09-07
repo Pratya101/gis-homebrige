@@ -113,7 +113,6 @@ export default {
         province: this.provinceSelect,
         form_living: this.addressStatus,
       };
-      console.log("send data serach : ", data);
       this.updateSearchDataReport(data);
     },
   },

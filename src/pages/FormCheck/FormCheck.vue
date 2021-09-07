@@ -26,17 +26,28 @@
         <v-text-field
           outlined
           hide-details
-          placeholder="เลขบัตรประชาชน"
           background-color="#ffffff"
           class="rounded-lg "
           type="number"
           v-model.trim="idCard"
         >
           <template slot="label" v-if="idCard == ''">
-            <span class="error--text">* โปรดระบุเลขบัตรประชาชน</span>
+            <span class="error--text">* ระบุเลขบัตรประชาชน 13 ตัว</span>
           </template>
-          <template slot="label" v-else>
-            เลขบัตรประชาชน *
+          <template slot="placeholder" v-if="idCard == ''">
+            <span class="error--text">* ระบุเลขบัตรประชาชน 13 ตัว</span>
+          </template>
+          <template slot="label" v-if="idCard.length != 13 && idCard != ''">
+            <span class="error--text">* ระบุเลขบัตรประชาชน 13 ตัว</span>
+          </template>
+          <template slot="label" v-if="idCard.length == 13 && idCard != ''">
+            <span class="success--text">* เลขบัตรประชาชนถูกต้อง</span>
+          </template>
+          <template
+            slot="placeholder"
+            v-if="idCard.length != 13 && idCard != ''"
+          >
+            <span class="error--text">* ระบุเลขบัตรประชาชน 13 หลัก</span>
           </template>
         </v-text-field>
       </v-col>
@@ -348,7 +359,7 @@
         <v-btn
           color="primary"
           x-large
-          :disabled="idCard == ''"
+          :disabled="idCard == '' || idCard.length != 13"
           @click="sendForm"
           class="set-font-kanit rounded-lg elevation-4 me-2"
           outlined

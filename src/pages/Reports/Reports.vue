@@ -124,7 +124,6 @@ export default {
   },
   watch: {
     searDataReport(value) {
-      console.log("data report type");
       if (this.reportTypeSelect == 1) {
         this.getHouseList(value);
       } else if (this.reportTypeSelect == 2) {
