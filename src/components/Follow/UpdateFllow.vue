@@ -24,7 +24,7 @@
                     ? 'warning'
                     : houseData.rating_description == 'สำเร็จ'
                     ? 'success'
-                    : 'gray'
+                    : 'primary'
                 "
                 class="rounded-lg elevation-4"
               >

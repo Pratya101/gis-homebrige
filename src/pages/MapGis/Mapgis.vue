@@ -80,51 +80,61 @@
         ></v-autocomplete>
         <v-autocomplete
           hide-detail
-          :items="subDistrictsList"
-          v-model="subDistrictSelect"
-          item-value="SUB_DISTRICT_NAME"
-          item-text="SUB_DISTRICT_NAME"
-          placeholder="ตำบล/แขวง"
-          label="ตำบล/แขวง"
-          dense
+          :items="geographyList"
+          v-model="geoSelect"
+          placeholder="ภาค"
           background-color="#ffffff"
+          item-value="GEO_ID"
+          @change="onGeoSelect"
+          return-object
+          item-text="GEO_NAME"
+          label="ภาค"
+          outlined
+          dense
+        ></v-autocomplete>
+        <v-autocomplete
+          hide-detail
+          :items="provinceList"
+          v-model="provinceSelect"
+          return-object
+          placeholder="จังหวัด"
+          @change="onProvinceSelect"
+          background-color="#ffffff"
+          item-value="PROVINCE_ID"
+          item-text="PROVINCE_NAME"
+          label="จังหวัด"
+          dense
           outlined
         ></v-autocomplete>
+
         <v-autocomplete
           hide-detail
           :items="districtList"
           v-model="districtSelect"
           dense
           placeholder="อำเภอ/เขต"
-          item-value="DISTRICT_NAME"
+          item-value="DISTRICT_ID"
+          return-object
+          @change="onDistrictSelect"
           background-color="#ffffff"
           item-text="DISTRICT_NAME"
           label="อำเภอ/เขต"
           outlined
         ></v-autocomplete>
+
         <v-autocomplete
           hide-detail
-          :items="provinceList"
-          v-model="provinceSelect"
-          placeholder="จังหวัด"
-          background-color="#ffffff"
-          item-value="PROVINCE_NAME"
-          item-text="PROVINCE_NAME"
-          label="จังหวัด"
+          :items="subDistrictsList"
+          v-model="subDistrictSelect"
+          item-value="SUB_DISTRICT_ID"
+          item-text="SUB_DISTRICT_NAME"
+          placeholder="ตำบล/แขวง"
+          label="ตำบล/แขวง"
+          return-object
+          @change="onSubDistricSelect"
           dense
-          outlined
-        ></v-autocomplete>
-        <v-autocomplete
-          hide-detail
-          :items="geographyList"
-          v-model="geoSelect"
-          placeholder="ภาค"
           background-color="#ffffff"
-          item-value="GEO_NAME"
-          item-text="GEO_NAME"
-          label="ภาค"
           outlined
-          dense
         ></v-autocomplete>
 
         <v-btn
@@ -325,20 +335,25 @@ export default {
       total: 0,
     };
   },
+
+  watch: {},
   mounted() {
     this.addressStatusList = address_status.data;
     this.addressStatusList.unshift("ทั้งหมด");
     this.addressStatus = "ทั้งหมด";
     this.getProjectNetWorkList();
     this.getProjectTypeList();
-    this.subDistrictsList.unshift({ SUB_DISTRICT_NAME: "ทั้งหมด" });
-    this.districtList.unshift({ DISTRICT_NAME: "ทั้งหมด" });
-    this.provinceList.unshift({ PROVINCE_NAME: "ทั้งหมด" });
-    this.geographyList.unshift({ GEO_NAME: "ทั้งหมด" });
-    this.subDistrictSelect = "ทั้งหมด";
-    this.districtSelect = "ทั้งหมด";
-    this.provinceSelect = "ทั้งหมด";
-    this.geoSelect = "ทั้งหมด";
+    this.subDistrictsList.unshift({
+      SUB_DISTRICT_ID: "0",
+      SUB_DISTRICT_NAME: "ทั้งหมด",
+    });
+    this.districtList.unshift({ DISTRICT_ID: "0", DISTRICT_NAME: "ทั้งหมด" });
+    this.provinceList.unshift({ PROVINCE_ID: "0", PROVINCE_NAME: "ทั้งหมด" });
+    this.geographyList.unshift({ GEO_ID: "0", GEO_NAME: "ทั้งหมด" });
+    this.subDistrictSelect = this.subDistrictsList[0];
+    this.districtSelect = this.districtList[0];
+    this.provinceSelect = this.provinceList[0];
+    this.geoSelect = this.geographyList[0];
     // this.event()
     if (this.$route.query.id) {
       this.locationStart = null;
@@ -350,6 +365,93 @@ export default {
   },
 
   methods: {
+    onSubDistricSelect() {
+      let SUB_DISTRICT_ID = this.subDistrictSelect.SUB_DISTRICT_ID;
+      if (this.subDistrictSelect.SUB_DISTRICT_ID == "0") {
+        this.locationSerach({ DISTRICT_ID: this.districtSelect.DISTRICT_ID });
+      } else {
+        this.locationSerach({ SUB_DISTRICT_ID });
+      }
+    },
+    onDistrictSelect() {
+      let DISTRICT_ID = this.districtSelect.DISTRICT_ID;
+      if (this.districtSelect.DISTRICT_ID == "0") {
+        this.locationSerach({ PROVINCE_ID: this.provinceSelect.PROVINCE_ID });
+      } else {
+        this.locationSerach({ DISTRICT_ID });
+      }
+    },
+    onProvinceSelect() {
+      let PROVINCE_ID = this.provinceSelect.PROVINCE_ID;
+      if (this.provinceSelect.PROVINCE_ID == "0") {
+        this.locationSerach({ GEO_ID: this.geoSelect.GEO_ID });
+        this.districtSelect = this.districtList[0];
+        this.subDistrictSelect = this.subDistrictsList[0];
+      } else {
+        this.locationSerach({ PROVINCE_ID });
+      }
+    },
+    onGeoSelect() {
+      let GEO_ID = this.geoSelect.GEO_ID;
+      this.districtSelect = this.districtList[0];
+      this.subDistrictSelect = this.subDistrictsList[0];
+      this.provinceSelect = this.provinceList[0];
+      this.locationSerach({ GEO_ID });
+    },
+    async locationSerach(body) {
+      let { GEO_ID, PROVINCE_ID, DISTRICT_ID, SUB_DISTRICT_ID } = body;
+
+      let data = await apiService.post({
+        path: "location/search",
+        body: body,
+      });
+      if (GEO_ID) {
+        this.provinceList = data.data.provinces;
+        this.districtList = data.data.districts;
+        this.subDistrictsList = data.data.subDistricts;
+        this.provinceList.unshift({
+          PROVINCE_ID: "0",
+          PROVINCE_NAME: "ทั้งหมด",
+        });
+        this.districtList.unshift({
+          DISTRICT_ID: "0",
+          DISTRICT_NAME: "ทั้งหมด",
+        });
+        this.subDistrictsList.unshift({
+          SUB_DISTRICT_ID: "0",
+          SUB_DISTRICT_NAME: "ทั้งหมด",
+        });
+        //this.provinceSelect = data.data.provinces[0];
+        // this.districtSelect = data.data.districts[0];
+        // this.subDistrictSelect = data.data.subDistricts[0];
+      } else if (PROVINCE_ID) {
+        this.districtList = data.data.districts;
+        this.subDistrictsList = data.data.subDistricts;
+        this.districtList.unshift({
+          DISTRICT_ID: "0",
+          DISTRICT_NAME: "ทั้งหมด",
+        });
+        this.subDistrictsList.unshift({
+          SUB_DISTRICT_ID: "0",
+          SUB_DISTRICT_NAME: "ทั้งหมด",
+        });
+        this.geoSelect = data.data.geo[0];
+        // this.districtSelect = data.data.districts[0];
+        // this.subDistrictSelect = data.data.subDistricts[0];
+      } else if (DISTRICT_ID) {
+        this.subDistrictsList = data.data.subDistricts;
+        this.subDistrictsList.unshift({
+          SUB_DISTRICT_ID: "0",
+          SUB_DISTRICT_NAME: "ทั้งหมด",
+        });
+        this.geoSelect = data.data.geo[0];
+        this.provinceSelect = data.data.provinces[0];
+      } else if (SUB_DISTRICT_ID) {
+        this.geoSelect = data.data.geo[0];
+        this.provinceSelect = data.data.provinces[0];
+        this.districtSelect = data.data.districts[0];
+      }
+    },
     async event(map) {
       await map.Layers.externalOptions({
         googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
@@ -427,7 +529,6 @@ export default {
       ];
       this.statusLoadData = true;
     },
-
     async getHouse(id) {
       this.statusLoadMap = false;
       let data = await apiService.get({
@@ -540,6 +641,8 @@ export default {
       };
     },
     async serachHosue(status) {
+      this.houseTotal = 0;
+      this.total = 0;
       this.statusLoadMap = false;
       this.clearData();
       this.markers = [];
@@ -548,12 +651,20 @@ export default {
         search_name: this.search_name,
         network_id: this.network_id,
         type_id: this.type_id,
-        sub_district: this.subDistrictSelect,
+        sub_district: this.subDistrictSelect.SUB_DISTRICT_NAME
+          ? this.subDistrictSelect.SUB_DISTRICT_NAME
+          : "ทั้งหมด",
         form_living: this.addressStatus,
-        district: this.districtSelect,
-        province: this.provinceSelect,
-        geo: this.geoSelect,
+        district: this.districtSelect.DISTRICT_NAME
+          ? this.districtSelect.DISTRICT_NAME
+          : "ทั้งหมด",
+        province: this.provinceSelect.PROVINCE_NAME
+          ? this.provinceSelect.PROVINCE_NAME
+          : "ทั้งหมด",
+        geo: this.geoSelect.GEO_NAME ? this.geoSelect.GEO_NAME : "ทั้งหมด",
       };
+      console.log(body);
+
       let data = await apiService.post({
         path: "project/search",
         body: body,

@@ -32,13 +32,44 @@
         <v-divider class="mt-0"></v-divider>
         <v-card-text v-if="followStatusList">
           <v-list subheader three-line>
+            <v-subheader>{{ followStatusList.ready.status_ready }}</v-subheader>
+            <v-list-item>
+              <v-list-item-content>
+                <p v-if="followStatusList.ready.images_ready.length == 0">
+                  ไม่มีรูปภาพ !
+                </p>
+                <v-row v-else>
+                  <v-col
+                    cols="6"
+                    md="4"
+                    v-for="(img, index) in followStatusList.ready.images_ready"
+                    :key="index"
+                  >
+                    <v-img
+                      @click="previewImage(img)"
+                      style="cursor:pointer"
+                      class="rounded-lg elevation-4"
+                      max-height="150"
+                      max-width="250"
+                      :src="img"
+                    ></v-img>
+                  </v-col>
+                </v-row>
+                <p class="mt-3 ml-2" v-if="followStatusList.ready.detail_ready">
+                  <strong>รายละเอียด : </strong>
+                  {{ followStatusList.ready.detail_ready }}
+                </p>
+              </v-list-item-content>
+            </v-list-item>
             <v-subheader>{{
               followStatusList.prepare.status_prepare
             }}</v-subheader>
-
             <v-list-item>
               <v-list-item-content>
-                <v-row>
+                <p v-if="followStatusList.prepare.images_prepare.length == 0">
+                  ไม่มีรูปภาพ !
+                </p>
+                <v-row v-else>
                   <v-col
                     cols="6"
                     md="4"
@@ -57,7 +88,9 @@
                   </v-col>
                 </v-row>
                 <p class="mt-3 ml-2">
-                  <strong>รายละเอียด : </strong>
+                  <strong v-if="followStatusList.prepare.detail_prepare"
+                    >รายละเอียด :
+                  </strong>
                   {{ followStatusList.prepare.detail_prepare }}
                 </p>
               </v-list-item-content>
@@ -69,7 +102,10 @@
 
             <v-list-item>
               <v-list-item-content>
-                <v-row>
+                <p v-if="followStatusList.progress.images_progress.length == 0">
+                  ไม่มีรูปภาพ !
+                </p>
+                <v-row v-else>
                   <v-col
                     cols="6"
                     md="4"
@@ -87,7 +123,10 @@
                     ></v-img>
                   </v-col>
                 </v-row>
-                <p class="mt-3 ml-2">
+                <p
+                  class="mt-3 ml-2"
+                  v-if="followStatusList.progress.detail_progress"
+                >
                   <strong>รายละเอียด : </strong>
                   {{ followStatusList.progress.detail_progress }}
                 </p>
@@ -100,7 +139,10 @@
 
             <v-list-item>
               <v-list-item-content>
-                <v-row>
+                <p v-if="followStatusList.success.images_success.length == 0">
+                  ไม่มีรูปภาพ !
+                </p>
+                <v-row v-else>
                   <v-col
                     cols="6"
                     md="4"
@@ -118,7 +160,10 @@
                     ></v-img>
                   </v-col>
                 </v-row>
-                <p class="mt-3 ml-2">
+                <p
+                  class="mt-3 ml-2"
+                  v-if="followStatusList.success.detail_success"
+                >
                   <strong>รายละเอียด : </strong>
                   {{ followStatusList.success.detail_success }}
                 </p>

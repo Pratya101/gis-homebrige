@@ -53,8 +53,8 @@
               small
               label
               class="rounded-lg elevation-4"
-              v-if="item.rating_description == 'ยังไม่ติดตาม'"
-              color="greyTint"
+              v-if="item.rating_description == 'เริ่มเข้าโครงการ'"
+              color="primary"
               >{{ item.rating_description }}
             </v-chip>
             <v-chip
@@ -81,7 +81,6 @@
               color="success"
               >{{ item.rating_description }}
             </v-chip>
-            
           </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-tooltip color="#212121" top>
@@ -113,12 +112,57 @@
               </template>
               <span>ข้อมูลการติดตาม</span>
             </v-tooltip>
+            <v-tooltip color="#212121" top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="confirmDelete(item.map_project_form_id)"
+                  color="primary"
+                  style="cursor:pointer;"
+                  ><v-icon>mdi-delete-outline</v-icon></v-btn
+                >
+              </template>
+              <span>ลบ</span>
+            </v-tooltip>
           </template>
         </v-data-table>
       </v-col>
     </v-row>
     <UpdateFllow v-on:update="getFollowList"></UpdateFllow>
     <DetailFollow></DetailFollow>
+    <v-dialog v-model="dialogConfirmDelete" max-width="600">
+      <v-card>
+        <v-card-title class="set-font-kanit">
+          <v-icon left>mdi-delete-outline</v-icon>
+          ยืนยันการลบครัวเรือนออกจากการพัฒนาที่อยู่อาศัย !
+        </v-card-title>
+        <v-divider class="mb-2"></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            large
+            @click="deleteFollow"
+            color="primary"
+            class="rounded-lg button-shadow elevation-3 set-font-kanit"
+          >
+            <v-icon left>fa-save</v-icon>
+            ยืนยัน
+          </v-btn>
+          <v-btn
+            large
+            @click="dialogConfirmDelete = false"
+            color="error"
+            outlined
+            class="rounded-lg button-shadow elevation-3 set-font-kanit"
+            ><v-icon left>fa-times</v-icon>
+            ยกเลิก
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -142,6 +186,8 @@ export default {
       headers: followTableHeader,
       followList: [],
       address_status_list: [],
+      dialogConfirmDelete: false,
+      map_project_form_id: "",
     };
   },
   mounted() {
@@ -150,6 +196,30 @@ export default {
     this.address_status_list.unshift("ทั้งหมด");
   },
   methods: {
+    async deleteFollow() {
+      console.log("follow : ", this.map_project_form_id);
+      let data = await apiService.delete({
+        path: "mapprojectfrom",
+        param: this.map_project_form_id,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "ลบข้อมูลการพัฒนา",
+          message: "ทำการข้อมูลการพัฒนาเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.dialogConfirmDelete = false;
+      this.getFollowList();
+    },
+    confirmDelete(id) {
+      this.map_project_form_id = id;
+      this.dialogConfirmDelete = true;
+    },
     ...mapActions("house", ["updateStatusHouse", "updateFollowData"]),
     showDetail(data) {
       this.updateFollowData(data);

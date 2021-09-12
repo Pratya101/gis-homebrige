@@ -43,7 +43,7 @@
           outlined
         ></v-autocomplete
       ></v-col>
-      <v-col cols="12" md="6" class="py-0">
+      <v-col cols="12" md="4" class="py-0">
         <v-autocomplete
           hide-detail
           :items="restoreChanelList"
@@ -56,7 +56,22 @@
           dense
         ></v-autocomplete>
       </v-col>
-      <v-col cols="12" md="6" class="py-0">
+      <v-col cols="12" md="4" class="py-0">
+        <v-autocomplete
+          hide-detail
+          :items="projectNetworkList"
+          v-model="network_id"
+          placeholder="เครือข่าย"
+          item-value="project_network_id"
+          background-color="#ffffff"
+          item-text="project_network_name"
+          label="เครือข่าย"
+          outlined
+          hide-details
+          dense
+        ></v-autocomplete>
+      </v-col>
+      <v-col cols="12" md="4" class="py-0">
         <v-autocomplete
           hide-detail
           :items="statusDevList"
@@ -80,6 +95,7 @@ import province from "@/data/provinces";
 import statusHouseDev from "@/data/statusHouseDev.json";
 import restore_chanel from "@/data/restore_chanel.json";
 import { mapActions } from "vuex";
+import { apiService } from "@/services/axios";
 export default {
   data() {
     return {
@@ -93,9 +109,12 @@ export default {
       provinceSelect: "",
       restoreChanel: "",
       statusDevSelect: statusHouseDev.data[0],
+      projectNetworkList: [],
+      network_id: "",
     };
   },
   mounted() {
+    this.getProjectNetWorkList();
     this.subDistrictsList.unshift({ SUB_DISTRICT_NAME: "ทั้งหมด" });
     this.districtList.unshift({ DISTRICT_NAME: "ทั้งหมด" });
     this.provinceList.unshift({ PROVINCE_NAME: "ทั้งหมด" });
@@ -122,8 +141,21 @@ export default {
     restoreChanel() {
       this.sendDataSearch();
     },
+    network_id() {
+      this.sendDataSearch();
+    },
   },
   methods: {
+    async getProjectNetWorkList() {
+      let data = await apiService.get({
+        path: "projectnetwork/list",
+      });
+      this.projectNetworkList = data.data;
+      this.projectNetworkList.unshift({
+        project_network_id: "",
+        project_network_name: "ทั้งหมด",
+      });
+    },
     ...mapActions("house", ["updateSearchDataReport"]),
 
     sendDataSearch() {
@@ -133,6 +165,7 @@ export default {
         province: this.provinceSelect,
         status_project: this.statusDevSelect,
         improvement: this.restoreChanel,
+        project_network_id: this.network_id,
       };
       this.updateSearchDataReport(data);
     },

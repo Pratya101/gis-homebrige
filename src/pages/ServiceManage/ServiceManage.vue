@@ -82,10 +82,55 @@
               </template>
               <span class="set-font-kanit">รายละเอียด</span>
             </v-tooltip>
+            <v-tooltip color="#212121" top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="confirmDelete(item.project_id)"
+                  color="primary"
+                  style="cursor:pointer;"
+                  ><v-icon>mdi-delete-outline</v-icon></v-btn
+                >
+              </template>
+              <span>ลบ</span>
+            </v-tooltip>
           </template>
         </v-data-table></v-col
       >
     </v-row>
+    <v-dialog v-model="dialogConfirmDelete" max-width="600">
+      <v-card>
+        <v-card-title class="set-font-kanit">
+          <v-icon left>mdi-delete-outline</v-icon>
+          ยืนยันการลบโครงการ !
+        </v-card-title>
+        <v-divider class="mb-2"></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            large
+            color="primary"
+            @click="deleteProject"
+            class="rounded-lg button-shadow elevation-3 set-font-kanit"
+          >
+            <v-icon left>fa-save</v-icon>
+            ยืนยัน
+          </v-btn>
+          <v-btn
+            large
+            @click="dialogConfirmDelete = false"
+            color="error"
+            outlined
+            class="rounded-lg button-shadow elevation-3 set-font-kanit"
+            ><v-icon left>fa-times</v-icon>
+            ยกเลิก
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -98,11 +143,13 @@ export default {
   data() {
     return {
       search: "",
+      dialogConfirmDelete: false,
       headers: serviceManagerTableHeader,
       skill: 20,
       dialog: false,
       projectList: [],
       address_status_list: [],
+      projectId: "",
     };
   },
   mounted() {
@@ -111,6 +158,30 @@ export default {
     this.address_status_list.unshift("ทั้งหมด");
   },
   methods: {
+    async deleteProject() {
+      console.log("param : ", this.projectId);
+      let data = await apiService.delete({
+        path: "project",
+        param: this.projectId,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "ลบโครงการสำเร็จ",
+          message: "ทำการโครงการเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.dialogConfirmDelete = false;
+      this.getProjectList();
+    },
+    confirmDelete(id) {
+      this.projectId = id;
+      this.dialogConfirmDelete = true;
+    },
     async getProjectList() {
       let data = await apiService.get({
         path: "project/list",

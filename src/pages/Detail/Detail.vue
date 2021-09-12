@@ -699,6 +699,7 @@ export default {
       this.mapData(response.data);
     },
     mapData(data) {
+      console.log("map data : ", data);
       this.idCard = data.form_id_card;
       this.perfix = data.form_unit;
       this.fname = data.form_fname;
@@ -725,7 +726,7 @@ export default {
         SUB_DISTRICT_NAME: data.form_sub_district,
         ZIPCODE: data.form_zipcode,
       };
-      this.imageList = data.images;
+      this.imageList = data.images ? data.images : [];
     },
     selectLocation() {
       this.dialogSelectLocation = true;

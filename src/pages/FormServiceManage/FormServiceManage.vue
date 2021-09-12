@@ -230,6 +230,7 @@
         <v-text-field
           label="ข้อมูลจำนวนเป้าหมาย"
           placeholder="ข้อมูลจำนวนเป้าหมาย"
+          type="number"
           v-model.trim="dataAmountDistination"
           hide-details
           outlined
