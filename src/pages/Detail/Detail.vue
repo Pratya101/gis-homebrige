@@ -699,7 +699,6 @@ export default {
       this.mapData(response.data);
     },
     mapData(data) {
-      console.log("map data : ", data);
       this.idCard = data.form_id_card;
       this.perfix = data.form_unit;
       this.fname = data.form_fname;

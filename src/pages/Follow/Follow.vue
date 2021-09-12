@@ -197,7 +197,6 @@ export default {
   },
   methods: {
     async deleteFollow() {
-      console.log("follow : ", this.map_project_form_id);
       let data = await apiService.delete({
         path: "mapprojectfrom",
         param: this.map_project_form_id,

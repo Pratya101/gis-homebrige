@@ -159,7 +159,6 @@ export default {
   },
   methods: {
     async deleteProject() {
-      console.log("param : ", this.projectId);
       let data = await apiService.delete({
         path: "project",
         param: this.projectId,

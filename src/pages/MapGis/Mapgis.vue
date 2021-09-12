@@ -663,7 +663,6 @@ export default {
           : "ทั้งหมด",
         geo: this.geoSelect.GEO_NAME ? this.geoSelect.GEO_NAME : "ทั้งหมด",
       };
-      console.log(body);
 
       let data = await apiService.post({
         path: "project/search",
