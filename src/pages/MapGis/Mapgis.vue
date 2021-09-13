@@ -477,6 +477,7 @@ export default {
           ? data.data.formLiving[2].json_build_object.form_living_total
           : ""
       );
+      console.log("liveingeHouse", this.liveingeHouse);
       this.houseDev.series.push(data.data.progress.prepare);
       this.houseDev.series.push(data.data.progress.progress);
       this.houseDev.series.push(data.data.progress.success);

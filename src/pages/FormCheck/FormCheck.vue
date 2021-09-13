@@ -589,6 +589,17 @@ export default {
   },
   mounted() {
     this.addressStatusList = address_status.data;
+    let tempStatus = address_status.data.filter((item) => {
+      return item == "ทั้งหมด";
+    });
+    for (const item of tempStatus) {
+      let checkStatus = address_status.data.findIndex((item1) => {
+        return item1 == item;
+      });
+      if (checkStatus > -1) {
+        this.addressStatusList.splice(checkStatus, 1);
+      }
+    }
   },
   methods: {
     saveOther() {
