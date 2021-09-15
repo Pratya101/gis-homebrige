@@ -666,11 +666,8 @@ export default {
         body: body,
       });
       if (data.response) {
-        if (this.fileImageUpload.length != 0) {
-          this.uploadImage(data.data.form_id);
-        } else {
-          this.saveHouseSuccess();
-        }
+        this.uploadImage(data.data.form_id);
+        this.saveHouseSuccess();
       } else {
         this.saveHouseFailed(data.message);
       }
@@ -685,7 +682,7 @@ export default {
         param: id,
         body: formData,
       });
-      data.response ? this.saveHouseSuccess() : this.saveHouseFailed();
+      console.log("data :", data);
     },
     saveHouseSuccess() {
       this.$notify.success({
