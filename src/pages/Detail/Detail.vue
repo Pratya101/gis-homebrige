@@ -15,7 +15,7 @@
         <v-btn
           @click="statusEdit = !statusEdit"
           color="warning"
-          class="rounded-lg elevation-3 mb-2"
+          class="rounded-lg elevation-3 mb-2 me-2"
           large
           v-if="!statusEdit"
           outlined
@@ -26,11 +26,20 @@
           v-if="statusEdit"
           @click="statusEdit = !statusEdit"
           color="error"
-          class="rounded-lg elevation-3 mb-2"
+          class="rounded-lg elevation-3 mb-2 me-2"
           large
           outlined
         >
           <v-icon left>mdi-close</v-icon>ยกเลิก
+        </v-btn>
+        <v-btn
+          @click="undo()"
+          color="info"
+          class="rounded-lg elevation-3 mb-2"
+          large
+          outlined
+        >
+          <v-icon left>mdi-undo</v-icon>ย้อนกลับ
         </v-btn>
       </v-col>
     </v-row>
@@ -510,7 +519,10 @@
     </v-dialog>
   </v-container>
 </template>
-
+<script
+  type="text/javascript"
+  src="https://api.longdo.com/map/?key=4950658d2b8d1babc2e9f4b2515bd9d3"
+></script>
 <script>
 import location_new from "@/data/locations.json";
 import { apiService } from "@/services/axios";
@@ -523,7 +535,12 @@ import restore_chanel from "@/data/restore_chanel.json";
 import house_need from "@/data/house_need.json";
 import house_format from "@/data/house_format.json";
 import solids from "@/data/solids.json";
+import { LongdoMap } from "longdo-map-vue";
+LongdoMap.init({ apiKey: "4950658d2b8d1babc2e9f4b2515bd9d3" });
 export default {
+  components: {
+    LongdoMap,
+  },
   name: "Detail",
   data() {
     return {
@@ -698,6 +715,9 @@ export default {
       });
       this.mapData(response.data);
     },
+    undo() {
+      this.$router.push("/house");
+    },
     mapData(data) {
       this.idCard = data.form_id_card;
       this.perfix = data.form_unit;
@@ -731,10 +751,13 @@ export default {
       this.dialogSelectLocation = true;
     },
     event(map) {
+      map.Layers.externalOptions({
+        googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
+      });
+      map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
       map.Event.bind("drag", () => {
         this.lat = map.location().lat;
         this.lon = map.location().lon;
-
         this.gpsLocation = `${map.location().lat},${map.location().lon}`;
       });
     },

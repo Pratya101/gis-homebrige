@@ -88,10 +88,55 @@
               </template>
               <span>รายละเอียด</span>
             </v-tooltip>
+            <v-tooltip color="#212121" top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  color="primary"
+                  @click="confirmDelete(item.form_id)"
+                  style="cursor:pointer;"
+                  ><v-icon>mdi-delete-outline</v-icon></v-btn
+                >
+              </template>
+              <span>ลบ</span>
+            </v-tooltip>
           </template>
         </v-data-table></v-col
       >
     </v-row>
+    <v-dialog v-model="dialogConfirmDelete" max-width="600">
+      <v-card>
+        <v-card-title class="set-font-kanit">
+          <v-icon left>mdi-delete-outline</v-icon>
+          ยืนยันการลบครัวเรือน !
+        </v-card-title>
+        <v-divider class="mb-2"></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            large
+            color="primary"
+            @click="deleteForm"
+            class="rounded-lg button-shadow elevation-3 set-font-kanit"
+          >
+            <v-icon left>fa-save</v-icon>
+            ยืนยัน
+          </v-btn>
+          <v-btn
+            large
+            @click="dialogConfirmDelete = false"
+            color="error"
+            outlined
+            class="rounded-lg button-shadow elevation-3 set-font-kanit"
+            ><v-icon left>fa-times</v-icon>
+            ยกเลิก
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -103,11 +148,13 @@ export default {
   name: "Icons",
   data() {
     return {
+      dialogConfirmDelete: false,
       search: null,
       headers: houseTableHeader,
       address_status_list: [],
       dialog: false,
       houseList: [],
+      form_id: "",
     };
   },
   mounted() {
@@ -121,6 +168,29 @@ export default {
     },
   },
   methods: {
+    async deleteForm() {
+      let data = await apiService.delete({
+        path: "form",
+        param: this.form_id,
+      });
+      if (data.response) {
+        this.$notify.success({
+          title: "ลบครัวเรือนสำเร็จ",
+          message: "ทำการครัวเรือนเรียบร้อย",
+        });
+      } else {
+        this.$notify.error({
+          title: "ผิดพลาด",
+          message: data.message,
+        });
+      }
+      this.dialogConfirmDelete = false;
+      this.getHouseList();
+    },
+    confirmDelete(id) {
+      this.form_id = id;
+      this.dialogConfirmDelete = true;
+    },
     async getHouseList() {
       let data = await apiService.get({
         path: "form/list",
