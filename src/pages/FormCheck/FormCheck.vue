@@ -338,6 +338,20 @@
           class="rounded-lg "
         ></v-select>
       </v-col>
+      <v-col cols="12" md="6">
+        <v-select
+          :items="beneficiaryList"
+          v-model="beneficiarySelect"
+          item-value="text"
+          item-text="text"
+          hide-details
+          outlined
+          label="กลุ่มผู้รับผลประโยชน์"
+          placeholder="กลุ่มผู้รับผลประโยชน์"
+          background-color="#ffffff"
+          class="rounded-lg "
+        ></v-select>
+      </v-col>
 
       <v-col cols="12">
         <label>ลักษณะที่ดิน</label>
@@ -396,7 +410,7 @@
         >
       </v-col>
     </v-row>
-    <v-dialog v-model="dialogSelectLocation" max-width="1200">
+    <v-dialog v-model="dialogSelectLocation" max-width="600">
       <v-card>
         <v-card-title>
           ตำแหน่ง :
@@ -412,7 +426,7 @@
             :lastView="false"
             :zoom="10"
             class="set-shadow"
-            style="height:615px"
+            style="height:400px"
           >
           </longdo-map>
         </v-card-text>
@@ -498,6 +512,7 @@ import restore_chanel from "@/data/restore_chanel.json";
 import house_need from "@/data/house_need.json";
 import house_format from "@/data/house_format.json";
 import solids from "@/data/solids.json";
+import beneficiary from "@/data/beneficiary.json";
 import { apiService } from "@/services/axios";
 import { LongdoMap } from "longdo-map-vue";
 LongdoMap.init({ apiKey: "4950658d2b8d1babc2e9f4b2515bd9d3" });
@@ -522,6 +537,9 @@ export default {
       houseNeedList: house_need.data,
       houseFormatList: house_format.data,
       solidsList: solids.data,
+      beneficiaryList: beneficiary.data,
+      beneficiarySelect: "",
+
       // field data
       idCard: "",
       perfix: "",
@@ -580,9 +598,16 @@ export default {
       }
     },
     soilsSelection(value) {
-      if (value == "อื่นๆ") {
+      if (value == "อื่นๆ (โปรดระบุ)") {
         this.other = "";
         this.statysCheckSelect = 4;
+        this.dialogther = true;
+      }
+    },
+    beneficiarySelect(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 5;
         this.dialogther = true;
       }
     },
@@ -624,6 +649,12 @@ export default {
       } else if (this.statysCheckSelect == 4) {
         this.soils.unshift(this.other);
         this.soilsSelection = this.other;
+      } else if (this.statysCheckSelect == 5) {
+        this.beneficiaryList.unshift({
+          value: this.beneficiaryList.length + 1,
+          text: this.other,
+        });
+        this.beneficiarySelect = this.other;
       }
       this.dialogther = false;
     },
@@ -658,6 +689,7 @@ export default {
         form_house_style: this.houseFormat,
         form_house_ownership: this.solids,
         form_land: this.soilsSelection,
+        form_beneficiary: this.beneficiarySelect,
         form_lat: this.lat,
         form_long: this.lon,
       };

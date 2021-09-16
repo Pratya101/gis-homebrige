@@ -361,7 +361,21 @@
           background-color="#ffffff"
         ></v-select>
       </v-col>
-
+      <v-col cols="12" md="6">
+        <v-select
+          :items="beneficiaryList"
+          v-model="beneficiarySelect"
+          item-value="text"
+          item-text="text"
+          :disabled="!statusEdit"
+          hide-details
+          outlined
+          label="กลุ่มผู้รับผลประโยชน์"
+          placeholder="กลุ่มผู้รับผลประโยชน์"
+          background-color="#ffffff"
+          class="rounded-lg "
+        ></v-select>
+      </v-col>
       <v-col cols="12">
         <label>ลักษณะที่ดิน</label>
         <v-radio-group :disabled="!statusEdit" v-model="soilsSelection" row>
@@ -490,7 +504,7 @@
             :lastView="false"
             :zoom="16"
             class="set-shadow"
-            style="height:615px"
+            style="height:400px"
           >
           </longdo-map>
         </v-card-text>
@@ -517,6 +531,48 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogther" max-width="500">
+      <v-card>
+        <v-card-title class="set-font-kanit">
+          อื่นๆ (โปรดระบุ)
+        </v-card-title>
+        <v-divider class="mb-5"></v-divider>
+        <v-card-text>
+          <v-text-field
+            outlined
+            label="อื่นๆ"
+            placeholder="อื่นๆ"
+            background-color="#ffffff"
+            class="rounded-lg"
+            autofocus
+            v-model.trim="other"
+            hide-details
+          ></v-text-field>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            @click="saveOther"
+            class="rounded-lg button-shadow set-font-kanit"
+            outlined
+            large
+          >
+            บันทึก
+          </v-btn>
+          <v-btn
+            color="error"
+            @click="dialogther = false"
+            class="rounded-lg button-shadow set-font-kanit"
+            outlined
+            large
+          >
+            ยกเลิก
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script
@@ -534,8 +590,10 @@ import address_status from "@/data/address_status.json";
 import restore_chanel from "@/data/restore_chanel.json";
 import house_need from "@/data/house_need.json";
 import house_format from "@/data/house_format.json";
+import beneficiary from "@/data/beneficiary.json";
 import solids from "@/data/solids.json";
 import { LongdoMap } from "longdo-map-vue";
+
 LongdoMap.init({ apiKey: "4950658d2b8d1babc2e9f4b2515bd9d3" });
 export default {
   components: {
@@ -548,6 +606,8 @@ export default {
       dialogSelectLocation: false,
 
       //data for select
+      beneficiaryList: beneficiary.data,
+      beneficiarySelect: "",
       locationList: location_new,
       perfixList: perfix_data.data,
       memberStatusList: member_status.data,
@@ -588,17 +648,87 @@ export default {
       file: null,
       statusEditImage: false,
       oldFileEdit: "",
+      other: "",
+      statysCheckSelect: 1,
     };
   },
   mounted() {
     this.form_id = this.$route.query.id;
     this.getFormData();
   },
+  watch: {
+    houseNeed(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 1;
+        this.dialogther = true;
+      }
+    },
+    houseFormat(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 2;
+        this.dialogther = true;
+      }
+    },
+    solids(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 3;
+        this.dialogther = true;
+      }
+    },
+    soilsSelection(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 4;
+        this.dialogther = true;
+      }
+    },
+    beneficiarySelect(value) {
+      if (value == "อื่นๆ (โปรดระบุ)") {
+        this.other = "";
+        this.statysCheckSelect = 5;
+        this.dialogther = true;
+      }
+    },
+  },
   methods: {
     showSelectEditImage(file) {
       this.oldFileEdit = file;
       this.statusEditImage = true;
       this.$refs.selectImage.click();
+    },
+    saveOther() {
+      if (this.statysCheckSelect == 1) {
+        this.houseNeedList.unshift({
+          value: this.houseNeedList.length + 1,
+          text: this.other,
+        });
+        this.houseNeed = this.other;
+      } else if (this.statysCheckSelect == 2) {
+        this.houseFormatList.unshift({
+          value: this.houseFormatList.length + 1,
+          text: this.other,
+        });
+        this.houseFormat = this.other;
+      } else if (this.statysCheckSelect == 3) {
+        this.solidsList.unshift({
+          value: this.solidsList.length + 1,
+          text: this.other,
+        });
+        this.solids = this.other;
+      } else if (this.statysCheckSelect == 4) {
+        this.soils.unshift(this.other);
+        this.soilsSelection = this.other;
+      } else if (this.statysCheckSelect == 5) {
+        this.beneficiaryList.unshift({
+          value: this.beneficiaryList.length + 1,
+          text: this.other,
+        });
+        this.beneficiarySelect = this.other;
+      }
+      this.dialogther = false;
     },
     showSelectImage() {
       this.$refs.selectImage.click();
@@ -685,6 +815,7 @@ export default {
         form_living: this.addressStatus,
         form_improvement: this.restoreChanel,
         form_housing_needs: this.houseNeed,
+        form_beneficiary: this.beneficiarySelect,
         form_house_style: this.houseFormat,
         form_house_ownership: this.solids,
         form_land: this.soilsSelection,
@@ -733,6 +864,7 @@ export default {
       this.houseFormat = data.form_house_style;
       this.solids = data.form_house_ownership;
       this.soilsSelection = data.form_land;
+      this.beneficiarySelect = data.form_beneficiary;
       this.lat = data.form_lat;
       this.lon = data.form_long;
       this.locationStart = { lon: data.form_long, lat: data.form_lat };

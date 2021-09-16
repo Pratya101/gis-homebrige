@@ -55,6 +55,17 @@
           background-color="#ffffff"
         ></v-autocomplete>
         <v-autocomplete
+          :items="projectList"
+          v-model="projectSelect"
+          item-text="project_name"
+          item-value="project_id"
+          outlined
+          label="โครงการ"
+          dense
+          placeholder="โครงการ"
+          background-color="#ffffff"
+        ></v-autocomplete>
+        <v-autocomplete
           hide-detail
           :items="projectNetworkList"
           v-model.trim="network_id"
@@ -149,7 +160,6 @@
         >
       </v-col>
     </v-row>
-
     <v-row class="mt-5">
       <v-col cols="12" md="6">
         <v-skeleton-loader
@@ -214,6 +224,13 @@
         </div>
       </v-col>
     </v-row>
+    <v-dialog v-model="dialog">
+      <v-card>
+        <v-card-title>
+          hello world
+        </v-card-title>
+      </v-card></v-dialog
+    >
   </v-container>
 </template>
 <script
@@ -240,6 +257,9 @@ export default {
   name: "Maps",
   data() {
     return {
+      projectList: [],
+      projectSelect: "",
+      dialog: false,
       statusLoadMap: true,
       addressStatusList: [],
       addressStatus: "",
@@ -342,6 +362,7 @@ export default {
     this.addressStatusList.unshift("ทั้งหมด");
     this.addressStatus = "ทั้งหมด";
     this.getProjectNetWorkList();
+    this.getProjectList();
     this.getProjectTypeList();
     this.subDistrictsList.unshift({
       SUB_DISTRICT_ID: "0",
@@ -365,6 +386,13 @@ export default {
   },
 
   methods: {
+    async getProjectList() {
+      let data = await apiService.get({
+        path: "project/list/mini",
+      });
+      this.projectList = data.data;
+      this.projectList.unshift({ project_id: "", project_name: "ทั้งหมด" });
+    },
     onSubDistricSelect() {
       let SUB_DISTRICT_ID = this.subDistrictSelect.SUB_DISTRICT_ID;
       if (this.subDistrictSelect.SUB_DISTRICT_ID == "0") {
@@ -458,6 +486,10 @@ export default {
       });
       map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
       this.statusLoadMap = true;
+      // map.Event.bind("overlayClick", (overlay) => {
+      //   console.log("orveray : ", overlay);
+      //   this.dialog = true;
+      // });
     },
     async getGraph() {
       let data = {};
@@ -687,22 +719,95 @@ export default {
       }
       this.getGraph();
     },
+    helloworld() {
+      console.log("hello world");
+    },
     async addMarker(data) {
+      console.log("data", data.data_progress);
       this.markers = [];
+      data.forEach(async (element) => {
+        let image1 = [];
+        let image2 = [];
+        let image3 = [];
+        let image4 = [];
+        element.data_progress.ready.images_ready.forEach(async (item) => {
+          await image1.push(
+            `<a href="${item}" target="_blank"> <img width="130px" class="rounded-lg elevation-2 m-2"  src='${item}' ></a>`
+          );
+        });
+        element.data_progress.prepare.images_prepare.forEach(async (item) => {
+          await image2.push(
+            `<a href="${item}" target="_blank"> <img width="130px" class="rounded-lg elevation-2 m-2"  src='${item}' ></a>`
+          );
+        });
+        element.data_progress.progress.images_progress.forEach(async (item) => {
+          await image3.push(
+            `<a href="${item}" target="_blank"> <img width="130px" class="rounded-lg elevation-2 m-2"  src='${item}' ></a>`
+          );
+        });
+        element.data_progress.success.images_success.forEach(async (item) => {
+          await image4.push(
+            `<a href="${item}" target="_blank"> <img width="130px" class="rounded-lg elevation-2 m-2"  src='${item}' ></a>`
+          );
+        });
+        let image = await `
+      <hr>
+      <strong>${element.data_progress.ready.status_ready}</strong>
+      <div align="">
+      ${
+        image1.length != 0
+          ? image1.toString().replace(",", " ")
+          : "ไม่มีข้อมูลรูปภาพ !"
+      }
+      </div>
+      <strong>${element.data_progress.prepare.status_prepare}</strong>
+      <div align="">
+      ${
+        image2.length != 0
+          ? image2.toString().replace(",", " ")
+          : "ไม่มีข้อมูลรูปภาพ !"
+      }
+      </div>
+      <strong>${element.data_progress.progress.status_progress}</strong>
+      <div align="">
+      ${
+        image3.length != 0
+          ? image3.toString().replace(",", " ")
+          : "ไม่มีข้อมูลรูปภาพ !"
+      }
+      </div>
+      <strong>${element.data_progress.success.status_success}</strong>
+      <div align="">
+      ${
+        image4.length != 0
+          ? image4.toString().replace(",", " ")
+          : "ไม่มีข้อมูลรูปภาพ !"
+      }
+      </div>`;
 
-      data.forEach((element) => {
         this.markers.push({
           location: { lon: element.form_long, lat: element.form_lat },
           icon: {
             url: element.color,
-            offset: { x: 14, y: 10 },
-            size: { width: 30, height: 30 },
+            offset: { x: 9, y: 9 },
+            size: { width: 20, height: 20 },
           },
           popup: {
-            title: `${element.form_unit} ${element.form_fname} ${element.form_lname}`,
-            detail: `${element.form_home_id} ${element.form_sub_district} ${element.form_district} ${element.form_province}
-            <br> <strong>สภาพที่อยู่ : </strong> ${element.form_living} <br> <strong>ชื่อโครงการ : </strong> ${element.project_name}`,
-            size: { width: 200, height: 100 },
+            title: `<div  class="set-font-kanit">${element.form_unit} ${element.form_fname} ${element.form_lname}</div>`,
+            detail: `<div  class="set-font-kanit"><strong>ที่อยู่ : </strong>${
+              element.form_home_id
+            } ${element.form_sub_district} ${element.form_district} ${
+              element.form_province
+            }
+            <br> <strong>สภาพที่อยู่ : </strong> ${
+              element.form_living
+            } <br> <strong>ชื่อโครงการ : </strong> ${
+              element.project_name
+                ? element.project_name
+                : "ยังไม่เข้าร่วมโครงการ"
+            } <br> ${image}</div>
+            `,
+            size: { width: 300, height: 300 },
           },
         });
       });
