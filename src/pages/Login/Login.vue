@@ -77,8 +77,8 @@ export default {
       ],
       createFullName: "John Smith",
       createEmail: "john@flatlogic.com",
-      username: "admin",
-      password: "123456",
+      username: "",
+      password: "",
       passRules: [
         (v) => !!v || "Password is required",
         (v) => v.length >= 6 || "Min 6 characters",
