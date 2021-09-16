@@ -486,10 +486,6 @@ export default {
       });
       map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
       this.statusLoadMap = true;
-      // map.Event.bind("overlayClick", (overlay) => {
-      //   console.log("orveray : ", overlay);
-      //   this.dialog = true;
-      // });
     },
     async getGraph() {
       let data = {};
@@ -509,7 +505,6 @@ export default {
           ? data.data.formLiving[2].json_build_object.form_living_total
           : ""
       );
-      console.log("liveingeHouse", this.liveingeHouse);
       this.houseDev.series.push(data.data.progress.prepare);
       this.houseDev.series.push(data.data.progress.progress);
       this.houseDev.series.push(data.data.progress.success);
@@ -719,11 +714,8 @@ export default {
       }
       this.getGraph();
     },
-    helloworld() {
-      console.log("hello world");
-    },
+
     async addMarker(data) {
-      console.log("data", data.data_progress);
       this.markers = [];
       data.forEach(async (element) => {
         let image1 = [];

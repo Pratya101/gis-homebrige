@@ -650,6 +650,7 @@ export default {
       oldFileEdit: "",
       other: "",
       statysCheckSelect: 1,
+      dialogther: false,
     };
   },
   mounted() {

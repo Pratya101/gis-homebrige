@@ -714,7 +714,6 @@ export default {
         param: id,
         body: formData,
       });
-      console.log("data :", data);
     },
     saveHouseSuccess() {
       this.$notify.success({
