@@ -7,31 +7,35 @@
     color="primary"
     dark
   >
-    <v-btn icon class="mx-1" @click.stop="TOGGLE_DRAWER">
+    <v-btn
+      icon
+      class="mx-1"
+      @click.stop="TOGGLE_DRAWER"
+    >
       <template v-if="DRAWER_STATE">
-        <v-icon size="28" :class="$vuetify.theme.dark ? 'primary--text' : null"
-          >mdi-arrow-left</v-icon
-        >
+        <v-icon
+          size="28"
+          :class="$vuetify.theme.dark ? 'primary--text' : null"
+        >mdi-arrow-left</v-icon>
       </template>
       <template v-else>
-        <v-icon size="28" :class="$vuetify.theme.dark ? 'primary--text' : null"
-          >mdi-menu</v-icon
-        >
+        <v-icon
+          size="28"
+          :class="$vuetify.theme.dark ? 'primary--text' : null"
+        >mdi-menu</v-icon>
       </template>
     </v-btn>
     <v-toolbar-title
       class="set-font-kanit light--text set-font-shadows"
       style="font-size:2rem"
-      >แบบประเมินชุมชนสลัม</v-toolbar-title
-    >
+    >แบบประเมินชุมชนสลัม</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn
       @click="$router.push('/login')"
       outlined
       class="light set-font-kanit"
       v-if="statusLogin == false"
-      >เข้าสู่ระบบ</v-btn
-    >
+    >เข้าสู่ระบบ</v-btn>
     <v-menu
       v-if="statusLogin"
       min-width="180"
@@ -41,8 +45,16 @@
       nudge-bottom="10"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-avatar size="40" v-bind="attrs" v-on="on" class="mr-3">
-          <img src="@/assets/img/profile.jpg" alt="ผู้ใช้งาน" />
+        <v-avatar
+          size="40"
+          v-bind="attrs"
+          v-on="on"
+          class="mr-3"
+        >
+          <img
+            src="@/assets/img/profile.jpg"
+            alt="ผู้ใช้งาน"
+          />
         </v-avatar>
       </template>
       <v-list>
@@ -67,15 +79,15 @@
             color="primary"
             class="text-capitalize"
             @click="logout"
-            >ออกจากระบบ</v-btn
-          >
+          >ออกจากระบบ</v-btn>
         </div>
       </v-list>
     </v-menu>
-    <div v-if="statusLogin" class="greeting-text mr-3 d-none d-md-block">
-      <span v-if="user != null"
-        >{{ user.user_fname }} {{ user.user_lname }}</span
-      >
+    <div
+      v-if="statusLogin"
+      class="greeting-text mr-3 d-none d-md-block"
+    >
+      <span v-if="user != null">{{ user.user_fname }} {{ user.user_lname }}</span>
     </div>
   </v-app-bar>
 </template>
@@ -143,6 +155,8 @@ export default {
       this.statusLogin = false;
       this.$router.push("/map");
       this.updateLoginStatus(false);
+      window.location.href = `/#/map`;
+      location.reload();
     },
     ...mapActions("layout", ["TOGGLE_DRAWER"]),
     ...mapActions("auth", ["logoutUser", "updateLoginStatus"]),

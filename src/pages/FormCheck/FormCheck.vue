@@ -1,7 +1,13 @@
 <template>
-  <v-container fluid class="icons-page mt-3">
+  <v-container
+    fluid
+    class="icons-page mt-3"
+  >
     <v-row>
-      <v-col cols="12" class="px-0">
+      <v-col
+        cols="12"
+        class="px-0"
+      >
         <h3>
           <v-icon>mdi-file-document-edit-outline</v-icon>
           แบบฟอร์มสำรวจข้อมูลที่อยู่อาศัยระดับครัวเรือน
@@ -18,11 +24,13 @@
   text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
   font-size: 20px;"
           left
-          >fa-cubes</v-icon
-        >
+        >fa-cubes</v-icon>
         หมวดข้อมูลในครัวเรือน
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-text-field
           outlined
           hide-details
@@ -31,16 +39,28 @@
           type="number"
           v-model.trim="idCard"
         >
-          <template slot="label" v-if="idCard == ''">
+          <template
+            slot="label"
+            v-if="idCard == ''"
+          >
             <span class="error--text">ระบุเลขบัตรประชาชน 13 ตัว *</span>
           </template>
-          <template slot="placeholder" v-if="idCard == ''">
+          <template
+            slot="placeholder"
+            v-if="idCard == ''"
+          >
             <span class="error--text">ระบุเลขบัตรประชาชน 13 ตัว *</span>
           </template>
-          <template slot="label" v-if="idCard.length != 13 && idCard != ''">
+          <template
+            slot="label"
+            v-if="idCard.length != 13 && idCard != ''"
+          >
             <span class="error--text">ระบุเลขบัตรประชาชน 13 ตัว *</span>
           </template>
-          <template slot="label" v-if="idCard.length == 13 && idCard != ''">
+          <template
+            slot="label"
+            v-if="idCard.length == 13 && idCard != ''"
+          >
             <span class="success--text">เลขบัตรประชาชนถูกต้อง *</span>
           </template>
           <template
@@ -51,7 +71,10 @@
           </template>
         </v-text-field>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           outlined
           hide-details
@@ -62,12 +85,18 @@
           v-model.trim="perfix"
           :items="perfixList"
         >
-          <template slot="label" v-if="perfix == ''">
+          <template
+            slot="label"
+            v-if="perfix == ''"
+          >
             <span class="error--text">คำนำหน้า *</span>
           </template>
         </v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-text-field
           hide-details
           outlined
@@ -77,13 +106,19 @@
           class="rounded-lg "
           v-model.trim="fname"
         >
-          <template slot="label" v-if="fname == ''">
+          <template
+            slot="label"
+            v-if="fname == ''"
+          >
             <span class="error--text">ชื่อ *</span>
           </template>
         </v-text-field>
       </v-col>
-      <v-col cols="12" md="6"
-        ><v-text-field
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-text-field
           outlined
           label="นามสกุล *"
           placeholder="นามสกุล *"
@@ -92,12 +127,18 @@
           v-model.trim="lname"
           hide-details
         >
-          <template slot="label" v-if="lname == ''">
+          <template
+            slot="label"
+            v-if="lname == ''"
+          >
             <span class="error--text">นามสกุล *</span>
           </template>
-        </v-text-field></v-col
+        </v-text-field>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
       >
-      <v-col cols="12" md="6">
         <v-select
           :items="memberStatusList"
           v-model.trim="memberStatus"
@@ -109,7 +150,10 @@
           class="rounded-lg "
         ></v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           outlined
           label="จำนวนสมาชิกในครัวเรือน"
@@ -121,7 +165,9 @@
           v-model.trim="memberCount"
         ></v-select>
       </v-col>
-      <v-col cols="12"> <v-divider></v-divider> </v-col>
+      <v-col cols="12">
+        <v-divider></v-divider>
+      </v-col>
       <v-col cols="12 set-text-shadow">
         <v-icon
           style="background: #686868;
@@ -131,11 +177,13 @@
   text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
   font-size: 20px;"
           left
-          >fa-cubes</v-icon
-        >
+        >fa-cubes</v-icon>
         หมวดที่ตั้งครัวเรือน
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-text-field
           outlined
           label="บ้านเลขที่"
@@ -146,7 +194,10 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-text-field
           outlined
           label="หมู่ที่"
@@ -157,7 +208,10 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-autocomplete
           v-model.trim="address2"
           :items="locationList"
@@ -178,7 +232,10 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-autocomplete
           v-model.trim="address2"
           :items="locationList"
@@ -199,7 +256,10 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-autocomplete
           v-model.trim="address2"
           :items="locationList"
@@ -220,7 +280,10 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-autocomplete
           v-model.trim="address2"
           :items="locationList"
@@ -241,7 +304,10 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-text-field
           outlined
           label="พิกัด GPS"
@@ -252,13 +318,16 @@
           hide-details
         >
           <template v-slot:append>
-            <v-icon @click="selectLocation" style="color:blue;cursor:pointer"
-              >mdi-map-marker-radius-outline</v-icon
-            >
+            <v-icon
+              @click="selectLocation"
+              style="color:blue;cursor:pointer"
+            >mdi-map-marker-radius-outline</v-icon>
           </template>
         </v-text-field>
       </v-col>
-      <v-col cols="12"> <v-divider></v-divider> </v-col>
+      <v-col cols="12">
+        <v-divider></v-divider>
+      </v-col>
       <v-col cols="12 set-text-shadow">
         <v-icon
           style="background: #686868;
@@ -268,11 +337,13 @@
   text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
   font-size: 20px;"
           left
-          >fa-cubes</v-icon
-        >
+        >fa-cubes</v-icon>
         หมวดข้อมูลพัฒนาที่อยู่อาศัย
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           :items="addressStatusList"
           v-model.trim="addressStatus"
@@ -284,7 +355,10 @@
           class="rounded-lg "
         ></v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           :items="restoreChanelList"
           v-model.trim="restoreChanel"
@@ -296,7 +370,10 @@
           class="rounded-lg "
         ></v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           :items="houseNeedList"
           v-model="houseNeed"
@@ -310,7 +387,10 @@
           class="rounded-lg "
         ></v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           :items="houseFormatList"
           v-model="houseFormat"
@@ -324,7 +404,10 @@
           class="rounded-lg "
         ></v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           :items="solidsList"
           v-model="solids"
@@ -338,7 +421,10 @@
           class="rounded-lg "
         ></v-select>
       </v-col>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           :items="beneficiaryList"
           v-model="beneficiarySelect"
@@ -355,7 +441,10 @@
 
       <v-col cols="12">
         <label>ลักษณะที่ดิน</label>
-        <v-radio-group v-model="soilsSelection" row>
+        <v-radio-group
+          v-model="soilsSelection"
+          row
+        >
           <v-col
             v-for="(item, index) in soils"
             :key="index"
@@ -363,7 +452,10 @@
             md="4"
             class="py-1"
           >
-            <v-radio :label="item" :value="item"> </v-radio>
+            <v-radio
+              :label="item"
+              :value="item"
+            > </v-radio>
           </v-col>
         </v-radio-group>
       </v-col>
@@ -375,13 +467,23 @@
           list-type="picture-card"
           :auto-upload="false"
         >
-          <i slot="default" class="el-icon-plus"></i>
+          <i
+            slot="default"
+            class="el-icon-plus"
+          ></i>
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="" />
+          <img
+            width="100%"
+            :src="dialogImageUrl"
+            alt=""
+          />
         </el-dialog>
       </v-col>
-      <v-col cols="12" class="pt-0 text-right">
+      <v-col
+        cols="12"
+        class="pt-0 text-right"
+      >
         <v-btn
           color="primary"
           x-large
@@ -397,8 +499,8 @@
           outlined
         >
           <v-icon left>fa-save</v-icon>
-          บันทึกข้อมูล</v-btn
-        >
+          บันทึกข้อมูล
+        </v-btn>
         <v-btn
           color="error"
           x-large
@@ -406,11 +508,14 @@
           outlined
         >
           <v-icon left>fa-close</v-icon>
-          ล้างข้อมูล</v-btn
-        >
+          ล้างข้อมูล
+        </v-btn>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialogSelectLocation" max-width="600">
+    <v-dialog
+      v-model="dialogSelectLocation"
+      max-width="600"
+    >
       <v-card>
         <v-card-title>
           ตำแหน่ง :
@@ -440,8 +545,9 @@
             class="rounded-lg elevation-4 set-font-kanit"
             @click="dialogSelectLocation = false"
           >
-            <v-icon left>mdi-check-circle-outline</v-icon> ยืนยัน</v-btn
-          ><v-btn
+            <v-icon left>mdi-check-circle-outline</v-icon> ยืนยัน
+          </v-btn>
+          <v-btn
             color="error"
             outlined
             @click="dialogSelectLocation = false"
@@ -453,7 +559,10 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogther" max-width="500">
+    <v-dialog
+      v-model="dialogther"
+      max-width="500"
+    >
       <v-card>
         <v-card-title class="set-font-kanit">
           อื่นๆ (โปรดระบุ)
@@ -576,6 +685,15 @@ export default {
     };
   },
   watch: {
+    gpsLocation(value) {
+      if (!value) {
+        this.lat = "";
+        this.lon = "";
+      } else {
+        this.lat = value.split(",")[1];
+        this.lon = value.split(",")[0];
+      }
+    },
     houseNeed(value) {
       if (value == "อื่นๆ (โปรดระบุ)") {
         this.other = "";

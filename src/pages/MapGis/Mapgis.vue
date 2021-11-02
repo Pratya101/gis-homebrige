@@ -13,9 +13,9 @@
           @load="event"
           :zoom="zoom"
           :zoomRange="rangs"
-          class="set-shadow"
+          class="rounded-lg elevation-3"
           stringlanguage="en"
-          style="height:580px"
+          style="height:640px"
         >
           <longdo-map-marker
             v-for="(item, i) in markers"
@@ -170,7 +170,7 @@
           type="image"
           v-if="!statusLoadData"
         ></v-skeleton-loader>
-        <div class="set-shadow" v-if="statusLoadData">
+        <div class="rounded-lg elevation-3" v-if="statusLoadData">
           <h3 class="pt-3 pl-3">ครัวเรือนทั้งหมด {{ houseTotal }} ครัวเรือน</h3>
           <ApexChart
             type="donut"
@@ -190,7 +190,7 @@
           type="image"
           v-if="!statusLoadData"
         ></v-skeleton-loader>
-        <div class="set-shadow" v-if="statusLoadData">
+        <div class="rounded-lg elevation-3" v-if="statusLoadData">
           <h3 class="pt-3 pl-3">
             การพัฒนาที่อยู่อาศัยระดับครัวเรือน {{ total }} ครัวเรือน
           </h3>
@@ -212,7 +212,7 @@
           type="image"
           v-if="!statusLoadData"
         ></v-skeleton-loader>
-        <div class="set-shadow" v-if="statusLoadData">
+        <div class="rounded-lg elevation-3" v-if="statusLoadData">
           <h3 class="pt-3 pl-3">ติดตามการก่อสร้าง</h3>
           <ApexChart
             type="bar"
@@ -679,6 +679,7 @@ export default {
         search_name: this.search_name,
         network_id: this.network_id,
         type_id: this.type_id,
+        project_id: this.projectSelect,
         sub_district: this.subDistrictSelect.SUB_DISTRICT_NAME
           ? this.subDistrictSelect.SUB_DISTRICT_NAME
           : "ทั้งหมด",

@@ -1,26 +1,40 @@
 <template>
-  <v-container fluid class="icons-page mt-3">
+  <v-container
+    fluid
+    class="icons-page mt-3"
+  >
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <h3>
           <v-icon>mdi-format-list-bulleted</v-icon>
           รายการข้อมูลครัวเรื่อน
         </h3>
       </v-col>
-      <v-col cols="12" md="6" class="d-md-flex justify-md-end">
+      <v-col
+        cols="12"
+        md="6"
+        class="d-md-flex justify-md-end"
+      >
         <v-btn
           color="primary"
           @click="$router.push('/formcheck')"
           outlined
           large
           class="set-font-kanit rounded-lg elevation-4"
-          ><v-icon left>mdi-file-document-edit-outline</v-icon>
-          สํารวจข้อมูลทที่อยู่อาศัย</v-btn
         >
+          <v-icon left>mdi-file-document-edit-outline</v-icon>
+          สํารวจข้อมูลทที่อยู่อาศัย
+        </v-btn>
       </v-col>
     </v-row>
     <v-row class="pt-0 mt-0">
-      <v-col cols="12" md="6">
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -30,9 +44,12 @@
           placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
           outlined
           hide-details
-        ></v-text-field
-      ></v-col>
-      <v-col cols="12" md="6">
+        ></v-text-field>
+      </v-col>
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-select
           v-model="search"
           hide-details
@@ -42,10 +59,11 @@
           background-color="#ffffff"
           placeholder="เลือกสภาพที่อยู่อาศัย"
           label="เลือกสภาพที่อยู่อาศัย"
-        ></v-select
-      ></v-col>
+        ></v-select>
+      </v-col>
       <v-col cols="12">
         <v-data-table
+          :disable-sort="true"
           :headers="headers"
           :items="houseList"
           :search="search"
@@ -59,7 +77,10 @@
             {{ item.form_unit }} {{ item.form_fname }} {{ item.form_lname }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-tooltip color="#212121" top>
+            <v-tooltip
+              color="#212121"
+              top
+            >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   icon
@@ -68,13 +89,17 @@
                   color="primary"
                   @click="map(item.form_id)"
                   style="cursor:pointer;"
-                  ><v-icon>mdi-map-marker-radius-outline</v-icon></v-btn
                 >
+                  <v-icon>mdi-map-marker-radius-outline</v-icon>
+                </v-btn>
               </template>
               <span>ตำแหน่งที่อยู่</span>
             </v-tooltip>
 
-            <v-tooltip color="#212121" top>
+            <v-tooltip
+              color="#212121"
+              top
+            >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   icon
@@ -83,12 +108,16 @@
                   color="primary"
                   @click="detail(item.form_id)"
                   style="cursor:pointer;"
-                  ><v-icon>mdi-information-outline</v-icon></v-btn
                 >
+                  <v-icon>mdi-information-outline</v-icon>
+                </v-btn>
               </template>
               <span>รายละเอียด</span>
             </v-tooltip>
-            <v-tooltip color="#212121" top>
+            <v-tooltip
+              color="#212121"
+              top
+            >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   icon
@@ -97,16 +126,20 @@
                   color="primary"
                   @click="confirmDelete(item.form_id)"
                   style="cursor:pointer;"
-                  ><v-icon>mdi-delete-outline</v-icon></v-btn
                 >
+                  <v-icon>mdi-delete-outline</v-icon>
+                </v-btn>
               </template>
               <span>ลบ</span>
             </v-tooltip>
           </template>
-        </v-data-table></v-col
-      >
+        </v-data-table>
+      </v-col>
     </v-row>
-    <v-dialog v-model="dialogConfirmDelete" max-width="600">
+    <v-dialog
+      v-model="dialogConfirmDelete"
+      max-width="600"
+    >
       <v-card>
         <v-card-title class="set-font-kanit">
           <v-icon left>mdi-delete-outline</v-icon>
@@ -131,7 +164,8 @@
             color="error"
             outlined
             class="rounded-lg button-shadow elevation-3 set-font-kanit"
-            ><v-icon left>fa-times</v-icon>
+          >
+            <v-icon left>fa-times</v-icon>
             ยกเลิก
           </v-btn>
         </v-card-actions>

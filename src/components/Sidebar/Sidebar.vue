@@ -13,7 +13,11 @@
   >
     <v-list>
       <template v-for="(item, i) in items">
-        <v-row v-if="item.heading" :key="item.heading" align="center"> </v-row>
+        <v-row
+          v-if="item.heading"
+          :key="item.heading"
+          align="center"
+        > </v-row>
         <v-divider
           v-else-if="item.divider"
           :key="i"
@@ -27,7 +31,11 @@
           v-model="item.model"
         >
           <template v-slot:prependIcon>
-            <v-icon size="24" class="mr-0 ml-0" color="greyTint">
+            <v-icon
+              size="24"
+              class="mr-0 ml-0"
+              color="greyTint"
+            >
               {{ item.icon }}
             </v-icon>
           </template>
@@ -48,7 +56,10 @@
             class="pl-12"
             @click="child.action ? child.action() : null"
           >
-            <v-list-item-action class="mr-2" v-if="child.icon">
+            <v-list-item-action
+              class="mr-2"
+              v-if="child.icon"
+            >
               <v-icon size="">{{ child.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
@@ -72,7 +83,11 @@
                 </v-list-item-content>
               </template>
 
-              <v-list-item v-for="(child, i) in item.children" :key="i" link>
+              <v-list-item
+                v-for="(child, i) in item.children"
+                :key="i"
+                link
+              >
                 <v-list-item-title v-text="child.title"></v-list-item-title>
               </v-list-item>
             </v-list-group>
@@ -91,8 +106,7 @@
             <v-icon
               :size="item.size ? item.size : 24"
               :color="item.color ? item.color : 'greyTint'"
-              >{{ item.icon }}</v-icon
-            >
+            >{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title link>
@@ -167,6 +181,7 @@ export default {
       let data = await apiService.get({
         path: "user/tokhen",
       });
+      console.log("user data : ", data.data);
       if (data.data.role_id == 1 && this.items.length <= 5) {
         this.items.push({
           title: "ผู้ใช้งาน",
@@ -216,12 +231,12 @@ export default {
       }
     },
     ...mapActions("layout", ["TOGGLE_DRAWER"]),
-    logOut: function() {
+    logOut: function () {
       window.localStorage.setItem("authenticated", false);
       window.localStorage.removeItem("token");
       this.$router.push("/login");
     },
-    addSection: function() {
+    addSection: function () {
       this.dialog = true;
     },
   },
