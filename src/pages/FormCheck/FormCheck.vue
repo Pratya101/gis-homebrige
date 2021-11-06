@@ -14,17 +14,9 @@
         </h3>
       </v-col>
     </v-row>
-    <v-row class="set-shadow mt-0">
-      <v-col cols="12 set-text-shadow">
-        <v-icon
-          style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 20px;"
-          left
-        >fa-cubes</v-icon>
+    <v-row class="rounded-lg elevation-3 mt-0">
+      <v-col cols="12 ">
+        <v-icon left>fa-cubes</v-icon>
         หมวดข้อมูลในครัวเรือน
       </v-col>
       <v-col
@@ -168,16 +160,8 @@
       <v-col cols="12">
         <v-divider></v-divider>
       </v-col>
-      <v-col cols="12 set-text-shadow">
-        <v-icon
-          style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 20px;"
-          left
-        >fa-cubes</v-icon>
+      <v-col cols="12">
+        <v-icon left>fa-cubes</v-icon>
         หมวดที่ตั้งครัวเรือน
       </v-col>
       <v-col
@@ -328,16 +312,8 @@
       <v-col cols="12">
         <v-divider></v-divider>
       </v-col>
-      <v-col cols="12 set-text-shadow">
-        <v-icon
-          style="background: #686868;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
-  font-size: 20px;"
-          left
-        >fa-cubes</v-icon>
+      <v-col cols="12">
+        <v-icon left>fa-cubes</v-icon>
         หมวดข้อมูลพัฒนาที่อยู่อาศัย
       </v-col>
       <v-col
@@ -690,8 +666,8 @@ export default {
         this.lat = "";
         this.lon = "";
       } else {
-        this.lat = value.split(",")[1];
-        this.lon = value.split(",")[0];
+        this.lat = value.split(",")[0];
+        this.lon = value.split(",")[1];
       }
     },
     houseNeed(value) {

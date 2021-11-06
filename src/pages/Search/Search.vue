@@ -10,7 +10,7 @@
   font-size: 30px;"
         >mdi-format-list-bulleted</v-icon
       >
-      รายการข้อมูลครัวเรื่อน
+      รายการข้อมูลครัวเรือน
     </h2>
     <v-row>
       <v-col cols="12 px-0">

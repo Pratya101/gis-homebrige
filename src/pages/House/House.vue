@@ -10,7 +10,7 @@
       >
         <h3>
           <v-icon>mdi-format-list-bulleted</v-icon>
-          รายการข้อมูลครัวเรื่อน
+          รายการข้อมูลครัวเรือน
         </h3>
       </v-col>
       <v-col
