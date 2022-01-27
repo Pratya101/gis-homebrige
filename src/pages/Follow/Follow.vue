@@ -115,12 +115,7 @@
               color="warning"
               >{{ item.rating_description }}
             </v-chip>
-            <v-chip
-              small
-              label
-              class="rounded-lg elevation-4"
-              v-else
-              color="success"
+            <v-chip small label class="rounded-lg elevation-4" v-else color="success"
               >{{ item.rating_description }}
             </v-chip>
           </template>
@@ -246,7 +241,7 @@ export default {
     };
   },
   mounted() {
-    this.getFollowList();
+    
     this.address_status_list = address_status.data;
     this.address_status_list.unshift("ทั้งหมด");
     this.subDistrictsList.unshift({ SUB_DISTRICT_NAME: "ทั้งหมด" });
@@ -255,6 +250,7 @@ export default {
     this.subDistrictSelect = "ทั้งหมด";
     this.districtSelect = "ทั้งหมด";
     this.provinceSelect = "ทั้งหมด";
+    this.getFollowList();
   },
   watch: {
     subDistrictSelect() {
@@ -265,6 +261,9 @@ export default {
     },
     provinceSelect() {
       this.getFollowList();
+    },
+    search(value) {
+      value == "ทั้งหมด" ? (this.search = "") : value;
     },
   },
   methods: {

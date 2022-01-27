@@ -26,12 +26,12 @@
           label="ค้นหาข้อมูล"
           background-color="#ffffff"
           class="elevation-3 rounded-lg"
-          placeholder="เลขบัตรประชาชน, ชื่อ-นามสกุล, ตำบล, อำเภอ, จังหวัด เป็นต้น"
+          placeholder="ชื่อโครงการ, ตำบล, อำเภอ, จังหวัด เป็นต้น"
           outlined
           hide-details
         ></v-text-field
       ></v-col>
-      <v-col cols="12" md="6">
+      <!-- <v-col cols="12" md="6">
         <v-select
           v-model="search"
           hide-details
@@ -42,7 +42,7 @@
           placeholder="เลือกสภาพที่อยู่อาศัย"
           label="เลือกสภาพที่อยู่อาศัย"
         ></v-select
-      ></v-col>
+      ></v-col> -->
       <v-col cols="12">
         <v-data-table
           :headers="headers"
@@ -156,6 +156,11 @@ export default {
     this.getProjectList();
     this.address_status_list = address_status.data;
     this.address_status_list.unshift("ทั้งหมด");
+  },
+  watch: {
+    search(value) {
+      value == "ทั้งหมด" ? (this.search = "") : value;
+    },
   },
   methods: {
     async deleteProject() {

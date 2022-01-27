@@ -1,23 +1,13 @@
 <template>
-  <v-container
-    fluid
-    class="icons-page mt-3"
-  >
+  <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <h3>
           <v-icon>mdi-format-list-bulleted</v-icon>
           รายการข้อมูลครัวเรือน
         </h3>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-        class="d-md-flex justify-md-end"
-      >
+      <v-col cols="12" md="6" class="d-md-flex justify-md-end">
         <v-btn
           color="primary"
           @click="$router.push('/formcheck')"
@@ -31,10 +21,7 @@
       </v-col>
     </v-row>
     <v-row class="pt-0 mt-0">
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -46,10 +33,7 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           v-model="search"
           hide-details
@@ -77,10 +61,7 @@
             {{ item.form_unit }} {{ item.form_fname }} {{ item.form_lname }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-tooltip
-              color="#212121"
-              top
-            >
+            <v-tooltip color="#212121" top>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   icon
@@ -96,10 +77,7 @@
               <span>ตำแหน่งที่อยู่</span>
             </v-tooltip>
 
-            <v-tooltip
-              color="#212121"
-              top
-            >
+            <v-tooltip color="#212121" top>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   icon
@@ -114,10 +92,7 @@
               </template>
               <span>รายละเอียด</span>
             </v-tooltip>
-            <v-tooltip
-              color="#212121"
-              top
-            >
+            <v-tooltip color="#212121" top>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   icon
@@ -136,10 +111,7 @@
         </v-data-table>
       </v-col>
     </v-row>
-    <v-dialog
-      v-model="dialogConfirmDelete"
-      max-width="600"
-    >
+    <v-dialog v-model="dialogConfirmDelete" max-width="600">
       <v-card>
         <v-card-title class="set-font-kanit">
           <v-icon left>mdi-delete-outline</v-icon>
@@ -189,6 +161,7 @@ export default {
       dialog: false,
       houseList: [],
       form_id: "",
+      addressStatusSelect: "",
     };
   },
   mounted() {
@@ -242,9 +215,6 @@ export default {
         name: "Detail",
         query: { id: id },
       });
-    },
-    onSearch() {
-      this.dialog = true;
     },
   },
 };
