@@ -669,6 +669,10 @@
                     value: 'form_home_id',
                   },
                   {
+                    text: 'หมู่',
+                    value: 'form_village',
+                  },
+                  {
                     text: 'ตำบล',
                     value: 'form_sub_district',
                   },
@@ -680,7 +684,10 @@
                     text: 'จังหวัด',
                     value: 'form_province',
                   },
-                   
+                  {
+                    text: 'รหัสไปรษณีย์',
+                    value: 'form_zipcode',
+                  },
                 ]"
                 :items="houseList"
                 :items-per-page="10"
@@ -689,10 +696,6 @@
                 <template v-slot:[`item.form_fname`]="{ item }">
                   {{ item.form_unit }} {{ item.form_fname }}
                   {{ item.form_lname }}
-                </template>
-                <template v-slot:[`item.form_province`]="{ item }">
-                  {{ item.form_province }}
-                  {{ item.form_zipcode }}
                 </template>
               </v-data-table>
             </v-col>
