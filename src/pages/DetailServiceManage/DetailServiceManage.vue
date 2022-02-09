@@ -316,13 +316,7 @@
         >
           <v-icon left>fa-plus</v-icon>ค่าสาธารณูปโภค
         </v-btn>
-        <v-btn
-          @click="addHouse()"
-          color="primary"
-          class="rounded-lg elevation-3"
-          large
-          outlined
-        >
+        <v-btn @click="addHouse()" color="primary" class="rounded-lg elevation-3" large outlined>
           <v-icon left>fa-plus</v-icon>เพิ่มครัวเรือน
         </v-btn>
       </v-col>
@@ -341,9 +335,7 @@
             <v-icon left>mdi-office-building</v-icon>
             สร้างใหม่
           </v-tab>
-          <v-tab class="my-1">
-            <v-icon left>mdi-hammer-wrench</v-icon>ปรับปรุงแก้ไข
-          </v-tab>
+          <v-tab class="my-1"> <v-icon left>mdi-hammer-wrench</v-icon>ปรับปรุงแก้ไข </v-tab>
           <v-tab-item>
             <v-simple-table class="material-table-tab set-shadow mt-3">
               <template v-slot:default>
@@ -365,9 +357,7 @@
                             icon
                             color="primary"
                           >
-                            <v-icon class="white--text"
-                              >mdi-order-bool-ascending-variant</v-icon
-                            >
+                            <v-icon class="white--text">mdi-order-bool-ascending-variant</v-icon>
                           </v-btn>
                         </template>
                         <span>เลือกหลายครัวเรือน</span>
@@ -377,16 +367,8 @@
                       งบประมาณสนับสนุน
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            @click="editCost"
-                            v-bind="attrs"
-                            v-on="on"
-                            icon
-                            color="primary"
-                          >
-                            <v-icon class="white--text"
-                              >mdi-order-bool-ascending-variant</v-icon
-                            >
+                          <v-btn @click="editCost" v-bind="attrs" v-on="on" icon color="primary">
+                            <v-icon class="white--text">mdi-order-bool-ascending-variant</v-icon>
                           </v-btn>
                         </template>
                         <span>เลือกหลายครัวเรือน</span>
@@ -409,12 +391,7 @@
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
-                            @click="
-                              editSinglePhase(
-                                item.phase_id,
-                                item.map_project_form_id
-                              )
-                            "
+                            @click="editSinglePhase(item.phase_id, item.map_project_form_id)"
                             v-bind="attrs"
                             v-on="on"
                             icon
@@ -434,7 +411,7 @@
                             @click="
                               editUpdateSignleCost(
                                 item.map_project_form_id,
-                                item.map_project_form_budget_support
+                                item.map_project_form_budget_support,
                               )
                             "
                             v-bind="attrs"
@@ -474,9 +451,7 @@
                             icon
                             color="primary"
                           >
-                            <v-icon class="white--text"
-                              >mdi-order-bool-ascending-variant</v-icon
-                            >
+                            <v-icon class="white--text">mdi-order-bool-ascending-variant</v-icon>
                           </v-btn>
                         </template>
                         <span>เลือกหลายครัวเรือน</span>
@@ -486,16 +461,8 @@
                       งบประมาณสนับสนุน
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            @click="editCost"
-                            v-bind="attrs"
-                            v-on="on"
-                            icon
-                            color="primary"
-                          >
-                            <v-icon class="white--text"
-                              >mdi-order-bool-ascending-variant</v-icon
-                            >
+                          <v-btn @click="editCost" v-bind="attrs" v-on="on" icon color="primary">
+                            <v-icon class="white--text">mdi-order-bool-ascending-variant</v-icon>
                           </v-btn>
                         </template>
                         <span>เลือกหลายครัวเรือน</span>
@@ -518,12 +485,7 @@
                       <v-tooltip color="#212121" top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
-                            @click="
-                              editSinglePhase(
-                                item.phase_id,
-                                item.map_project_form_id
-                              )
-                            "
+                            @click="editSinglePhase(item.phase_id, item.map_project_form_id)"
                             v-bind="attrs"
                             v-on="on"
                             icon
@@ -543,7 +505,7 @@
                             @click="
                               editUpdateSignleCost(
                                 item.map_project_form_id,
-                                item.map_project_form_budget_support
+                                item.map_project_form_budget_support,
                               )
                             "
                             v-bind="attrs"
@@ -706,6 +668,19 @@
                     text: 'ที่อยู่',
                     value: 'form_home_id',
                   },
+                  {
+                    text: 'ตำบล',
+                    value: 'form_sub_district',
+                  },
+                  {
+                    text: 'อำเภอ',
+                    value: 'form_district',
+                  },
+                  {
+                    text: 'จังหวัด',
+                    value: 'form_province',
+                  },
+                   
                 ]"
                 :items="houseList"
                 :items-per-page="10"
@@ -715,9 +690,8 @@
                   {{ item.form_unit }} {{ item.form_fname }}
                   {{ item.form_lname }}
                 </template>
-                <template v-slot:[`item.form_home_id`]="{ item }">
-                  {{ item.form_home_id }} {{ item.form_sub_district }}
-                  {{ item.form_district }} {{ item.form_province }}
+                <template v-slot:[`item.form_province`]="{ item }">
+                  {{ item.form_province }}
                   {{ item.form_zipcode }}
                 </template>
               </v-data-table>
@@ -786,10 +760,7 @@
                 <v-col cols="12" lg="6">
                   <h5 class="pt-2"><v-icon>fa-list</v-icon> ข้อมูลครัวเรือน</h5>
                 </v-col>
-                <v-col
-                  cols="12"
-                  lg="6"
-                  class="d-md-flex justify-content-between"
+                <v-col cols="12" lg="6" class="d-md-flex justify-content-between"
                   ><v-select
                     outlined
                     dense
@@ -846,8 +817,8 @@
                   {{ item.form_lname }}
                 </template>
                 <template v-slot:[`item.form_home_id`]="{ item }">
-                  {{ item.form_home_id }} {{ item.form_sub_district }}
-                  {{ item.form_district }} {{ item.form_province }}
+                  {{ item.form_home_id }} {{ item.form_sub_district }} {{ item.form_district }}
+                  {{ item.form_province }}
                   {{ item.form_zipcode }}
                 </template>
               </v-data-table>
@@ -917,11 +888,7 @@
                 <v-col cols="12" lg="6">
                   <h5 class="pt-2"><v-icon>fa-list</v-icon> ข้อมูลครัวเรือน</h5>
                 </v-col>
-                <v-col
-                  cols="12"
-                  lg="6"
-                  class="d-md-flex justify-content-between"
-                >
+                <v-col cols="12" lg="6" class="d-md-flex justify-content-between">
                   <v-text-field
                     outlined
                     class="rounded-lg"
@@ -975,8 +942,8 @@
                   {{ item.form_lname }}
                 </template>
                 <template v-slot:[`item.form_home_id`]="{ item }">
-                  {{ item.form_home_id }} {{ item.form_sub_district }}
-                  {{ item.form_district }} {{ item.form_province }}
+                  {{ item.form_home_id }} {{ item.form_sub_district }} {{ item.form_district }}
+                  {{ item.form_province }}
                   {{ item.form_zipcode }}
                 </template>
               </v-data-table>
@@ -1014,11 +981,7 @@
         <v-divider class="mb-3"></v-divider>
         <v-card-text>
           <label>ชื่อเครือข่าย</label>
-          <v-text-field
-            hide-details
-            outlined
-            v-model.trim="networkName"
-          ></v-text-field>
+          <v-text-field hide-details outlined v-model.trim="networkName"></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -1047,18 +1010,12 @@
     <v-dialog v-model="dialogAddType" max-width="550">
       <v-card>
         <v-card-title>
-          <h3>
-            <v-icon left>mdi-plus-circle-outline</v-icon>เพิ่มประเภทโครงการ
-          </h3>
+          <h3><v-icon left>mdi-plus-circle-outline</v-icon>เพิ่มประเภทโครงการ</h3>
         </v-card-title>
         <v-divider class="mb-3"></v-divider>
         <v-card-text>
           <label>ชื่อประเภทโครงการ</label>
-          <v-text-field
-            hide-details
-            outlined
-            v-model.trim="typeName"
-          ></v-text-field>
+          <v-text-field hide-details outlined v-model.trim="typeName"></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -1402,9 +1359,7 @@ export default {
         path: `mapprojectfrom/type/${status}`,
         param: this.project_id,
       });
-      status == 1
-        ? (this.houseTypeNewCreate = data.data)
-        : (this.houseTypeUpdate = data.data);
+      status == 1 ? (this.houseTypeNewCreate = data.data) : (this.houseTypeUpdate = data.data);
     },
     async updateProject() {
       let body = {
@@ -1554,6 +1509,19 @@ export default {
         path: "projectnetwork/list",
       });
       this.projectNetworkList = data.data;
+    },
+
+    customFilter(item, queryText) {
+      const textOne = item.customer_fullname.toLowerCase();
+      const textThree = item.customer_id.toLowerCase();
+      const textFour = item.customer_tel.toLowerCase();
+      const searchText = queryText.toLowerCase();
+
+      return (
+        textOne.indexOf(searchText) > -1 ||
+        textThree.indexOf(searchText) > -1 ||
+        textFour.indexOf(searchText) > -1
+      );
     },
   },
 };
