@@ -2,10 +2,10 @@
   <v-container class="icons-page mt-3">
     <v-row>
       <v-col class="order-first" cols="12" md="9">
-        <h3>
+        <h5>
           <v-icon>mdi-map-marker-radius-outline</v-icon>
           แผนที่ GIS
-        </h3>
+        </h5>
         <longdo-map
           v-if="statusLoadMap"
           :location="locationStart"
@@ -30,10 +30,10 @@
         </longdo-map>
       </v-col>
       <v-col class="order-last" cols="12" md="3">
-        <h3>
+        <h5>
           <v-icon>mdi-magnify</v-icon>
           ค้นหา
-        </h3>
+        </h5>
 
         <v-text-field
           placeholder="ชื่อ-นามสกุล"
@@ -171,7 +171,7 @@
           v-if="!statusLoadData"
         ></v-skeleton-loader>
         <div class="rounded-lg elevation-3" v-if="statusLoadData">
-          <h3 class="pt-3 pl-3">ครัวเรือนทั้งหมด {{ houseTotal }} ครัวเรือน</h3>
+          <h5 class="pt-3 pl-3">ครัวเรือนทั้งหมด {{ houseTotal }} ครัวเรือน</h5>
           <ApexChart
             type="donut"
             :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
@@ -191,9 +191,9 @@
           v-if="!statusLoadData"
         ></v-skeleton-loader>
         <div class="rounded-lg elevation-3" v-if="statusLoadData">
-          <h3 class="pt-3 pl-3">
+          <h5 class="pt-3 pl-3">
             การพัฒนาที่อยู่อาศัยระดับครัวเรือน {{ total }} ครัวเรือน
-          </h3>
+          </h5>
           <ApexChart
             type="donut"
             :height="$vuetify.breakpoint.smAndDown ? 300 : 350"
@@ -213,7 +213,7 @@
           v-if="!statusLoadData"
         ></v-skeleton-loader>
         <div class="rounded-lg elevation-3" v-if="statusLoadData">
-          <h3 class="pt-3 pl-3">ติดตามการก่อสร้าง</h3>
+          <h5 class="pt-3 pl-3">ติดตามการก่อสร้าง</h5>
           <ApexChart
             type="bar"
             height="350"

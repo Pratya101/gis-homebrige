@@ -2,10 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="6">
-        <h3>
+        <h5>
           <v-icon>mdi-format-list-bulleted</v-icon>
           รายการติดตามการพัฒนาที่อยู่อาศัย
-        </h3>
+        </h5>
       </v-col>
     </v-row>
     <v-row class="pt-0 mt-0">
@@ -81,6 +81,10 @@
           :items="followList"
           :search="search"
           class="material-table set-shadow"
+          :loading="loading"
+          loading-text="กำลังโหลดข้อมูล..."
+          no-data-text="ไม่พบข้อมูล !"
+          no-results-text="ไม่พบข้อมูล !"
           :mobile-breakpoint="0"
           disable-sort
         >
@@ -115,7 +119,12 @@
               color="warning"
               >{{ item.rating_description }}
             </v-chip>
-            <v-chip small label class="rounded-lg elevation-4" v-else color="success"
+            <v-chip
+              small
+              label
+              class="rounded-lg elevation-4"
+              v-else
+              color="success"
               >{{ item.rating_description }}
             </v-chip>
           </template>
@@ -237,11 +246,12 @@ export default {
       followList: [],
       address_status_list: [],
       dialogConfirmDelete: false,
+      loading: false,
       map_project_form_id: "",
     };
   },
   mounted() {
-    
+    this.loading = true;
     this.address_status_list = address_status.data;
     this.address_status_list.unshift("ทั้งหมด");
     this.subDistrictsList.unshift({ SUB_DISTRICT_NAME: "ทั้งหมด" });
@@ -275,7 +285,7 @@ export default {
       if (data.response) {
         this.$notify.success({
           title: "ลบข้อมูลการพัฒนา",
-          message: "ทำการข้อมูลการพัฒนาเรียบร้อย",
+          message: "ทำการลบข้อมูลการพัฒนาเรียบร้อย",
         });
       } else {
         this.$notify.error({
@@ -298,6 +308,7 @@ export default {
       this.updateStatusHouse(data);
     },
     async getFollowList() {
+      this.loading = true;
       let body = {
         district: this.districtSelect,
         sub_district: this.subDistrictSelect,
@@ -308,6 +319,7 @@ export default {
         body: body,
       });
       this.followList = data.data;
+      this.loading = false;
     },
     map() {
       this.$router.push("/map");

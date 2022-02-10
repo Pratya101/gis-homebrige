@@ -3,6 +3,10 @@
     <v-data-table
       :headers="headers"
       :items="houseList"
+      no-data-text="ไม่พบข้อมูล !"
+      no-results-text="ไม่พบข้อมูล !"
+      :loading="loading"
+      loading-text="กำลังโหลดข้อมูล...."
       class="material-table set-shadow"
       :mobile-breakpoint="0"
       disable-sort
@@ -26,6 +30,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       headers: houseTableHeader,
       address_status_list: [],
       dialog: false,
@@ -50,11 +55,13 @@ export default {
   },
   methods: {
     async getHouseList(body) {
+      this.loading = true;
       let data = await apiService.post({
         path: "report/form",
         body: body,
       });
       this.houseList = data.data;
+      this.loading = false;
     },
     map(id) {
       this.$router.push({

@@ -2,10 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="6">
-        <h3>
+        <h5>
           <v-icon>mdi-format-list-bulleted</v-icon>
           รายการบริหารโครงการ
-        </h3>
+        </h5>
       </v-col>
       <v-col cols="12" md="6" class="d-md-flex justify-md-end px-0">
         <v-btn
@@ -45,9 +45,14 @@
       ></v-col> -->
       <v-col cols="12">
         <v-data-table
+          :disable-sort="true"
           :headers="headers"
           :items="projectList"
           :search="search"
+          :loading="loading"
+          loading-text="กำลังโหลดข้อมูล..."
+          no-data-text="ไม่พบข้อมูล !"
+          no-results-text="ไม่พบข้อมูล !"
           class="material-table set-shadow"
           :mobile-breakpoint="0"
         >
@@ -150,6 +155,7 @@ export default {
       projectList: [],
       address_status_list: [],
       projectId: "",
+      loading: false,
     };
   },
   mounted() {
@@ -187,10 +193,12 @@ export default {
       this.dialogConfirmDelete = true;
     },
     async getProjectList() {
+      this.loading = true;
       let data = await apiService.get({
         path: "project/list",
       });
       this.projectList = data.data;
+      this.loading = false
     },
     map() {
       this.$router.push("/map");

@@ -2,10 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="6">
-        <h3>
+        <h5>
           <v-icon>mdi-account-multiple-outline</v-icon>
           ผู้ใช้งาน
-        </h3>
+        </h5>
       </v-col>
       <v-col cols="12" md="6" class="d-md-flex justify-md-end">
         <v-btn
@@ -37,6 +37,10 @@
           :headers="headers"
           :items="userList"
           :search="search"
+          no-data-text="ไม่พบข้อมูล !"
+          no-results-text="ไม่พบข้อมูล !"
+          :loading="loading"
+          loading-text="กำลังโหลดข้อมูล...."
           class="material-table set-shadow"
           :mobile-breakpoint="0"
         >
@@ -365,6 +369,7 @@ export default {
       dialog: false,
       dialogEdit: false,
       dialogReset: false,
+      loading: false,
       dialogConfirmDelete: false,
       userId: "",
     };
@@ -506,10 +511,12 @@ export default {
       }
     },
     async getUsers() {
+      this.loading = true
       let data = await apiService.get({
         path: "user/list",
       });
       this.userList = data.data;
+      this.loading = false
     },
     addUser() {
       this.dialog = true;

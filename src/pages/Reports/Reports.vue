@@ -2,7 +2,7 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="7" class="mb-0 py-0">
-        <h3 class="mt-5"><v-icon>mdi-file-excel-outline</v-icon> รายงาน</h3>
+        <h5 class="mt-5"><v-icon>mdi-file-excel-outline</v-icon> รายงาน</h5>
       </v-col>
       <v-col cols="12" md="5" class="mb-0 py-0 d-flex justify-content-end">
         <v-select

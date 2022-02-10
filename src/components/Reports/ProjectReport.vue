@@ -2,6 +2,10 @@
   <v-data-table
     :headers="headers"
     :items="projectList"
+    no-data-text="ไม่พบข้อมูล !"
+    no-results-text="ไม่พบข้อมูล !"
+    :loading="loading"
+    loading-text="กำลังโหลดข้อมูล...."
     :search="search"
     class="material-table set-shadow"
     :mobile-breakpoint="0"
@@ -38,6 +42,7 @@ export default {
       headers: serviceManagerTableHeader,
       skill: 20,
       dialog: false,
+      loading: false,
       projectList: [],
       address_status_list: [],
     };
@@ -57,11 +62,13 @@ export default {
   },
   methods: {
     async getProjectList(body) {
+      this.loading = true;
       let data = await apiService.post({
         path: "report/project",
         body: body,
       });
       this.projectList = data.data;
+      this.loading = false;
     },
     map() {
       this.$router.push("/map");

@@ -16,7 +16,7 @@
           class="set-font-kanit rounded-lg elevation-4"
         >
           <v-icon left>mdi-file-document-edit-outline</v-icon>
-          สํารวจข้อมูลทที่อยู่อาศัย
+          สํารวจข้อมูลที่อยู่อาศัย
         </v-btn>
       </v-col>
     </v-row>
@@ -51,6 +51,10 @@
           :headers="headers"
           :items="houseList"
           :search="search"
+          :loading="loading"
+          no-data-text="ไม่พบข้อมูล !"
+          no-results-text="ไม่พบข้อมูล !"
+          loading-text="กำลังโหลดข้อมูล...."
           class="material-table set-shadow"
           :mobile-breakpoint="0"
         >
@@ -158,6 +162,7 @@ export default {
       search: null,
       headers: houseTableHeader,
       address_status_list: [],
+      loading: false,
       dialog: false,
       houseList: [],
       form_id: "",
@@ -199,10 +204,12 @@ export default {
       this.dialogConfirmDelete = true;
     },
     async getHouseList() {
+      this.loading = true;
       let data = await apiService.get({
         path: "form/list",
       });
       this.houseList = data.data;
+      this.loading = false;
     },
     map(id) {
       this.$router.push({

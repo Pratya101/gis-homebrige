@@ -3,6 +3,10 @@
     :headers="headers"
     :items="followList"
     :search="search"
+    no-data-text="ไม่พบข้อมูล !"
+    no-results-text="ไม่พบข้อมูล !"
+    :loading="loading"
+    loading-text="กำลังโหลดข้อมูล...."
     class="material-table set-shadow"
     :mobile-breakpoint="0"
     disable-sort
@@ -52,6 +56,7 @@ export default {
   name: "FollowReport",
   data() {
     return {
+      loading: false,
       search: "",
       dialog: false,
       headers: followTableHeader,
@@ -79,11 +84,13 @@ export default {
     },
 
     async getFollowList(body) {
+      this.loading = true;
       let data = await apiService.post({
         path: "report/formproject",
         body: body,
       });
       this.followList = data.data;
+      this.loading = false;
     },
     map() {
       this.$router.push("/map");
