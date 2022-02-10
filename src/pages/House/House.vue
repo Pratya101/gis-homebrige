@@ -2,10 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="6">
-        <h3>
+        <h5>
           <v-icon>mdi-format-list-bulleted</v-icon>
           รายการข้อมูลครัวเรือน
-        </h3>
+        </h5>
       </v-col>
       <v-col cols="12" md="6" class="d-md-flex justify-md-end">
         <v-btn

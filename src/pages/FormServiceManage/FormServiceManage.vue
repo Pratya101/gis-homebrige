@@ -2,10 +2,10 @@
   <v-container fluid class="icons-page mt-3">
     <v-row>
       <v-col cols="12" md="6">
-        <h3>
+        <h5>
           <v-icon>mdi-file-document-edit-outline</v-icon>
           แบบฟอร์มเพิ่มโครงการ
-        </h3> </v-col
+        </h5> </v-col
       ><v-col cols="12" md="6" class="d-md-flex justify-md-end rounded-lg">
         <v-btn
           @click="$router.push('/servicemanage')"
@@ -304,9 +304,9 @@
     <v-dialog v-model="dialogAddType" max-width="550">
       <v-card>
         <v-card-title>
-          <h3>
+          <h5>
             <v-icon left>mdi-plus-circle-outline</v-icon>เพิ่มประเภทโครงการ
-          </h3>
+          </h5>
         </v-card-title>
         <v-divider class="mb-3"></v-divider>
         <v-card-text>

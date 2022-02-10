@@ -1,17 +1,11 @@
 <template>
-  <v-container
-    fluid
-    class="icons-page mt-3"
-  >
+  <v-container fluid class="icons-page mt-3">
     <v-row>
-      <v-col
-        cols="12"
-        md="8"
-      >
-        <h3>
+      <v-col cols="12" md="8">
+        <h5>
           <v-icon>mdi-card-account-details-outline</v-icon>
           รายละเอียดข้อมูลของ {{ perfix }} {{ fname }} {{ lname }}
-        </h3>
+        </h5>
       </v-col>
       <v-col
         cols="12"
@@ -59,13 +53,11 @@
   text-shadow: rgba(255, 255, 255, 0.5) 1px 2px 1px;
   font-size: 20px;"
           left
-        >fa-cubes</v-icon>
+          >fa-cubes</v-icon
+        >
         หมวดข้อมูลในครัวเรือน
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-text-field
           :disabled="!statusEdit"
           outlined
@@ -78,10 +70,7 @@
           v-model.trim="idCard"
         ></v-text-field>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           outlined
           label="คำนำหน้า"
@@ -94,10 +83,7 @@
           hide-details
         ></v-select>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-text-field
           outlined
           label="ชื่อ"
@@ -109,10 +95,7 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-text-field
           outlined
           label="นามสกุล"
@@ -124,10 +107,7 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           outlined
           label="ตําแหน่ง/สถานะภาพ"
@@ -140,10 +120,7 @@
           hide-details
         ></v-select>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           outlined
           label="จำนวนสมาชิกในครัวเรือน"
@@ -162,10 +139,7 @@
         <v-icon left>fa-cubes</v-icon>
         หมวดที่ตั้งครัวเรือน
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-text-field
           outlined
           label="บ้านเลขที่"
@@ -177,10 +151,7 @@
           hide-details
         ></v-text-field>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-text-field
           :disabled="!statusEdit"
           v-model.trim="villageId"
@@ -192,10 +163,7 @@
           background-color="#ffffff"
         ></v-text-field>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="address2"
           :items="locationList"
@@ -217,10 +185,7 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="address2"
           :disabled="!statusEdit"
@@ -242,10 +207,7 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="address2"
           :items="locationList"
@@ -267,10 +229,7 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="address2"
           hide-details
@@ -292,10 +251,7 @@
           </template>
         </v-autocomplete>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-text-field
           :disabled="!statusEdit"
           v-model="gpsLocation"
@@ -307,10 +263,9 @@
           background-color="#ffffff"
         >
           <template v-slot:append>
-            <v-icon
-              @click="selectLocation"
-              style="color:blue;cursor:pointer"
-            >mdi-map-marker-radius-outline</v-icon>
+            <v-icon @click="selectLocation" style="color:blue;cursor:pointer"
+              >mdi-map-marker-radius-outline</v-icon
+            >
           </template>
         </v-text-field>
       </v-col>
@@ -321,10 +276,7 @@
         <v-icon left>fa-cubes</v-icon>
         หมวดข้อมูลพัฒนาที่อยู่อาศัย
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           :disabled="!statusEdit"
           :items="addressStatusList"
@@ -337,10 +289,7 @@
           background-color="#ffffff"
         ></v-select>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           :disabled="!statusEdit"
           :items="restoreChanelList"
@@ -353,10 +302,7 @@
           background-color="#ffffff"
         ></v-select>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           :disabled="!statusEdit"
           :items="houseNeedList"
@@ -371,10 +317,7 @@
           background-color="#ffffff"
         ></v-select>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           :items="houseFormatList"
           v-model="houseFormat"
@@ -389,10 +332,7 @@
           background-color="#ffffff"
         ></v-select>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           :items="solidsList"
           v-model="solids"
@@ -407,10 +347,7 @@
           background-color="#ffffff"
         ></v-select>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-      >
+      <v-col cols="12" md="6">
         <v-select
           :items="beneficiaryList"
           v-model="beneficiarySelect"
@@ -427,11 +364,7 @@
       </v-col>
       <v-col cols="12">
         <label>ลักษณะที่ดิน</label>
-        <v-radio-group
-          :disabled="!statusEdit"
-          v-model="soilsSelection"
-          row
-        >
+        <v-radio-group :disabled="!statusEdit" v-model="soilsSelection" row>
           <v-col
             v-for="(item, index) in soils"
             :key="index"
@@ -439,10 +372,7 @@
             md="4"
             class="py-1"
           >
-            <v-radio
-              :label="item"
-              :value="item"
-            > </v-radio>
+            <v-radio :label="item" :value="item"> </v-radio>
           </v-col>
         </v-radio-group>
       </v-col>
@@ -450,10 +380,7 @@
         <label>รูปภาพ</label>
 
         <v-row>
-          <v-col
-            cols="12"
-            v-if="imageList.length == 0"
-          >
+          <v-col cols="12" v-if="imageList.length == 0">
             <strong class="error--text">ไม่มีรูปภาพ !</strong>
           </v-col>
           <v-col
@@ -465,16 +392,10 @@
             :key="index"
           >
             <v-card>
-              <v-img
-                height="150"
-                :src="item"
-              ></v-img>
+              <v-img height="150" :src="item"></v-img>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-tooltip
-                  color="#212121"
-                  bottom
-                >
+                <v-tooltip color="#212121" bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       :disabled="!statusEdit"
@@ -490,10 +411,7 @@
                   </template>
                   <span>แก้ไขรูปภาพ</span>
                 </v-tooltip>
-                <v-tooltip
-                  color="#212121"
-                  bottom
-                >
+                <v-tooltip color="#212121" bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       :disabled="!statusEdit"
@@ -514,11 +432,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-        class="pt-0"
-      >
+      <v-col cols="12" md="6" class="pt-0">
         <input
           type="file"
           style="display:none;"
@@ -537,11 +451,7 @@
           เพิ่มรูปภาพ
         </v-btn>
       </v-col>
-      <v-col
-        cols="12"
-        md="6"
-        class="pt-0 text-right"
-      >
+      <v-col cols="12" md="6" class="pt-0 text-right">
         <v-btn
           color="primary"
           x-large
@@ -566,10 +476,7 @@
       </v-col>
     </v-row>
 
-    <v-dialog
-      v-model="dialogSelectLocation"
-      max-width="600"
-    >
+    <v-dialog v-model="dialogSelectLocation" max-width="600">
       <v-card>
         <v-card-title>
           ตำแหน่ง :
@@ -613,10 +520,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog
-      v-model="dialogther"
-      max-width="500"
-    >
+    <v-dialog v-model="dialogther" max-width="500">
       <v-card>
         <v-card-title class="set-font-kanit">
           อื่นๆ (โปรดระบุ)

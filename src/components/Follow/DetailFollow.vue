@@ -5,10 +5,10 @@
         <v-card-title>
           <v-row class="no-gutters">
             <v-col cols="12" md="6">
-              <h3>
+              <h5>
                 <v-icon class="pb-1">mdi-file</v-icon>
                 ข้อมูลการติดตามการพัฒนา
-              </h3>
+              </h5>
             </v-col>
             <v-col
               cols="12"
