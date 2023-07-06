@@ -883,7 +883,7 @@ export default {
     },
     event(map) {
       map.Layers.externalOptions({
-        googleQuery: "key=AIzaSyA4-7a_yvgBodGTHptiCGW_TZMs7VWP6gM",
+        googleQuery: "key=AIzaSyDArsAx-DI67-hzOfDfA4FbPYKLfa7yg-E",
       });
       map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
       map.Event.bind("drag", () => {
